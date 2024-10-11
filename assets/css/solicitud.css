@@ -1,0 +1,87 @@
+
+#formulario-solicitud {
+    height: 500px;
+    width: 400px;
+    margin: 0;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    transform: rotate(-45deg);
+    top: 10%;
+    position: relative;
+    left: 24%;
+}
+h1 {
+    position: relative;
+    bottom: 15px;
+    width: 100%;
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    color: var(--verde-corporativo);
+} 
+
+label{
+    position: relative;
+    width: 90%;
+    font-weight: 600;
+    color: var(--verde-corporativo);
+}
+
+.input_solicitud {
+    width: 90%;
+    background-color: var(--azul-oscuro-contraste);
+    color: var(--blanco);
+    height: 30px;
+    padding-left: 8px;
+    margin: 0;
+    position: relative;
+    border: none;
+    border-bottom: solid 1px var(--blanco);
+    outline: none;
+}
+
+input::placeholder {
+    color: var(--blanco); /* Cambia a tu color preferido */
+    opacity: 1; /* Para asegurar que el color se vea */
+}
+
+#observaciones{
+    height: 100px;
+}
+textarea::placeholder {
+    color: var(--blanco); /* Cambia a tu color preferido */
+    opacity: 1; /* Asegura que el color sea visible */
+}
+#btn-enviar {
+    position: relative;
+    background: var(--verde-corporativo);
+    color: var(--blanco);
+    font-weight: 600;
+    border: solid 2px var(--blanco);
+    width: 60%;
+    top: 25px;
+}
+#btn-enviar:hover{
+    box-shadow: 1px 1px 10px var(--blanco);
+}
+#contenedor-logo {
+    position: relative;
+    bottom: 180px;
+    height: 150px;
+    width: 35%;
+    left: 32%;
+}
+#contenedor-logo img{
+    height: 100%;
+    width: 100%;
+}
+
+
+@media screen and (max-width:800px) {
+
+    #formulario-solicitud{
+        left: 30%;
+    }
+}
