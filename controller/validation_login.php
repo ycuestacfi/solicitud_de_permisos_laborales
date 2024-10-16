@@ -38,46 +38,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Verificar si se encontró un usuario que coincida
     if ($result->num_rows > 0) {
-        // asignacion de valores ala variable de session
-
-        session_start(); // Esto inicia la variable de sesión
-        
-        // Obtener resultados por filas de la consulta
+        session_start();
         $row = $result->fetch_assoc();
         
-        // Asignar valores a la sesión
-        $_SESSION['nombre'] = $row['nombre']; // Guarda el nombre
-        $_SESSION['cedula'] = $row['cedula']; // Guarda la cédula
-        $_SESSION['correo'] = $row['correo']; // Guarda el correo
-        $_SESSION['id_departamento'] = $row['id_departamento']; // Guarda el ID del departamento
-        $_SESSION['rol'] = $row['rol']; // Guarda el rol
-    
-        // Redirigir a la página de solicitudes
-        if (isset($_SESSION['rol'])) {
-            $rol = $_SESSION['rol']; // Obtiene el rol del usuario desde la sesión
+        $_SESSION['nombre'] = $row['nombre'];
+        $_SESSION['cedula'] = $row['cedula'];
+        $_SESSION['correo'] = $row['correo'];
+        $_SESSION['id_departamento'] = $row['id_departamento'];
+        $_SESSION['rol'] = $row['rol'];
         
-            if ($rol === 'solicitante') {
-                header("Location: /views/solicitud.php");
-                exit();
-            } elseif ($rol === 'líder aprobador') {
-                header("Location: /views/solicitudes_lider.php");
-                exit();
-            } elseif ($rol === 'administrador') {
-                header("Location: /views/administrador.php");
-                exit();
-            } else {
-                // Si no coincide con ninguno de los roles esperados
-                echo "<script>
-            swal({
-                title: 'Error',
-                text: 'Rol no reconocido.',
-                icon: 'error',
-                button: 'Aceptar',
-            }).then(function() {
-            window.location.href = '/login.php'; 
-        });
-        </script>";
-            }
+        $rol = $_SESSION['rol'];
+        
+        if ($rol === 'solicitante') {
+            header("Location: /views/solicitud.php");
+            exit();
+        } elseif (strtolower($rol) === 'lider_aprobador') {
+            header("Location: /index.php");
+            exit();
+        } elseif ($rol === 'administrador') {
+            header("Location: /views/administrador.php");
+            exit();
         }
     } else {
         echo "<script>
@@ -95,6 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Cerrar la consulta y la conexión
     $stmt->close();
-    $conn->close();
+    $conect_service->close();
 }
 ?>

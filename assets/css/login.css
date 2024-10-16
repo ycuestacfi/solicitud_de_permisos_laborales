@@ -53,6 +53,16 @@
     top: 70px;
     color: var(--blanco);
 }
+#btn_salir{
+    color: var(--verde-corporativo);
+    background-color: var(--blanco);
+    width: 100%;
+    border-radius: 10px;
+    border: solid 2px var(--verde-corporativo);
+    height: 40px;
+    position: absolute;
+    top: 80%;
+}
 #text_login{
     position: absolute;
     left: 70%;

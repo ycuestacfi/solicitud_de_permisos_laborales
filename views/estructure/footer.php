@@ -49,6 +49,6 @@ message => {
 </script> -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://smtpjs.com/v3/smtp.js"></script>
-    
+  <script src="/solicitud.js"></script>
 </body>
 </html>

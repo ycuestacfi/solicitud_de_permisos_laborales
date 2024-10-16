@@ -29,12 +29,34 @@ main{
    
     align-items: center;
 }
+td{
+    border: solid 1px var(--blanco);
+    background-color: var(--azul-oscuro-contraste);
+    color: var(--blanco);
+    text-align: center;
+}
+th{
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--verde-corporativo);
+    border: solid 1px var(--verde-corporativo);
+    background-color: none;
+}
 .button-aceptar-alert{
     background-color: var(--verde-corporativo);
     color: var(--blanco);
     border: none;
 }
-
+#btn_salir{
+    color: var(--verde-corporativo);
+    background-color: var(--blanco);
+    width: 100%;
+    border-radius: 10px;
+    border: solid 2px var(--verde-corporativo);
+    height: 40px;
+    position: absolute;
+    top: 90%;
+}
 
 #fondo-form {
     height: 75%;
