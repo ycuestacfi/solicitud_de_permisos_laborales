@@ -12,10 +12,10 @@ $prueba1 = [
 ];
 ?>
 
-    <table id="tabla_registros" style=" border: solid 2px var(--azul-oscuro-contraste);
+    <table id="tabla_registros" style=" border: solid 2px var(--blanco);
     width: 65%;
     padding: 10px;
-    background-color: var(--blanco);
+    background-color: var(--azul-oscuro-contraste);
     position: relative;
     left: 52%;
     transform: translateX(-50%);

@@ -30,17 +30,16 @@ main{
     align-items: center;
 }
 td{
-    border: solid 1px var(--blanco);
-    background-color: var(--azul-oscuro-contraste);
-    color: var(--blanco);
+    background-color: var(--blanco);
+    color: var(--azul-oscuro-contraste);
     text-align: center;
 }
 th{
     font-size: 22px;
-    font-weight: 600;
-    color: var(--verde-corporativo);
-    border: solid 1px var(--verde-corporativo);
-    background-color: none;
+    font-weight: 900;
+    color: var(--blanco);
+    border: solid 2px var(--blanco);
+    background-color: var(--verde-corporativo);
 }
 .button-aceptar-alert{
     background-color: var(--verde-corporativo);
@@ -51,11 +50,16 @@ th{
     color: var(--verde-corporativo);
     background-color: var(--blanco);
     width: 100%;
-    border-radius: 10px;
+    font-size: 22px;
+    border-radius: 25px;
     border: solid 2px var(--verde-corporativo);
     height: 40px;
     position: absolute;
     top: 90%;
+    cursor: pointer;
+}
+#btn_salir:hover{   
+    scale: 1.1;
 }
 
 #fondo-form {
