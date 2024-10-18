@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
+    header("Location: /app/views/login.php ");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,13 +31,13 @@ session_start();
                 <li><a href="solicitudes_pendientes.html">Pendientes</a></li>
                  <?php endif; ?>
                  
-                <li><a href="solicitudes_aprovadas.html">Aprovadas</a></li>
-                <li><a href="solicitudes_rechazadas.html">Rechazadas</a></li>
+                <li><a href="aprovadas.html">Aprovadas</a></li>
+                <li><a href="rechazadas.html">Rechazadas</a></li>
                 
             </ul>
-            <button id="btn_salir">
+            <a href="/controller/cierre_de_sesion.php" id="btn_salir">
                 Cerrar sesión
-            </button>
+            </a>
         </nav>
     </header>
     <main>

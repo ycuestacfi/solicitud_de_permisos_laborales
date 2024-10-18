@@ -52,11 +52,13 @@ th{
     width: 100%;
     font-size: 22px;
     border-radius: 25px;
-    border: solid 2px var(--verde-corporativo);
     height: 40px;
     position: absolute;
     top: 90%;
     cursor: pointer;
+    text-align: center;
+    padding: 6px;
+    text-decoration: none;
 }
 #btn_salir:hover{   
     scale: 1.1;
