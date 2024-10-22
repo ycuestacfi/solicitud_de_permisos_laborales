@@ -1,5 +1,5 @@
 </main>
-<script src="/solicitud.js"></script>
+
 <!-- <script>
 
 
@@ -47,6 +47,18 @@ message => {
 }
 
 </script> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Código para mostrar la alerta
+        <?php if (isset($_SESSION['message'])): ?>
+            Swal.fire({
+                title: '<?= $_SESSION['message'] ?>',
+                icon: '<?= $_SESSION['type'] ?>',
+                confirmButtonText: 'OK'
+            });
+            <?php unset($_SESSION['message']); unset($_SESSION['type']); ?>
+        <?php endif; ?>
+    </script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="https://smtpjs.com/v3/smtp.js"></script>
   <script src="/solicitud.js"></script>

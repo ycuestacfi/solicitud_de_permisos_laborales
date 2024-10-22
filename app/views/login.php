@@ -1,6 +1,6 @@
 <?php
 require_once '../helpers/CookieHelper.php';
-$correo_recordado = isset($_COOKIE['correo']) ? $_COOKIE['correo'] : '';
+$usuario_recordado = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -31,8 +31,8 @@ $correo_recordado = isset($_COOKIE['correo']) ? $_COOKIE['correo'] : '';
             </article>
             <h2 id="text_login">Inicia sesión</h2>
             <form id="form-login" method="POST">
-                <label for="email">Correo Electrónico:</label>
-                <input type="email" id="email" name="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" value="<?php echo $correo_recordado; ?>" tabindex="1" title="Ingrese su correo"><br><br>
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required pattern="[a-z0-9]{5,25}" value="<?php echo $usuario_recordado; ?>" tabindex="1" title="Ingrese su usuario"><br><br>
 
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required pattern=".{9,}[*.#]$" tabindex="2" title="La contraseña debe tener minimo 8 caracteres y terminar con * o # o .">

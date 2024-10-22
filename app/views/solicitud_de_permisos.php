@@ -5,15 +5,13 @@
             <a style="left: 40%; transform:translateX(-50%); position:relative; top:0; color:var(--blanco); font-size:22px; font-weight: 600;">
                 <?php echo 'Bienvenido '. $_SESSION['nombre'] ; ?>
             </a> 
-            <a style="left: 40%; transform:translateX(-50%); position:relative; top:0; color:var(--blanco); font-size:22px; font-weight: 600;">
-                <?php echo 'Bienvenido '. $_SESSION['nombre'] ; ?>
-            </a> 
+            
             <div id="fondo-formulario">
                 
                 <form action="https://formsubmit.co/efc8028f1cfa38148558f5c9cc1e98df" method="POST"  id="formulario-solicitud">
                   
                     <h1>Formulario De Solicitud</h1>
-                    
+                     
                           
                     
                    
@@ -63,7 +61,7 @@
                 </form>
             </div>
             <figure id="contenedor-logo">
-                <img src="/assets/img/logoOficial.png" alt="">
+                <img src="/app/assets/img/logoOficial.png" alt="">
             </figure>
         </section>
         

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../conexion.php';
 class UserModel {
     private $db;
 
@@ -6,29 +7,25 @@ class UserModel {
         $this->db = $db;
     }
 
-    public function verificarCredenciales($email, $password) {
-        // Consulta SQL
-        $sql = "SELECT nombre , cedula , correo, id_departamento , rol FROM usuarios WHERE correo = ? AND contrasena = ?";
+    public function verificarCredenciales($usuario, $password) {
+        // Consulta SQL corregida
+        $sql = "SELECT nombres, cedula, correo, id_departamento, rol FROM usuarios WHERE usuario = ? AND contrasena = ?";
         $stmt = $this->db->prepare($sql);
 
         if ($stmt === false) {
-            throw new Exception("Error en la preparación de la consulta: " . $this->db->error);
+            throw new Exception("Error en la preparación de la consulta: " . implode(":", $this->db->errorInfo()));
         }
 
-        // Encriptacion de datos con haslib sha512
-        $email_hashed = hash("sha512", $email);
+        // Encriptar contraseña usando SHA512
         $password_hashed = hash("sha512", $password);
 
-        // Ejecutar consulta
-        $stmt->bind_param("ssi", $email_hashed, $password_hashed);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        // Ejecutar la consulta con los valores
+        $stmt->execute([$usuario, $password_hashed]);
+
+        // Obtener el resultado
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Verificar si se encontró el usuario
-        if ($result->num_rows > 0) {
-            return $result->fetch_assoc();
-        }
-
-        return false;
+        return $result ?: false;
     }
 }

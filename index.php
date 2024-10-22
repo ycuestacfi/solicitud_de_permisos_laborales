@@ -1,3 +1,15 @@
+<?php
+require_once 'app/controller/LoginController.php';
+require_once '../solicitud_de_permisos_laborales/conexion.php'; // Conexión a la base de datos
+
+$loginController = new LoginController($db);
+
+// Verificar si es necesario cerrar sesión por ser viernes después de las 4 PM
+$loginController->verificarCierreViernes();
+
+// Procesar el inicio de sesión
+$loginController->iniciarSesion();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,6 +20,6 @@
 </head>
 <body>
     <h1>Bienvenido a la Solicitud de Permisos Laborales</h1>
-    <a href="login.php">Iniciar Sesión</a>
+    <a href="/app/views/login.php">Iniciar Sesión</a>
 </body>
 </html>
