@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once '../helpers/CookieHelper.php';
 $usuario_recordado = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : '';
 ?>

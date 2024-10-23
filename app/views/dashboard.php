@@ -1,4 +1,10 @@
-<?php include_once '.\views\estructure\head.php';
+<?php 
+include_once "./estructure/head.php";
+
+
+
+
+
 
 $prueba1 = [
     ['nombre' => 'Juan Pérez', 'departamento' => 'Ventas', 'lider_aprobador' => 'Carlos Torralba', 'fecha_solicitud' => '2024-10-15', 'estado' => 'Aprobado'],
@@ -51,5 +57,6 @@ $prueba1 = [
               
         </tbody>
     </table>
-
-<?php include_once '.\views\estructure\footer.php'; ?>
+    <?php 
+include_once "./estructure/footer.php"
+?>

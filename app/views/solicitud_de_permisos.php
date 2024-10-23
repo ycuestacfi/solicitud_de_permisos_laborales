@@ -2,13 +2,14 @@
         
 
         <section id="fondo-form" >
-            <a style="left: 40%; transform:translateX(-50%); position:relative; top:0; color:var(--blanco); font-size:22px; font-weight: 600;">
-                <?php echo 'Bienvenido '. $_SESSION['nombre'] ; ?>
+            <a style="left: 50%; transform: translateX(-50%); position: absolute; top: 25px; color: var(--blanco); font-size: 30px; font-weight: 600;">
+                <?php echo 'Bienvenido '. $_SESSION['nombres']  ." ". $_SESSION['apellidos'] ; ?>
             </a> 
             
             <div id="fondo-formulario">
+            <!-- <form action="https://formsubmit.co/efc8028f1cfa38148558f5c9cc1e98df" method="POST"  id="formulario-solicitud"> -->
                 
-                <form action="https://formsubmit.co/efc8028f1cfa38148558f5c9cc1e98df" method="POST"  id="formulario-solicitud">
+                <form action="" method="POST"  id="formulario-solicitud">
                   
                     <h1>Formulario De Solicitud</h1>
                      
@@ -20,8 +21,9 @@
                     
                     <input class="input_solicitud" placeholder="Correo" type="email" id="correo" name="email" required>
                     
-    
-                    <label for="tipo-permiso" class="input-d">Seleccione el departamento al que pertenece</label>
+                    
+                    <input type="text" name="departamento" id="departamento" value="<?php echo $_SESSION['id_departamento']; ?>" required readonly hidden />
+                    <!-- <label for="tipo-permiso" class="input-d">Seleccione el departamento al que pertenece</label>
                     <select class="input_solicitud" name="departamento" id="departamento" required>
                         <option class="optiones" value="Talento Humano">Talento Humano</option>
                         <option class="optiones" value="Contabilidad">Contabilidad</option>
@@ -31,7 +33,7 @@
                         <option class="optiones" value="Almacen y logistica">Almacen y Logistica</option>
                         <option class="optiones" value="Big bag">Big Bag</option>
                         <option class="optiones" value="Academicas">Academicas</option>
-                    </select>
+                    </select> -->
     
                     
                     <input class="input_solicitud" placeholder="Fecha de Solicitud" type="date" id="fecha-de-solicitud" name="fecha-de-solicitud" required >

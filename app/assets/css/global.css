@@ -156,5 +156,8 @@ li{
     align-items: center;
     justify-content: center;
 }
-li a{color: var(--verde-corporativo);
-    font-size: 22px;}
+li a {
+    color: var(--verde-corporativo);
+    font-size: 17px;
+    text-decoration: none;
+}

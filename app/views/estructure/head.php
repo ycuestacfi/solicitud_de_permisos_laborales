@@ -17,6 +17,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     <link rel="stylesheet" href="/app/assets/css/aprovacion.css">
     <link rel="stylesheet" href="/app/assets/css/global.css">
     <link rel="stylesheet" href="/app/assets/css/solicitud.css">
+    <link rel="stylesheet" href="/app/assets/css/registro_usuarios.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- <link rel="stylesheet" href="solicitud.js"> -->
@@ -28,19 +29,19 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
         
             <ul> 
                 <p>Tipos de solicitudes</p>
+
                 <?php
                 $rol = $_SESSION["rol"];
-
                 if ($rol === 'administrador') {
-                    echo '<li><a href="register.php">Pendientes</a></li>';
+                    echo '<li><a href="register.php">Registrar usuario</a></li>';
                     }
 
                 if ($rol === 'lider_aprobador') {
                 echo '<li><a href="solicitudes_pendientes.php">Pendientes</a></li>';
                 }
                 ?>
-                 
-                <li><a href="aprovadas.php">Aprovadas</a></li>
+                <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+                <li><a href="dashboard.php">inicio</a></li>
                 <li><a href="rechazadas.php">Rechazadas</a></li>
                 
             </ul>

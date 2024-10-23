@@ -9,7 +9,7 @@ class UserModel {
 
     public function verificarCredenciales($usuario, $password) {
         // Consulta SQL corregida
-        $sql = "SELECT nombres, cedula, correo, id_departamento, rol FROM usuarios WHERE usuario = ? AND contrasena = ?";
+        $sql = "SELECT nombres, apellidos, cedula, correo, id_departamento, rol FROM usuarios WHERE usuario = ? AND contrasena = ?";
         $stmt = $this->db->prepare($sql);
 
         if ($stmt === false) {
