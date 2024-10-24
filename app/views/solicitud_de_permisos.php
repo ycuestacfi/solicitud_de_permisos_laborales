@@ -1,4 +1,5 @@
-<?php include_once './estructure/head.php' ?>
+<?php session_start();
+include_once './estructure/head.php'; ?>
         
 
         <section id="fondo-form" >

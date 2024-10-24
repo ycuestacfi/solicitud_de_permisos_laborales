@@ -59,6 +59,29 @@ class LoginController {
             }
         }
     }
+    // // Registra los usuarios 
+    // public function registrarUsuario($correo, $cedula, $usuario) {
+    //     // Verificar duplicados utilizando el modelo
+    //     $duplicados = $this->userModel->verificarDuplicados($correo, $cedula, $usuario);
+
+    //     // Manejar los errores de duplicados
+    //     if ($duplicados) {
+    //         if ($duplicados['correo'] == $correo) {
+    //             $mensaje = "El correo ya está en uso. Por favor, utiliza otro.";
+    //         } elseif ($duplicados['cedula'] == $cedula) {
+    //             $mensaje = "La cédula ya se encuentra inscrita. Por favor, verifica la información.";
+    //         } elseif ($duplicados['usuario'] == $usuario) {
+    //             $mensaje = "El usuario ya está en uso. Por favor, utiliza otro.";
+    //         }
+
+    //         // Retornar mensaje a la vista
+    //         return ['error' => true, 'mensaje' => $mensaje];
+    //     } else {
+    //         // Continuar con el registro (por ejemplo, insertar en la base de datos)
+    //         // ...
+    //         return ['error' => false, 'mensaje' => "Registro exitoso."];
+    //     }
+    // }
 
     public function cerrarSesion() {
         // Cerrar sesión y eliminar cookies

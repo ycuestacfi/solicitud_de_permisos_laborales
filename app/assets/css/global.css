@@ -147,7 +147,7 @@ ul{
 li{
     list-style: none;
     height: 60px;
-    width: 130px;
+    width: 100%;
     font-size: 22px;
     backdrop-filter: blur(10px);
     background: #72be4421;
