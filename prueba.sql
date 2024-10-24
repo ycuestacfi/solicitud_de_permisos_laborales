@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-10-2024 a las 23:20:33
+-- Tiempo de generación: 24-10-2024 a las 23:21:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -38,7 +38,17 @@ CREATE TABLE `departamentos` (
 --
 
 INSERT INTO `departamentos` (`id_departamento`, `nombre_departamento`, `id_lider`) VALUES
-(1, 'Tecnología Informática', NULL);
+(1, 'Tecnología Informática', NULL),
+(2, 'Academicas', NULL),
+(3, 'Almacen y logistica', NULL),
+(4, 'Big bag', NULL),
+(5, 'Calidad', NULL),
+(6, 'Comercial', NULL),
+(7, 'Contabilidad', NULL),
+(8, 'Desarrollo de producto', NULL),
+(9, 'Producción', NULL),
+(10, 'Talento Humano', NULL),
+(11, 'Administracion', NULL);
 
 -- --------------------------------------------------------
 
@@ -101,7 +111,7 @@ CREATE TABLE `usuarios` (
   `nombres` varchar(50) NOT NULL,
   `apellidos` varchar(50) NOT NULL,
   `usuario` varchar(128) NOT NULL,
-  `contraseña` varchar(128) NOT NULL,
+  `contrasena` varchar(128) NOT NULL,
   `correo` varchar(64) NOT NULL,
   `id_departamento` int(11) DEFAULT NULL,
   `rol` enum('solicitante','lider_aprobador','administrador') NOT NULL
@@ -111,9 +121,10 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombres`, `apellidos`, `usuario`, `contraseña`, `correo`, `id_departamento`, `rol`) VALUES
-(1, 123456789, 'yeffer', 'cuesta', 'e0555b3daf9e2047692287a6b44fb1fd9e56d65b4ea2927075443b587227b6ac95f06422117856b450ee8eeaa38d939cac8fe79b6749c9ad77905b59ba81971b', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta123@gmail.com', 1, 'solicitante'),
-(2, 12345678, 'prueba', 'primera', 'e0555b3daf9e2047692287a6b44fb1fd9e56d65b4ea2927075443b587227b6ac95f06422117856b450ee8eeaa38d939cac8fe79b6749c9ad77905b59ba81971b', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'prueba123@prueba.com', 1, 'lider_aprobador');
+INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombres`, `apellidos`, `usuario`, `contrasena`, `correo`, `id_departamento`, `rol`) VALUES
+(1, 123456789, 'yeffer', 'cuesta', 'e0555b3daf9e2047692287a6b44fb1fd9e56d65b4ea2927075443b587227b6ac95f06422117856b450ee8eeaa38d939cac8fe79b6749c9ad77905b59ba81971b', '$2y$10$2xAGkXndiKPw4yNnideU5eFk8WPW9v8vdZ7loIYB2s5DhG44DW3qi', 'yecuesta@providenciacfi.com', 1, 'solicitante'),
+(2, 12345678, 'prueba', 'primera', 'e0555b3daf9e2047692287a6b44fb1fd9e56d65b4ea2927075443b587227b6ac95f06422117856b450ee8eeaa38d939cac8fe79b6749c9ad77905b59ba81971b', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'prueba123@prueba.com', 1, 'lider_aprobador'),
+(4, 1078460223, 'yeffer', 'cuesta mena', 'ycuesta', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta@providenciacfi.com', 2, 'administrador');
 
 --
 -- Índices para tablas volcadas
@@ -165,7 +176,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `departamentos`
 --
 ALTER TABLE `departamentos`
-  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `historial_solicitudes`
@@ -189,7 +200,7 @@ ALTER TABLE `solicitudes`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
