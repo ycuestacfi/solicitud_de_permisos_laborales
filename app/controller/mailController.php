@@ -5,45 +5,57 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
+// //Load Composer's autoloader
+// require_once '/envio_mail/Exception.php';
+// require_once '/envio_mail/PHPMailer.php';
+// require_once '/envio_mail/SMTP.php';
 //Load Composer's autoloader
-require '/envio_mail/Exception.php';
-require '/envio_mail/PHPMailer.php';
-require '/envio_mail/SMTP.php';
+// require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../app/controller/envio_mail/Exception.php';
+require_once __DIR__ . '/../../app/controller/envio_mail/PHPMailer.php';
+require_once __DIR__ . '/../../app/controller/envio_mail/SMTP.php';
 
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
 
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $correo_solicitante = $_SESSION['correo'];
+    $nombre_solicitante = $_SESSION['nombre'];
+    
+
+}
+
 try {
     //Server settings
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+    $mail->SMTPDebug = 0;                      //Enable verbose debug output
     $mail->isSMTP();                                            //Send using SMTP
-    $mail->Host       = 'smtp.example.com';                     //Set the SMTP server to send through
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'user@example.com';                     //SMTP username
-    $mail->Password   = 'secret';                               //SMTP password
+    $mail->Username   = 'solicitud.permisos.laborales@providenciacfi.com';                     //SMTP username
+    $mail->Password   = 'Pr0v1d3nc14$#';                               //SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('from@example.com', 'Mailer');
-    $mail->addAddress('joe@example.net', 'Joe User');     //Add a recipient
-    $mail->addAddress('ellen@example.com');               //Name is optional
-    $mail->addReplyTo('info@example.com', 'Information');
-    $mail->addCC('cc@example.com');
-    $mail->addBCC('bcc@example.com');
+    $mail->setFrom('solicitud.permisos.laborales@providenciacfi.com');
+    $mail->addAddress('yefercuesta123@gmail.com');     //Add a recipient
+    // $mail->addAddress('ellen@example.com');               //Name is optional
+    // $mail->addReplyTo('info@example.com', 'Information');
+    // $mail->addCC('cc@example.com');
+    // $mail->addBCC('bcc@example.com');
 
     //Attachments
-    $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-    $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+    // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+    // $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'Here is the subject';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->Subject = 'prueba correo';
+    $mail->Body    = 'This is the HTML message body <b>in bold!</b><p id="text_bienvenida">Bienvenidos</p>';
     $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();
-    echo 'Message has been sent';
+    echo 'mensaje';
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

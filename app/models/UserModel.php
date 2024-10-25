@@ -65,4 +65,15 @@ class UserModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$nombres, $apellidos, $cedula, $correo, $departamento, $rol, $password, $usuario]);
     }
+
+    public function identificarLider(){
+        
+    }
+
+    public function envioSolicitudLiderProceso($id_departamento_solicitante){
+        $sql = "SELECT usuarios.correo, usuarios.nombres FROM usuarios JOIN departamentos ON departamentos.id_lider = usuarios.id_usuario WHERE departamentos.id_lider = usuarios.id_usuario AND usuarios.id_departamento = '1' AND usuarios.rol = 'lider_aprobador';";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute();
+
+    }
 }
