@@ -40,19 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!-- Formulario de registro de usuarios -->
 <form method="POST" style="position: relative; left: 50%; transform: translateX(-50%); height: 60%; width: 25%; display: flex; flex-direction: column; gap: 5px; background-color: var(--azul-oscuro-contraste); padding: 25px; border:solid 1px var(--blanco);">
-    <h2 style="color: var(--verde-corporativo); font-size: 22px; margin: auto; font-weight: 600;">Registro de nuevos usuarios</h2>
+    <h2 style="color: var(--verde-corporativo); font-size: 22px; margin:0px auto 20px; font-weight: 600;">Registro de nuevos usuarios</h2>
     
-    <label for="nombres">Ingrese los nombres del usuario:</label>
-    <input type="text" class="input_solicitud" name="nombres" value="<?= htmlspecialchars($nombres) ?>" required placeholder="Nombres">
+    <input type="text" class="input_solicitud" name="nombres" value="<?= htmlspecialchars($nombres) ?>" required placeholder="Ingrese los nombres del usuario:">
 
-    <label for="apellidos">Ingrese los apellidos del usuario:</label>
-    <input type="text" class="input_solicitud" name="apellidos" value="<?= htmlspecialchars($apellidos) ?>" required placeholder="Apellidos">
+    <input type="text" class="input_solicitud" name="apellidos" value="<?= htmlspecialchars($apellidos) ?>" required placeholder="Ingrese los apellidos del usuario:">
 
-    <label for="cedula">Ingrese la cédula del usuario:</label>
-    <input type="text" class="input_solicitud" name="cedula" value="<?= htmlspecialchars($cedula) ?>" required placeholder="Cédula">
+    <input type="text" class="input_solicitud" name="cedula" value="<?= htmlspecialchars($cedula) ?>" required placeholder="Ingrese la cédula del usuario:">
 
-    <label for="correo">Ingrese el correo del usuario:</label>
-    <input type="email" class="input_solicitud" name="correo" value="<?= htmlspecialchars($correo) ?>" required placeholder="Correo">
+    <input type="email" class="input_solicitud" name="correo" value="<?= htmlspecialchars($correo) ?>" required placeholder="Ingrese el Correo corporativo del usuario:">
 
     <label for="departamento">Seleccione el departamento:</label>
     <select class="input_solicitud" name="departamento" required>
@@ -68,11 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <option value="administrador" <?= $rol == 'administrador' ? 'selected' : '' ?>>Administrador</option>
     </select>
 
-    <label for="usuario">Ingrese un nombre de usuario:</label>
-    <input type="text" class="input_solicitud" name="usuario" value="<?= htmlspecialchars($usuario) ?>" required placeholder="Usuario">
+  
+    <input type="text" class="input_solicitud" name="usuario" value="<?= htmlspecialchars($usuario) ?>" required placeholder="Ingrese un nombre de Usuario para ingreso al sistema:">
 
-    <label for="password">Ingrese la contraseña:</label>
-    <input type="password" class="input_solicitud" name="password" required placeholder="Contraseña">
+   
+    <input type="password" class="input_solicitud" name="password" required placeholder="Ingrese una Contraseña:">
 
     <button type="submit" style="background-color: var(--verde-corporativo); border: solid 1px var(--blanco); width: 50%; margin: 0 auto; top: 13px; position: relative;">Registrar</button>
 </form>

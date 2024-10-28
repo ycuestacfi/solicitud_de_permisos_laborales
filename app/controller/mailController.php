@@ -5,29 +5,20 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-// //Load Composer's autoloader
-// require_once '/envio_mail/Exception.php';
+//Load Composer's autoloader
+// require '/../../envio_mail/Exception.php';
 // require_once '/envio_mail/PHPMailer.php';
 // require_once '/envio_mail/SMTP.php';
-//Load Composer's autoloader
-// require_once __DIR__ . '/../../vendor/autoload.php';
-require_once __DIR__ . '/../../app/controller/envio_mail/Exception.php';
-require_once __DIR__ . '/../../app/controller/envio_mail/PHPMailer.php';
-require_once __DIR__ . '/../../app/controller/envio_mail/SMTP.php';
-
+require_once __DIR__ . '/envio_mail/Exception.php';  // Asegúrate de que el archivo existe aquí
+require_once __DIR__ . '/envio_mail/PHPMailer.php';  // Asegúrate de que el archivo existe aquí
+require_once __DIR__ . '/envio_mail/SMTP.php'; 
 //Create an instance; passing `true` enables exceptions
 $mail = new PHPMailer(true);
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $correo_solicitante = $_SESSION['correo'];
-    $nombre_solicitante = $_SESSION['nombre'];
-    
-
-}
-
 try {
     //Server settings
-    $mail->SMTPDebug = 0;                      //Enable verbose debug output
+    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;         
+    $mail->SMTPDebug = 0;              //Enable verbose debug output
     $mail->isSMTP();                                            //Send using SMTP
     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -38,10 +29,10 @@ try {
 
     //Recipients
     $mail->setFrom('solicitud.permisos.laborales@providenciacfi.com');
-    $mail->addAddress('yefercuesta123@gmail.com');     //Add a recipient
+    $mail->addAddress('yefercuesta123@gmail.com');     //Add a recipient    //Add a recipient
     // $mail->addAddress('ellen@example.com');               //Name is optional
     // $mail->addReplyTo('info@example.com', 'Information');
-    // $mail->addCC('cc@example.com');
+    // $mail->addCC('ycuesta@providenciacfi.com');
     // $mail->addBCC('bcc@example.com');
 
     //Attachments
@@ -50,12 +41,41 @@ try {
 
     //Content
     $mail->isHTML(true);                                  //Set email format to HTML
-    $mail->Subject = 'prueba correo';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b><p id="text_bienvenida">Bienvenidos</p>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    $mail->Subject = 'Solicitud De Permiso laboral 2';
+    $mail->Body = '
+<table style="width: 100%; border: solid 2px black;">
+    <thead>
+        <tr style="background-color: #72BE44; color: white;">
+            <th style="border: 1px solid black; color:#002A3F; font-size:20px; font-weight:600; padding: 8px;">nombre del solicitante</th>
+            <th style="border: 1px solid black; color:#002A3F; font-size:20px; font-weight:600; padding: 8px;">fecha de la solicitud</th>
+            <th style="border: 1px solid black; color:#002A3F; font-size:20px; font-weight:600; padding: 8px;">cedula del solicitante</th>
+            <th style="border: 1px solid black; color:#002A3F; font-size:20px; font-weight:600; padding: 8px;">correo del solicitante</th>
+            <th style="border: 1px solid black; color:#002A3F; font-size:20px; font-weight:600; padding: 8px;">comentario</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid black;  text-aling:center; padding: 8px;">pepito</td>
+            <td style="border: 1px solid black;  text-aling:center; padding: 8px;">15/10/2024</td>
+            <td style="border: 1px solid black;  text-aling:center; padding: 8px;">123456789</td>
+            <td style="border: 1px solid black;  text-aling:center; padding: 8px;">pepito@providenciacfi.com</td>
+            <td style="border: 1px solid black;  text-aling:center; padding: 8px;">N/A</td>
+        </tr>
+    </tbody>
+</table>';
+    // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
+    // $file_path = __DIR__ . '/../views/mail.php';
+    // if (file_exists($file_path) && filesize($file_path) > 0) {
+    //     $body = file_get_contents($file_path);
+    //     $mail->isHTML(true);     // Configura el correo para enviar contenido HTML
+    //     $mail->Body = $body;
+    // } else {
+    //     echo "Error: El archivo de plantilla no existe o está vacío.";
+    //     exit;
+    // }
     $mail->send();
-    echo 'mensaje';
+    echo 'Message has been sent';
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }

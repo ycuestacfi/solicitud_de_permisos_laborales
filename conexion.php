@@ -9,7 +9,7 @@ class ConectService {
         $dbport = "3306";
         $dbuser = "root";
         $dbpassword = "";
-        $dbname = "prueba";;
+        $dbname = "prueba_solicitud";;
 
         $dsn = "mysql:host=$dbhost;dbname=$dbname;dbport=$dbport;; ";
         $options = [

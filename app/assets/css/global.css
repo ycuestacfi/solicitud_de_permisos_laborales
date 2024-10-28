@@ -19,7 +19,9 @@ body, html {
     padding: 0;
 }
 body {
-    background: linear-gradient(to top, var(--verde-corporativo), var(--blanco) );
+    color: bla;
+    /* background: linear-gradient(to top, var(--verde-corporativo), var(--blanco) ); */
+   background-image: url(/app/assets/img/loginBackground.jpg)center center /cover no-repeat ;
    
 }
 main{
@@ -142,7 +144,7 @@ ul{
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
-    padding: 25px;
+    padding: 5px;
 }
 li{
     list-style: none;

@@ -31,8 +31,8 @@ label{
 
 .input_solicitud {
     width: 90%;
-    background-color: var(--azul-oscuro-contraste);
-    color: var(--blanco);
+    background-color: var(--blanco);
+    color: var(--azul-oscuro-contraste);
     height: 30px;
     padding-left: 8px;
     margin: 0;
@@ -43,7 +43,7 @@ label{
 }
 
 input::placeholder {
-    color: var(--blanco); /* Cambia a tu color preferido */
+    color: var(--azul-oscuro-contraste); /* Cambia a tu color preferido */
     opacity: 1; /* Para asegurar que el color se vea */
 }
 
