@@ -19,9 +19,9 @@ body, html {
     padding: 0;
 }
 body {
-    color: bla;
+   
     /* background: linear-gradient(to top, var(--verde-corporativo), var(--blanco) ); */
-   background-image: url(/app/assets/img/loginBackground.jpg)center center /cover no-repeat ;
+   background: url(/app/assets/img/loginBackground.jpg)center center /cover no-repeat ;
    
 }
 main{
@@ -74,7 +74,8 @@ th{
     transform: translateX(-50%);
     box-shadow: 0px 20px 50px var(--gris-fondo);
     overflow: hidden;
-    background: url(/app/assets/img/loginBackground.jpg) center center / cover no-repeat;
+    /* background: url(/app/assets/img/loginBackground.jpg) center center / cover no-repeat; */
+    background: linear-gradient(to top, var(--verde-corporativo), var(--blanco) );
 }
 
 #fondo-formulario {

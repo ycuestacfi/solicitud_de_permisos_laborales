@@ -1,4 +1,15 @@
-<?php include_once './estructure/head.php'?>
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
+    header("Location: /app/views/login.php ");
+    exit();
+}
+
+include_once './estructure/head.php'?>
         
         <section id="fondo-form" >
             <div id="fondo-formulario">

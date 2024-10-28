@@ -1,5 +1,14 @@
 <?php 
-include_once "./estructure/head.php";
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
+    header("Location: /app/views/login.php ");
+    exit();
+}
+include "./estructure/head.php";
 
 
 

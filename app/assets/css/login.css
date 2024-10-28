@@ -31,6 +31,12 @@
     flex-direction: column;
     border-left: solid 1px var(--verde-corporativo) ;
 }
+.label-login{
+    position: relative;
+    right: 24%;
+    font-size: 22px;
+    font-weight: 600;
+}
 #form-login input{
     padding-left: 8px;
     color: var(--azul-oscuro-contraste);

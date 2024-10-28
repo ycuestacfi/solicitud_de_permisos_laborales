@@ -1,4 +1,14 @@
-<?php include_once '.\estructure\head.php';
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
+    header("Location: /app/views/login.php ");
+    exit();
+}
+include_once '.\estructure\head.php';
 
 $prueba1 = [
     ['nombre' => 'Juan Pérez', 'departamento' => 'Ventas', 'lider_aprobador' => 'Carlos Torralba', 'fecha_solicitud' => '2024-10-15', 'estado' => 'Aprobado'],

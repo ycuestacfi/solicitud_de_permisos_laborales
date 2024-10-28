@@ -37,7 +37,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                     echo '<li><a href="register.php">Registrar usuario</a></li>';
                     }
 
-                if ($rol === 'lider_aprobador') {
+                if ($rol === 'lider_aprobador' or $rol === "administrador") {
                 echo '<li><a href="solicitudes_pendientes.php">Pendientes</a></li>';
                 }
                 ?>

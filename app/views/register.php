@@ -1,4 +1,13 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
+    header("Location: /app/views/login.php ");
+    exit();
+}
 // Cargar dependencias
 include_once __DIR__ . '/estructure/head.php';
 include_once '../controller/UserController.php';

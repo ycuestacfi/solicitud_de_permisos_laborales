@@ -1,10 +1,7 @@
 <?php 
-$email = 'ycuesta@providenciacfi.com';
+$email = 'Prueba123*';
 $email_hashed = hash("sha512", $email);
 
-if ($email_hashed) {
-    echo $email_hashed;
-} else {
-    echo "Los valores son iguales en tipo y valor.";
-}
+    echo "Los valores son iguales en tipo y valor. $email_hashed";
+
 ?>
