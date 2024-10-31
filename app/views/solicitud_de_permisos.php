@@ -17,10 +17,10 @@ include_once './estructure/head.php'; ?>
             </a> 
             
             <div id="fondo-formulario">
-            <!-- <form action="https://formsubmit.co/efc8028f1cfa38148558f5c9cc1e98df" method="POST"  id="formulario-solicitud"> -->
+            <form action="https://formsubmit.co/efc8028f1cfa38148558f5c9cc1e98df" method="POST"  id="formulario-solicitud">
                 
-                <form action="" method="POST"  id="formulario-solicitud">
-                  
+                <!-- <form action="" method="POST"  id="formulario-solicitud">
+                   -->
                     <h1>Formulario De Solicitud</h1>
                      
                           
