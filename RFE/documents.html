@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RFE || Centro de Formación Integral Providencia</title>
+    
+    <!-- Importación de iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Variables de colores corporativos */
+        :root {
+            --verde-corporativo: #72BE44;
+            --azul-oscuro-contraste: #002A3F;
+            --blanco: #FFFFFF;
+            --blanco-segundario: #f9f9f9;
+            --gris-fondo: #333531;
+        }
+        
+        /* Estilos generales del cuerpo */
+        body {
+            display: grid;
+            grid-template-rows: 120px 1fr 220px;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilo del header */
+        header {
+            background-color: var(--verde-corporativo);
+        }
+
+        #contenedor-logoPrincipal {
+            height: 100%;
+            width: 25%;
+            margin: 0 auto;
+            padding: 4px;
+        }
+
+        #contenedor-logoPrincipal img {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Estilo del main */
+        main {
+            background-color: var(--blanco);
+            padding: 30px 0;
+            display: inline-flex;
+        }
+
+        /* Botón de menú hamburguesa */
+        .menu-toggle {
+            display: inline-block;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+        }
+
+        .menu-toggle .bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--azul-oscuro-contraste);
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Estilo del footer */
+        footer {
+            background-color: var(--azul-oscuro-contraste);
+        }
+        #logoPrincipal2{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #logoPrincipal2 img{
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Estilos del menú lateral */
+        #menu_documentos {
+            background-color: var(--verde-corporativo);
+            width: 15%;
+            height: 100%;
+            padding: 8px;
+            margin-right: 20px;
+        }
+
+        #menu_documentos.active {
+            display: block;
+        }
+
+        #contenedor-desplazamiento {
+            position: sticky;
+            display: flex;
+            top: 20%;
+            gap: 20px;
+            flex-direction: column;
+            list-style: none;
+            width: 100%;
+            padding: 0;
+        }
+
+        #contenedor-desplazamiento li {
+            width: 100%;
+            position: relative;
+            left: 0;
+        }
+
+        /* Botón de menú hamburguesa */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .menu-toggle .bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--azul-oscuro-contraste);
+            margin: 5px 0;
+            transition: 0.3s;
+        }
+
+        /* Estilos para el menú al activar */
+        .menu-toggle.active {
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            left: 80%;
+        }
+
+        /* Cambios en las barras del ícono al activar */
+        .menu-toggle.active .bar:nth-child(1) {
+            opacity: 0;
+            margin: 0;
+        }
+
+        .menu-toggle.active .bar:nth-child(2) {
+            position: relative;
+            transform: rotate(45deg);
+            top: 8px;
+            margin: 0;
+        }
+
+        .menu-toggle.active .bar:nth-child(3) {
+            transform: rotate(-45deg);
+            margin: 0;
+        }
+
+        /* Estilo del menú lateral */
+        #menu_documentos {
+            background-color: var(--verde-corporativo);
+            width: 15%;
+            height: 100%;
+            padding: 8px;
+            margin-right: 20px;
+            transition: left 0.3s ease;
+        }
+
+        /* Mostrar el menú lateral al activar */
+        #menu_documentos.active {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+        }
+
+        /* Contenedor principal de documentos */
+        #contenedor_documentos {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 200px;
+        }
+
+        .desplazar {
+            font-size: 17px;
+            color: var(--azul-oscuro-contraste);
+            text-decoration: none;
+            font-weight: 600;
+            gap: 2px;
+            cursor: pointer;
+        }
+
+       
+
+        /* Estilos de documentos */
+        .documentos {
+            width: 70%;
+            margin: 0 auto;
+            height: 900px;
+        }
+
+        .pdfs {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Estilos del footer */
+        #footer {
+            margin-top: 1%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: column;
+            height: 220px;
+            background-color: var(--verde-corporativo);
+        }
+
+        #footer-center {
+            height: 60%;
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        #footer-center article {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: space-around;
+            color: var(--blanco);
+        }
+        #footer-center article h2 {
+            margin: 0;
+        }
+        #footer-bottom {
+            width: 100%;
+            flex-direction: column;
+            display: flex;
+            align-items: center;
+            background-color: #333533;
+            color: var(--blanco);
+        }
+
+        #contenedor-iconos {
+            width: 300px;
+            justify-content: space-between;
+            display: flex;
+        }
+
+        #contenedor-iconos a i {
+            font-size: 30px;
+            color: var(--blanco);
+            padding-bottom: 10px;
+        }
+         /* Responsivo para pantallas medianas (tablets) */
+        @media (max-width: 768px) {
+            #contenedor-logoPrincipal{
+                width: 50%;
+            }
+            #menu_documentos {
+                display: none;
+            }
+            #menu_documentos.active {
+                display: block;
+            }
+
+            #contenedor-desplazamiento {
+                top: 10%;
+            }
+
+            .desplazar {
+                font-size: 16px;
+            }
+            @media (max-width: 1080px){
+                .documentos {
+                    height: 350px;
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor del logo principal -->
+    <header>
+        <figure id="contenedor-logoPrincipal">
+            <img rel="preload" src="/documents/img/logocfipblanco.png" alt="Centro de Formación Integral Providencia" id="logoPrincipal">
+        </figure>
+    </header>
+
+    <!-- Main con menú lateral y documentos -->
+    <main>
+        <!-- Botón de menú hamburguesa -->
+        <div class="menu-toggle" id="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        
+        <!-- Menú de documentos -->
+        <button id="menu-toggle-documentos" style="position: fixed; height: 100%; top: 0; ">
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        
+        <!-- Menú de documentos -->
+        <div id="menu_documentos">
+            <ul id="contenedor-desplazamiento">
+                <p style="text-align: center; color: var(--blanco); font-size: 22px; font-weight: 600;">Lista de documentos</p>
+                <li><a href="#junta" class="desplazar">Junta Directiva</a></li>
+                <li><a href="#gestion" class="desplazar">Gestión</a></li>
+                <li><a href="#estado_financiero" class="desplazar">Estado Financiero</a></li>
+                <li><a href="#cumplimiento" class="desplazar">Cumplimiento y Requisitos</a></li>
+                <li><a href="#antecedentes" class="desplazar">Antecedentes</a></li>
+                <li><a href="#memoria_economica" class="desplazar">Memoria Económica</a></li>
+                <li><a href="#estatutos" class="desplazar">Estatutos</a></li>
+                <li><a href="#regimen" class="desplazar">Régimen</a></li>
+            </ul>
+        </div>
+
+        <!-- Contenedor de documentos -->
+        <div id="contenedor_documentos">
+            <div class="documentos" id="junta"><embed class="pdfs" src="/documents/1. MIEMBROS JUNTA DIRECTIVA.pdf" type="application/pdf"/></div>
+            <div class="documentos" id="gestion"><embed class="pdfs" src="/documents/3. 2023 INFORME DE GESTION.pdf" type="application/pdf"/></div>
+            <div class="documentos" id="estado_financiero"><embed class="pdfs" src="/documents/4. 2023 ESTADOS FINANCIEROS.pdf" type="application/pdf"/></div>
+            <div class="documentos" id="cumplimiento"><embed class="pdfs" src="/documents/5. Certrificado de cumplimiento y Requisito.pdf" type="application/pdf"/></div>
+            <div class="documentos" id="antecedentes"><embed class="pdfs" src="/documents/7. Certificación del Representante Legal de los antecedentes judiciales..pdf" type="application/pdf"/></div>
+            <div class="documentos" id="memoria_economica"><embed class="pdfs" src="/documents/Certificación Memoria Económica 2023.pdf" type="application/pdf"/></div>
+            <div class="documentos" id="estatutos"><embed class="pdfs" src="/documents/ESTATUTOS MARZO 22 2024.pdf" type="application/pdf"/></div>
+            <!-- <div class="documentos" id="regimen"><embed class="pdfs" src="/documents/RÉGIMEN TRIBUTARIO ESPECIAL 2023.pdf" type="application/pdf"/></div> -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer">
+
+        <section id="footer-center">
+
+                <figure id="logoPrincipal2">
+                    <img rel="preload" src="/documents/img/logocfipblanco.png" alt="Providencia - Centro de Formación Integral">
+                </figure>
+
+            <article>
+
+                <h2>Ubicación</h2>
+
+                <h2>Km 34 Via Central Cali - El Cerrito, corregimiento El Placer</h2>
+
+                <h2>PBX: (57)(2) 255 5221 FAX: (57)(2) 255 51 40</h2>
+
+            </article>
+        </section>
+
+        <section id="footer-bottom">
+
+            <p> © 2024 Copyright: Aviso de privacidad, Términos y condiciones. Todos los derechos reservados.</p>
+
+            <div id="contenedor-iconos">
+
+                <a href="https://www.instagram.com/providencia.cfi/">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+
+                <a href="https://api.whatsapp.com/send?phone=573142526163&text=Hola%2C%20%C2%BFc%C3%B3mo%20est%C3%A1s%3F%20Estoy%20buscando%20dotación%20y%20prendas%20de%20moda%2C%20%C2%BFtienes%20algo%20disponible%3F%20%F0%9F%9B%8D%EF%B8%8F">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+
+                <a href="https://www.linkedin.com/company/providencia-centro-de-formacion-integral-proteje-y-renueva/mycompany/?viewAsMember=true">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+
+            </div>
+
+        </section>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const menuToggleDocumentos = document.querySelector('#menu-toggle-documentos');
+    const menuDocumentos = document.querySelector('#menu_documentos');
+    const enlaces = document.querySelectorAll('#menu_documentos a'); // Seleccionamos todos los enlaces dentro del menú
+
+    function toggleMenuDocumentos() {
+        // Si el menú no está visible, lo mostramos con los estilos indicados
+        if (menuDocumentos.style.display !== 'block') {
+            menuDocumentos.style.display = 'block'; // Muestra el menú
+            menuDocumentos.style.zIndex = '20'; // Establece el z-index
+      
+            menuDocumentos.style.width = '45%'; // Establece el ancho
+        } else {
+            menuDocumentos.style.display = 'none'; // Oculta el menú
+            menuDocumentos.style.zIndex = ''; // Restablece el z-index
+            menuDocumentos.style.position = ''; // Restablece la posición
+            menuDocumentos.style.width = ''; // Restablece el ancho
+        }
+    }
+
+    // Asignamos el evento de click al botón para mostrar u ocultar el menú
+    if (menuToggleDocumentos) {
+        menuToggleDocumentos.addEventListener('click', toggleMenuDocumentos);
+    } else {
+        console.log('El elemento con id "menu-toggle-documentos" no se encontró');
+    }
+
+    // Cerramos el menú cuando se hace clic en un enlace dentro del menú
+    enlaces.forEach(enlace => {
+        enlace.addEventListener('click', () => {
+            menuDocumentos.style.display = 'none'; // Ocultamos el menú
+            menuDocumentos.style.zIndex = ''; // Restablecemos el z-index
+            menuDocumentos.style.position = ''; // Restablecemos la posición
+            menuDocumentos.style.width = ''; // Restablecemos el ancho
+        });
+    });
+});
+
+
+    </script>
+</body>
+</html>
