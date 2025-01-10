@@ -1,0 +1,198 @@
+
+#formulario-solicitud {
+    height: 65%;
+    width: 35%;
+    margin: 0;
+    padding: 12px 20px;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    top: 30%;
+    position: absolute;
+    left: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: 3;
+    border-radius: 25px ;
+}
+h1 {
+    position: relative;
+    bottom: 15px;
+    width: 100%;
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    color: var(--verde-corporativo);
+} 
+
+label{
+    position: relative;
+    width: 90%;
+    font-weight: 600;
+    color: var(--verde-corporativo);
+}
+
+.input_solicitud {
+    width: 90%;
+    background-color: transparent;
+    color: var(--blanco);
+    height: 30px;
+    padding-left: 8px;
+    margin: 0;
+    position: relative;
+    border: none;
+    border-bottom: solid 1px var(--blanco);
+    outline: none;
+}
+.input_laboral {
+    width: 90%;
+    background-color: var(--azul-oscuro-contraste);
+    color: var(--blanco);
+    height: 30px;
+    padding-left: 8px;
+    margin: 0;
+    position: relative;
+    border: none;
+    border-bottom: solid 1px var(--blanco);
+    outline: none;
+}
+.preguntas_laboral{
+    background-color: var(--azul-oscuro-contraste) !important;
+}
+
+input::placeholder {
+    color: var(--blanco); /* Cambia a tu color preferido */
+    opacity: 1; /* Para asegurar que el color se vea */
+}
+
+#observaciones{
+    height: 80px;
+}
+textarea::placeholder {
+    color: var(--blanco); /* Cambia a tu color preferido */
+    opacity: 1; /* Asegura que el color sea visible */
+}
+#btn-enviar-permiso{
+    position: relative;
+    background: var(--verde-corporativo);
+    color: var(--blanco);
+    font-weight: 600;
+    border: solid 2px var(--blanco);
+    width: 60%;
+    top: 25px;
+}
+#btn-enviar-permiso-laboral{
+    position: relative;
+    background: var(--verde-corporativo);
+    color: var(--blanco);
+    font-weight: 600;
+    border: solid 2px var(--blanco);
+    width: 60%;
+    top: 25px;
+}
+#btn-enviar-permiso-laboral:hover{    
+    box-shadow: 1px 1px 10px var(--azul-oscuro-contraste);
+    cursor: pointer;
+}
+#btn-enviar-permiso:hover{
+    box-shadow: 1px 1px 10px var(--blanco);
+    cursor: pointer;
+}
+#contenedor-logo {
+    position: relative;
+    bottom: 180px;
+    height: 150px;
+    width: 35%;
+    left: 32%;
+}
+#contenedor-logo img{
+    height: 100%;
+    width: 100%;
+}
+#tipo-permiso{
+    -webkit-appearance: none; /* Eliminar estilo nativo en Safari/Chrome */
+    -moz-appearance: none; /* Eliminar estilo nativo en Firefox */
+    appearance: none; /* General */
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' width='24' height='24'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
+.contenedor-permiso {
+    position: relative;
+    width: 90%;
+    cursor: pointer;
+}
+
+.selected-option {
+    padding: 10px;
+    background-color: transparent;
+    border-bottom: 1px solid var(--blanco);
+    color: var(--blanco);
+}
+
+.select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--blanco);
+    border: 1px solid var(--verde-corporativo);
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+}
+
+.select-options li {
+    height: 25px;
+    border-bottom: 1px solid;
+    padding: 10px;
+    color: var(--verde-corporativo);
+    background-color: var(--blanco);
+}
+
+.select-options li:hover {
+    background-color: var(--verde-corporativo);
+    color: var(--blanco);
+}
+#permiso-laboral{
+    display: none;
+    left: 400px;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    border: 1px solid var(--blanco);
+    border-radius: 25px;
+    top: 0;
+    padding: 10px 20px;
+    backdrop-filter: blur(10px); /* Aplica el desenfoque */
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
+}
+input[type="file"]{
+    display: none;
+}
+#label_file{
+    height: 30px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px dashed var(--blanco);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+#label_file:hover{
+    color: var(--verde-corporativo);
+    border: 1px dashed var(--verde-corporativo);
+    scale: 1.1;
+    cursor: pointer;
+
+}
+
+@media screen and (max-width:800px) {
+
+    #formulario-solicitud{
+        left: 30%;
+    }
+}

@@ -1,0 +1,22 @@
+#formulario-aprovacion {
+    height: 500px;
+    width: 400px;
+    margin: 0;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    transform: rotate(-45deg);
+    top: 10%;
+    position: relative;
+    left: 24%;
+}
+h1 {
+    position: relative;
+    bottom: 15px;
+    width: 100%;
+    font-size: 30px;
+    margin: 0;
+    text-align: center;
+    color: var(--verde-corporativo);
+} 

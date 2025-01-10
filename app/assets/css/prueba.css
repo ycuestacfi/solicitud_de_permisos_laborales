@@ -1,0 +1,15 @@
+
+:root {
+    --verde-corporativo: #72BE44;
+    --azul-oscuro-contraste: #002A3F;
+    --blanco: #FFFFFF;
+    --blanco-segundario: #f9f9f9;
+    --gris-fondo:#333531;
+}
+body, html {
+    margin: 0;
+    padding: 0;
+}
+body {
+ height: 100%;
+}
