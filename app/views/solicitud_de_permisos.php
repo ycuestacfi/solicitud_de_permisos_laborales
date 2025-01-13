@@ -61,7 +61,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
             <a id="Bienvenidos" >
                 <?php echo 'Bienvenido '. $_SESSION['nombres']  ." ". $_SESSION['apellidos'] ; ?>
             </a> 
-            <form action="/solicitud_de_permisos_laborales/app/controllers/SolicitudController.php" method="POST" id="formulario-solicitud" >     
+            <form action="/solicitud_de_permisos_laborales/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" >     
                 <h1 id="title_form">Formulario De Solicitud</h1>
 
                 <input class="input_solicitud" 
@@ -156,6 +156,44 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                         required id="Departamento_de_desplazamiento" 
                         placeholder="¿Cuál es tu departamento de destino?" 
                         title="Indica tu departamento de destino">
+
+
+                        // lista de departamentos 
+                        Amazonas
+                        Antioquía
+                        Arauca
+                        Atlántico
+                        Bolívar
+                        Boyacá
+                        Caldas
+                        Caquetá
+                        Casanare
+                        Cauca
+                        Cesar
+                        Chocó
+                        Córdoba
+                        Cundinamarca
+                        Guainía
+                        Guaviare
+                        Huila
+                        La Guajira
+                        Magdalena
+                        Meta
+                        Nariño
+                        Norte de Santander
+                        Putumayo
+                        Quindío
+                        Risaralda
+                        San Andrés y Providencia
+                        Santander
+                        Sucre
+                        Tolima
+                        Valle del Cauca
+                        Vaupés
+                        Vichada
+                        Bogotá D.C.
+                        usar https://api-colombia.com/swagger/index.html para consumir api de departamentos y municipios
+
 
                     <input type="text" class="input_solicitud" 
                         placeholder="¿A qué municipio te diriges?" 

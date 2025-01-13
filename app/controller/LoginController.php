@@ -5,7 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../models/UserModel.php';
-require_once __DIR__ . '/solictudController.php';
+require_once __DIR__ . '/solicitudController.php';
 require_once __DIR__ . '/../models/solicitudModel.php';
 require_once __DIR__ . '/../helpers/CookieHelper.php';
 require_once __DIR__ . '/../helpers/SessionHelper.php';
@@ -51,11 +51,11 @@ class LoginController {
 
                 // Redirigir según el rol del usuario
                 if ($_SESSION['rol'] === 'solicitante') {   
-                    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php&soli=" . urlencode($misSolicitudes));
+                    header("Location: /permisos/app/views/solicitudes.php&soli=" . urlencode($misSolicitudes));
                     exit();
                 } elseif ($_SESSION['rol'] === 'lider_aprobador' || $_SESSION['rol'] === 'administrador') {
                       
-                        header("Location: /solicitud_de_permisos_laborales/app/views/solicitud_de_permisos.php");
+                        header("Location: /permisos/app/views/solicitud_de_permisos.php");
                         exit();
                 }
             } else {
@@ -65,7 +65,7 @@ class LoginController {
                 $icono = "error";
                
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /permisos/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
                 exit();
             }
         } else {
@@ -75,7 +75,7 @@ class LoginController {
                 $icono = "error";
                 
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /permisos/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
                 exit();
         }
     }
@@ -87,7 +87,7 @@ class LoginController {
         SessionHelper::cerrarSesion();
         CookieHelper::eliminarCookies();
         // Redirigir al login después de cerrar la sesión
-        header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
+        header("Location: /permisos/app/views/login.php");
         exit();
     }
 

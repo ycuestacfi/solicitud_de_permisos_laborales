@@ -83,7 +83,30 @@ class SolicitudController {
             if ($registroExitoso) {
                 $email_lider = $this->solicitudModel->lideres_proceso($data['departamento']);
                 if ($email_lider) {
+
                     $this->solicitudModel->enviarCorreo($data['nombre'], $email_lider, $data['tipo_permiso']);
+                    return header("Location: /permisos/app/views/solicitudes.php");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
                 }
             }
 
