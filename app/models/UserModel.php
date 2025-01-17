@@ -3,8 +3,9 @@ require_once __DIR__ . '/../../conexion.php';
 class UserModel {
     private $db;
 
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct()
+    {
+        $this->db = ConectService::conectar();
     }
 
     

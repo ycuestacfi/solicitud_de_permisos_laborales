@@ -4,8 +4,8 @@ require_once __DIR__ . '/../models/SolicitudModel.php';
 class SolicitudController {
     private $solicitudModel;
 
-    public function __construct($solicitudModel) {
-        $this->solicitudModel = $solicitudModel;
+    public function __construct() {
+        $this->solicitudModel = new solicitudModel();
     }
 
     public function solicitudesRealizadas($cedula, $id_departamento) {
@@ -54,66 +54,76 @@ class SolicitudController {
     }
 
     public function procesarFormulario($data) {
-        // Validación básica de datos
-        $campos_requeridos = [
-            'nombre', 'email', 'departamento', 'fecha_solicitud',
-            'fecha_permiso', 'hora_salida', 'hora_llegada',
-            'observaciones', 'tipo_permiso'
-        ];
-
-        foreach ($campos_requeridos as $campo) {
-            if (!isset($data[$campo]) || empty($data[$campo])) {
-                return false;
+        // Variables comunes
+        $nombre = $_POST['nombre'];
+        $email = $_POST['email'];
+        $cedula = $_POST['cedula'];
+        $departamento = $_POST['departamento'];
+        $fecha_de_solicitud = $_POST['fecha_de_solicitud'];
+        $fecha_de_permiso = $_POST['fecha_de_permiso'];
+        $hora_de_salida = $_POST['hora_de_salida'];
+        $hora_de_llegada = $_POST['hora_de_llegada'];
+        $observaciones = $_POST['observaciones'];
+        $evidencias = $_FILES['evidencias']; // Para manejar archivos
+        $tipo_permiso = $_POST['tipo_permiso'];
+    
+        // Variables específicas para permisos laborales
+        $motivo_del_desplazamiento = "";
+        $departamento_de_desplazamiento = "";
+        $municipio_del_desplazamiento = "";
+        $lugar_desplazamiento = "";
+        $medio_de_transporte = "";
+        $placa_vehiculo = "";
+    
+        // Asignar valores específicos si el tipo de permiso es "laboral"
+        if ($tipo_permiso === 'laboral') {
+            $motivo_del_desplazamiento = $_POST['motivo_del_desplazamiento'];
+            $departamento_de_desplazamiento = $_POST['departamento_de_desplazamiento'];
+            $municipio_del_desplazamiento = $_POST['municipio_del_desplazamiento'];
+            $lugar_desplazamiento = $_POST['lugar_desplazamiento'];
+            $medio_de_transporte = $_POST['medio_de_transporte'];
+    
+            if ($medio_de_transporte === 'AUTOMOVIL' || $medio_de_transporte === 'MOTOCICLETA') {
+                $placa_vehiculo = $_POST['placa_vehiculo'];
             }
         }
-
+    
         try {
+            // Llamar al modelo para registrar la solicitud con todos los campos
             $registroExitoso = $this->solicitudModel->registrarSolicitud(
-                $data['nombre'],
-                $data['email'],
-                $data['departamento'],
-                $data['fecha_solicitud'],
-                $data['fecha_permiso'],
-                $data['hora_salida'],
-                $data['hora_llegada'],
-                $data['observaciones'],
-                $data['tipo_permiso']
+                $nombre,
+                $email,
+                $cedula,
+                $departamento,
+                $fecha_de_solicitud,
+                $fecha_de_permiso,
+                $hora_de_salida,
+                $hora_de_llegada,
+                $observaciones,
+                $tipo_permiso,
+                $motivo_del_desplazamiento,
+                $departamento_de_desplazamiento,
+                $municipio_del_desplazamiento,
+                $lugar_desplazamiento,
+                $medio_de_transporte,
+                $placa_vehiculo,
+                $evidencias
             );
-
+    
             if ($registroExitoso) {
-                $email_lider = $this->solicitudModel->lideres_proceso($data['departamento']);
+                // Obtener el email del líder del proceso
+                $email_lider = $this->solicitudModel->lideres_proceso($departamento);
                 if ($email_lider) {
-
-                    $this->solicitudModel->enviarCorreo($data['nombre'], $email_lider, $data['tipo_permiso']);
+                    $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
                     return header("Location: /permisos/app/views/solicitudes.php");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    
                 }
             }
-
+    
             return $registroExitoso;
         } catch (Exception $e) {
             error_log("Error en procesarFormulario: " . $e->getMessage());
             return false;
         }
     }
+    
 }

@@ -9,21 +9,15 @@ require_once __DIR__ . '/solicitudController.php';
 require_once __DIR__ . '/../models/solicitudModel.php';
 require_once __DIR__ . '/../helpers/CookieHelper.php';
 require_once __DIR__ . '/../helpers/SessionHelper.php';
-require_once __DIR__ . '/../../conexion.php';
 
-// Crear instancia de la clase de conexión
-$conectService = new ConectService();
-$db = $conectService->getConnection();
 
 // Clase LoginController
 class LoginController {
-    private $db;
     private $userModel;
 
-    public function __construct($db) {
+    public function __construct() {
         // Guardar la conexión en una propiedad de la clase
-        $this->db = $db;
-        $this->userModel = new UserModel($db);
+        $this->userModel = new UserModel();
     }
 
     public function iniciarSesion() {
@@ -42,8 +36,8 @@ class LoginController {
                 // Iniciar sesión si las credenciales son válidas
                 SessionHelper::iniciarSesion($usuario);
 
-                $misSolicitudes = $this->solicitudModel->solicitudes_realizadas($usuario['cedula']);
-                var_dump($misSolicitudes);
+                // $misSolicitudes = $this->solicitudModel->solicitudes_realizadas($usuario['cedula']);
+                // var_dump($misSolicitudes);
                 // Si el usuario marcó "Recordarme", guardar las cookies
                 if (isset($_POST['remember_me'])) {
                     CookieHelper::guardarCookies($usuario_log);
@@ -51,11 +45,11 @@ class LoginController {
 
                 // Redirigir según el rol del usuario
                 if ($_SESSION['rol'] === 'solicitante') {   
-                    header("Location: /permisos/app/views/solicitudes.php&soli=" . urlencode($misSolicitudes));
+                    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
                     exit();
                 } elseif ($_SESSION['rol'] === 'lider_aprobador' || $_SESSION['rol'] === 'administrador') {
                       
-                        header("Location: /permisos/app/views/solicitud_de_permisos.php");
+                        header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php");
                         exit();
                 }
             } else {
@@ -65,7 +59,7 @@ class LoginController {
                 $icono = "error";
                
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /permisos/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
                 exit();
             }
         } else {
@@ -75,7 +69,7 @@ class LoginController {
                 $icono = "error";
                 
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /permisos/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
                 exit();
         }
     }
@@ -87,7 +81,7 @@ class LoginController {
         SessionHelper::cerrarSesion();
         CookieHelper::eliminarCookies();
         // Redirigir al login después de cerrar la sesión
-        header("Location: /permisos/app/views/login.php");
+        header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
         exit();
     }
 

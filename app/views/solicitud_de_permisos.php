@@ -1,7 +1,8 @@
 <?php if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-
+include_once '../controller/solicitudController.php';
+$solocitudcontroller = new SolicitudController();
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     // Si no ha iniciado sesión, redirigir al login
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
@@ -61,7 +62,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
             <a id="Bienvenidos" >
                 <?php echo 'Bienvenido '. $_SESSION['nombres']  ." ". $_SESSION['apellidos'] ; ?>
             </a> 
-            <form action="/solicitud_de_permisos_laborales/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" >     
+            <form action="" method="POST" id="formulario-solicitud" >     
                 <h1 id="title_form">Formulario De Solicitud</h1>
 
                 <input class="input_solicitud" 
@@ -144,7 +145,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                 </div>
                 <button type="submit" id="btn-enviar-permiso">Enviar solicitud</button>
 
-                <!-- <div id="permiso-laboral" class="permiso-laboral">
+                 <div id="permiso-laboral" class="permiso-laboral">
                     <input class="input_solicitud" 
                         type="text" name="motivo_del_desplamiento" 
                         required id="motivo_del_desplazamiento" 
@@ -158,7 +159,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                         title="Indica tu departamento de destino">
 
 
-                        // lista de departamentos 
+                        <!-- // lista de departamentos 
                         Amazonas
                         Antioquía
                         Arauca
@@ -193,7 +194,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                         Vichada
                         Bogotá D.C.
                         usar https://api-colombia.com/swagger/index.html para consumir api de departamentos y municipios
-
+ -->
 
                     <input type="text" class="input_solicitud" 
                         placeholder="¿A qué municipio te diriges?" 
@@ -205,10 +206,10 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                         placeholder="¿Cuál es tu lugar de desplazamiento?" 
                         required id="lugar_desplazamiento" 
                         name="lugar_desplazamiento" 
-                        title="Indica el lugar al que te desplazas"> -->
+                        title="Indica el lugar al que te desplazas"> 
 
                     <!-- Select de Medio de Transporte -->
-                <!-- <div id="medio-transporte-contenedor" class="contenedor-permiso">
+                 <div id="medio-transporte-contenedor" class="contenedor-permiso">
                     <div id="medio-transporte-seleccion" class="selected-option">Seleccione un medio de transporte</div>
                     <ul id="medio-transporte-opciones" class="select-options">
                         <li data-value="MOTOCICLETA">Motocicleta</li>
@@ -216,8 +217,8 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                         <li data-value="TRANSPORTE PUBLICO">Transporte Público</li>
                         <li data-value="AVION">Avión</li>
                     </ul>
-                    <input type="hidden"  name="medio_de_transporte" id="medio_de_transporte" /> -->
-                 <!--</div>
+                    <input type="hidden"  name="medio_de_transporte" id="medio_de_transporte" /> 
+                 </div>
 
                 Campo de Placa de Vehículo
                 <input 
@@ -236,8 +237,11 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                         title="Indica la placa de tu vehículo">
 
                     <button type="submit" id="btn-enviar-permiso-laboral">Enviar solicitud</button>
-                </div> -->
+                </div> 
             </form>
+            <?php 
+            $this -> $solocitudcontroller->procesarFormulario();
+            ?>
 
             <div id="fondo-formulario">
             

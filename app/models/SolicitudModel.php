@@ -3,14 +3,15 @@ require_once __DIR__ . '/../../conexion.php';
 class solicitudModel {
     private $db;
 
-    public function __construct($db) {
-        $this->db = $db;
+    public function __construct()
+    {
+        $this->db = ConectService::conectar();
     }
 
      // Método para registrar una solicitud en la base de datos
      public function registrarSolicitud($nombre, $email, $departamento, $fecha_solicitud, $fecha_permiso, $hora_salida, $hora_llegada, $observaciones, $tipo_permiso) {
         // Consulta para insertar los datos en la tabla de solicitudes
-        $sql = "INSERT INTO solicitudes (nombre, email, departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_llegada, observaciones, tipo_permiso) 
+        $sql = "INSERT INTO solicitudes (nombres, email, departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_llegada, observaciones, tipo_permiso) 
                 VALUES (:nombre, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso)";
         
         $stmt = $this->db->prepare($sql);

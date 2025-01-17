@@ -7,25 +7,19 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: login.php");
     exit();
 }
-
-require_once __DIR__ . '/../../conexion.php';
-require_once __DIR__ . '/../models/SolicitudModel.php';
-require_once __DIR__ . '/../controller/SolicitudController.php';
-
-// Crear instancias
-// Crear una instancia de ConectService para obtener la conexión a la base de datos
-$conectService = new ConectService();
-$dbConnection = $conectService->getConnection();
+require_once __DIR__ . '/../controller/solicitudController.php';
 
 // Ahora, pasar la conexión a la clase solicitudModel
- 
-$solicitudModel = new SolicitudModel($dbConnection);
-$solicitudController = new SolicitudController($solicitudModel);
+$solicitudController = new SolicitudController();
 
 // Obtener solicitudes
 $cedula = $_SESSION['cedula'];
 $id_departamento = $_SESSION['id_departamento'];
 $solicitudes = $solicitudController->solicitudesRealizadas($cedula,$id_departamento);
+
+$lider_proceso = $solicitudes['lider'];
+$respuesta_solicitudes = $solicitudes['solicitudes']
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -76,13 +70,13 @@ $solicitudes = $solicitudController->solicitudesRealizadas($cedula,$id_departame
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($solicitudes) ): ?>
-                    <?php foreach ($solicitudes as $solicitud): ?>
+                <?php if (!empty($respuesta_solicitudes) ): ?>
+                    <?php foreach ($respuesta_solicitudes as $solicitud): ?>
                     <tr>
                         <td class="td_solicitud">
                             <?php echo htmlspecialchars($_SESSION['nombres'] . ' ' . $_SESSION['apellidos']); ?>
                         </td>
-                        <!-- <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['lider']); ?></td> -->
+                        <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['lider']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_solicitud']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
                     </tr>
