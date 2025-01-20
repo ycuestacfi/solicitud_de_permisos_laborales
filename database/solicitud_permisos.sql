@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-01-2025 a las 22:45:58
+-- Tiempo de generación: 20-01-2025 a las 16:21:39
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -27,12 +27,11 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `departamentos`
 --
 
-CREATE TABLE departamentos (
-  id_departamento INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  nombre_departamento VARCHAR(100) NOT NULL,
-  id_lider INT DEFAULT NULL,  -- La columna id_lider en departamentos debe ser del mismo tipo que id_usuario
-  CONSTRAINT fk_lider FOREIGN KEY (id_lider) REFERENCES usuarios(id_usuario)  ON DELETE SET NULL
-); ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `departamentos` (
+  `id_departamento` int(11) NOT NULL,
+  `nombre_departamento` varchar(100) NOT NULL,
+  `id_lider` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `departamentos`
@@ -67,6 +66,13 @@ CREATE TABLE `historial_solicitudes` (
   `identificador_solicitud` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `historial_solicitudes`
+--
+
+INSERT INTO `historial_solicitudes` (`id_historial`, `id_solicitud`, `id_departamento`, `fecha_permiso`, `estado`, `fecha_cambio`, `identificador_solicitud`) VALUES
+(1, 2, 1, '2025-01-20', 'pendiente', '2025-01-19 02:34:08', 'SOL-000001');
+
 -- --------------------------------------------------------
 
 --
@@ -94,7 +100,7 @@ CREATE TABLE `solicitudes` (
 --
 
 INSERT INTO `solicitudes` (`id_solicitud`, `nombre`, `cedula`, `correo`, `id_departamento`, `fecha_solicitud`, `fecha_permiso`, `hora_salida`, `hora_ingreso`, `observaciones`, `estado`, `ultima_modificacion`, `identificador_solicitud`) VALUES
-(2, 'Yeffer Cuesta', '1078460223', 'yecuesta@providenciacfi.com', 1, '2025-01-18 21:34:08', '2025-01-20', '09:00:00', '13:00:00', 'Necesito permiso para una cita médica.', 'pendiente', '2025-01-18 21:34:08', 'SOL-000001');
+(2, 'Yeffer Cuesta', '1078460223', 'yecuesta@providenciacfi.com', 1, '2025-01-19 02:34:08', '2025-01-20', '09:00:00', '13:00:00', 'Necesito permiso para una cita médica.', 'pendiente', '2025-01-19 02:34:08', 'SOL-000001');
 
 -- --------------------------------------------------------
 
@@ -120,7 +126,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombre`, `apellido`, `usuario`, `contrasena`, `correo`, `id_departamento`, `rol`, `estado`) VALUES
-(1, '1078460223', 'yeffer', 'cuesta mena', 'ycuesta', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta@providenciacfi.com', 1, 'administrador', 'activo'),
+(1, '1078460223', 'Yeffer', 'Cuesta Mena', 'ycuesta', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta@providenciacfi.com', 1, 'administrador', 'activo'),
 (2, '123456789', 'Juan', 'Perez', 'juanperez', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'juanperez@example.com', 1, 'solicitante', 'activo');
 
 --
@@ -131,7 +137,8 @@ INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombre`, `apellido`, `usuario`,
 -- Indices de la tabla `departamentos`
 --
 ALTER TABLE `departamentos`
-  ADD PRIMARY KEY (`id_departamento`);
+  ADD PRIMARY KEY (`id_departamento`),
+  ADD KEY `fk_lider` (`id_lider`);
 
 --
 -- Indices de la tabla `historial_solicitudes`
@@ -174,7 +181,7 @@ ALTER TABLE `departamentos`
 -- AUTO_INCREMENT de la tabla `historial_solicitudes`
 --
 ALTER TABLE `historial_solicitudes`
-  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudes`
@@ -191,6 +198,12 @@ ALTER TABLE `usuarios`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  ADD CONSTRAINT `fk_lider` FOREIGN KEY (`id_lider`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `historial_solicitudes`
