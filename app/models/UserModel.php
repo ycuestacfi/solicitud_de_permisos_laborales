@@ -11,7 +11,7 @@ class UserModel {
     
     public function verificarCredenciales($usuario, $password) {
         // Consulta SQL corregida
-        $sql = "SELECT nombres, apellidos, cedula, correo, id_departamento, rol,estado FROM usuarios WHERE usuario = ? AND contrasena = ?";
+        $sql = "SELECT nombre, apellido, cedula, correo, id_departamento, rol,estado FROM usuarios WHERE usuario = ? AND contrasena = ?";
         $stmt = $this->db->prepare($sql);
         if ($stmt === false) {
             throw new Exception("Error en la preparación de la consulta: " . implode(":", $this->db->errorInfo()));
@@ -62,10 +62,10 @@ class UserModel {
         return $stmt->fetchColumn();
     }
 
-    public function registrarUsuario($nombres, $apellidos, $cedula, $correo, $departamento, $rol, $usuario, $password) {
-        $sql = "INSERT INTO usuarios (nombres, apellidos, cedula, correo, id_departamento, rol, contrasena, usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public function registrarUsuario($nombre, $apellido, $cedula, $correo, $departamento, $rol, $usuario, $password) {
+        $sql = "INSERT INTO usuarios (nombre, apellido, cedula, correo, id_departamento, rol, contrasena, usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$nombres, $apellidos, $cedula, $correo, $departamento, $rol, $password, $usuario]);
+        return $stmt->execute([$nombre, $apellido, $cedula, $correo, $departamento, $rol, $password, $usuario]);
     }
 
     public function identificarLider(){

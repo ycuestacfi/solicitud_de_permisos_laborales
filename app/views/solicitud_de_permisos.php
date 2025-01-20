@@ -239,9 +239,22 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                     <button type="submit" id="btn-enviar-permiso-laboral">Enviar solicitud</button>
                 </div> 
             </form>
-            <?php 
-            $this -> $solocitudcontroller->procesarFormulario();
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                try {
+                    $resultado = $solicitudController->procesarFormulario();
+                    if ($resultado) {
+                        echo '<div class="alert alert-success">Solicitud enviada correctamente</div>';
+                    } else {
+                        echo '<div class="alert alert-error">Error al procesar la solicitud</div>';
+                    }
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    echo '<div class="alert alert-error">Error inesperado</div>';
+                }
+            }
             ?>
+
 
             <div id="fondo-formulario">
             

@@ -1,77 +1,97 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const dropdown = document.getElementById('contenedor-permiso');
-    const selectedOption = document.getElementById('selected-option');
-    const dropdownOptions = document.getElementById('select-options');
-    const hiddenInput = document.getElementById('tipo_permiso');
-    const envio_solicitud = document.getElementById('btn-enviar-permiso');
-    const permiso_laboral = document.getElementById('permiso-laboral');
-    const medioTransporte = document.getElementById('medio_de_transporte');
-    const placaVehicular = document.getElementById('placa_vehicular');
-    const medioTransporteSeleccion = document.getElementById('medio_transporte_seleccion');
-    const medioTransporteOpciones = document.getElementById('medio-transporte-opciones');
-    const medioTransporteInput = document.getElementById('medio_de_transporte');
-    const placaVehiculoInput = document.getElementById('placa_vehiculo');
+    // Element selectors
+    const elements = {
+        dropdown: document.getElementById('contenedor-permiso'),
+        selectedOption: document.getElementById('selected-option'),
+        dropdownOptions: document.getElementById('select-options'),
+        hiddenInput: document.getElementById('tipo_permiso'),
+        envioSolicitud: document.getElementById('btn-enviar-permiso'),
+        permisoLaboral: document.getElementById('permiso-laboral'),
+        medioTransporteSeleccion: document.getElementById('medio_transporte_seleccion'),
+        medioTransporteOpciones: document.getElementById('medio-transporte-opciones'),
+        medioTransporteInput: document.getElementById('medio_de_transporte'),
+        placaVehiculoInput: document.getElementById('placa_vehiculo'),
+    };
 
-    // Toggle dropdown visibility
-    selectedOption.addEventListener('click', () => {
-        dropdownOptions.style.display = dropdownOptions.style.display === 'block' ? 'none' : 'block';
-    });
+    /**
+     * Toggle visibility of a given element
+     * @param {HTMLElement} element - The element to toggle
+     * @param {boolean} [force] - Optional force display (true for show, false for hide)
+     */
+    const toggleVisibility = (element, force = null) => {
+        if (force !== null) {
+            element.style.display = force ? 'block' : 'none';
+        } else {
+            element.style.display = element.style.display === 'block' ? 'none' : 'block';
+        }
+    };
 
-    // Handle option selection
-    dropdownOptions.addEventListener('click', (event) => {
+    /**
+     * Handle selection of dropdown options
+     * @param {Event} event - The click event
+     */
+    const handleDropdownSelection = (event) => {
         if (event.target.tagName === 'LI') {
             const value = event.target.dataset.value;
             const text = event.target.textContent;
 
-            // Set the selected value
-            selectedOption.textContent = text;
-            hiddenInput.value = value;
+            elements.selectedOption.textContent = text;
+            elements.hiddenInput.value = value;
+            toggleVisibility(elements.dropdownOptions, false);
 
-            // Hide the dropdown
-            dropdownOptions.style.display = 'none';
-            if (hiddenInput.value ==="laboral"){
-                envio_solicitud.style.display="none";
-                permiso_laboral.style.display="flex";
-                dropdown.style.zIndex="3";
-                dropdown.style.bottom="40px";
-                placaVehicular.style.display = "none";
+            updateFormBasedOnSelection(value);
+        }
+    };
 
-// Mostrar/ocultar las opciones del dropdown
-medioTransporteSeleccion.addEventListener('click', () => {
-    medioTransporteOpciones.style.display = 
-        medioTransporteOpciones.style.display === 'block' ? 'none' : 'block';
-});
+    /**
+     * Update form based on the selected permission type
+     * @param {string} value - Selected permission type
+     */
+    const updateFormBasedOnSelection = (value) => {
+        if (value === 'laboral') {
+            toggleVisibility(elements.envioSolicitud, false);
+            toggleVisibility(elements.permisoLaboral, true);
 
-// Seleccionar una opción del dropdown
-medioTransporteOpciones.addEventListener('click', (event) => {
-    const selectedValue = event.target.getAttribute('data-value');
-    if (selectedValue) {
-        medioTransporteSeleccion.textContent = event.target.textContent;
-        medioTransporteInput.value = selectedValue;
-        medioTransporteOpciones.style.display = 'none';
-
-        // Mostrar campo de placa solo si el transporte requiere
-        if (selectedValue === 'MOTOCICLETA' || selectedValue === 'AUTOMOVIL') {
-            placaVehiculoInput.style.display = 'block';
+            elements.dropdown.style.zIndex = '3';
+            elements.dropdown.style.bottom = '40px';
         } else {
-            placaVehiculoInput.style.display = 'none';
-        }
-    }
-});
-                
-            }else{
-                envio_solicitud.style.display="block";
-                permiso_laboral.style.display="none"
-                dropdown.style.bottom="0";
-            }
-        }
-    });
+            toggleVisibility(elements.envioSolicitud, true);
+            toggleVisibility(elements.permisoLaboral, false);
 
-    // Close dropdown if clicking outside
-    document.addEventListener('click', (event) => {
-        if (!dropdown.contains(event.target)) {
-            dropdownOptions.style.display = 'none';
+            elements.dropdown.style.bottom = '0';
         }
-    });
-    
+    };
+
+    /**
+     * Handle selection of transportation options
+     * @param {Event} event - The click event
+     */
+    const handleTransportSelection = (event) => {
+        const selectedValue = event.target.dataset.value;
+        if (selectedValue) {
+            elements.medioTransporteSeleccion.textContent = event.target.textContent;
+            elements.medioTransporteInput.value = selectedValue;
+            toggleVisibility(elements.medioTransporteOpciones, false);
+
+            // Show/hide the vehicle plate field based on transport type
+            toggleVisibility(elements.placaVehiculoInput, selectedValue === 'MOTOCICLETA' || selectedValue === 'AUTOMOVIL');
+        }
+    };
+
+    /**
+     * Close dropdowns when clicking outside
+     * @param {Event} event - The click event
+     */
+    const closeDropdownsOnClickOutside = (event) => {
+        if (!elements.dropdown.contains(event.target)) {
+            toggleVisibility(elements.dropdownOptions, false);
+        }
+    };
+
+    // Event listeners
+    elements.selectedOption.addEventListener('click', () => toggleVisibility(elements.dropdownOptions));
+    elements.dropdownOptions.addEventListener('click', handleDropdownSelection);
+    elements.medioTransporteSeleccion.addEventListener('click', () => toggleVisibility(elements.medioTransporteOpciones));
+    elements.medioTransporteOpciones.addEventListener('click', handleTransportSelection);
+    document.addEventListener('click', closeDropdownsOnClickOutside);
 });

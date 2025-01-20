@@ -18,7 +18,7 @@ $id_departamento = $_SESSION['id_departamento'];
 $solicitudes = $solicitudController->solicitudesRealizadas($cedula,$id_departamento);
 
 $lider_proceso = $solicitudes['lider'];
-$respuesta_solicitudes = $solicitudes['solicitudes']
+$respuesta_solicitudes = $solicitudes['solicitudes'];
 
 ?>
 <!DOCTYPE html>
@@ -76,7 +76,7 @@ $respuesta_solicitudes = $solicitudes['solicitudes']
                         <td class="td_solicitud">
                             <?php echo htmlspecialchars($_SESSION['nombres'] . ' ' . $_SESSION['apellidos']); ?>
                         </td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['lider']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso['nombre']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_solicitud']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
                     </tr>

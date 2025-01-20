@@ -5,9 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../models/UserModel.php';
-require_once __DIR__ . '/solicitudController.php';
-require_once __DIR__ . '/../models/solicitudModel.php';
-require_once __DIR__ . '/../helpers/CookieHelper.php';
+// require_once __DIR__ . '/../helpers/CookieHelper.php';
 require_once __DIR__ . '/../helpers/SessionHelper.php';
 
 
@@ -85,16 +83,10 @@ class LoginController {
         exit();
     }
 
-    public function verificarCierreViernes() {
-        // Verificar si es viernes después de las 4 y cerrar sesión si es necesario
-        if (SessionHelper::esViernesDespuesDeLasCuatro()) {
-            $this->cerrarSesion();
-        }
-    }
 }
 
 // Instanciar el controlador de login y ejecutar iniciarSesion
-$loginController = new LoginController($db);
+$loginController = new LoginController();
 $loginController->iniciarSesion();
 
 ?>

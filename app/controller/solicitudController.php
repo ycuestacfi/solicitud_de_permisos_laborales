@@ -53,7 +53,7 @@ class SolicitudController {
         }
     }
 
-    public function procesarFormulario($data) {
+    public function procesarFormulario() {
         // Variables comunes
         $nombre = $_POST['nombre'];
         $email = $_POST['email'];

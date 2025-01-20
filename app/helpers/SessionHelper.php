@@ -8,6 +8,7 @@ class SessionHelper {
         $_SESSION['correo'] = $usuario['correo'];
         $_SESSION['id_departamento'] = $usuario['id_departamento'];
         $_SESSION['rol'] = $usuario['rol'];
+        $_SESSION['estado'] = $usuario['estado'];
     }
 
     public static function cerrarSesion() {
@@ -16,12 +17,5 @@ class SessionHelper {
         session_destroy();
     }
 
-    public static function esViernesDespuesDeLasCuatro() {
-        $fecha_actual = new DateTime();
-        $dia_semana = $fecha_actual->format('N'); // 5 = Viernes
-        $hora_actual = $fecha_actual->format('H:i');
-
-        return $dia_semana == 5 && $hora_actual >= '16:00';
-    }
 }
 ?>

@@ -59,6 +59,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
         <ul id="menu">
             <li><a href="dashboard.php">Inicio</a></li>
             <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="departamentos.php">Departamentos</a></li>
             <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
             <li><a href="rechazadas.php">Rechazadas</a></li>
             <?php if ($_SESSION['rol'] == 'administrador'){

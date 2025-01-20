@@ -101,7 +101,8 @@ CREATE TABLE `usuarios` (
   `cedula` varchar(20) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `contrasena` varchar(100) DEFAULT NULL,
-  `id_departamento` int(11) DEFAULT NULL
+  `id_departamento` int(11) DEFAULT NULL,
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

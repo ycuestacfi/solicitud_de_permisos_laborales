@@ -108,13 +108,15 @@ CREATE TABLE `solicitudes` (
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `cedula` int(16) NOT NULL,
-  `nombres` varchar(50) NOT NULL,
-  `apellidos` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
   `usuario` varchar(128) NOT NULL,
   `contrasena` varchar(128) NOT NULL,
   `correo` varchar(64) NOT NULL,
   `id_departamento` int(11) DEFAULT NULL,
-  `rol` enum('solicitante','lider_aprobador','administrador') NOT NULL
+  `rol` enum('solicitante','lider_aprobador','administrador','seguridad','TI') NOT NULL,
+  `estado` int(11) DEFAULT 'activo' NOT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

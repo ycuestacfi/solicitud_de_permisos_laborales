@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../helpers/CookieHelper.php';
+// require_once '../helpers/CookieHelper.php';
 
-$usuario_recordado = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : '';
+// $usuario_recordado = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +29,7 @@ $usuario_recordado = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : '';
             <h2 id="text_login">Inicia sesión</h2>
             <form id="form-login" method="POST" action="../controller/LoginController.php">
                 <label for="usuario" class="label-login">Usuario:</label>
-                <input type="text" id="usuario" name="usuario" required pattern="[a-z0-9]{5,25}" value="<?php echo $usuario_recordado; ?>" tabindex="1" title="Ingrese su usuario"><br><br>
+                <input type="text" id="usuario" name="usuario" required pattern="[a-z0-9]{5,25}" tabindex="1" title="Ingrese su usuario"><br><br>
                 <label for="password" class="label-login">Contraseña:</label>
                 <input type="password" id="password" name="password" required pattern=".{9,}[*.#]$" tabindex="2" title="La contraseña debe tener minimo 8 caracteres y terminar con * o # o .">
                 <button type="submit" tabindex="4">Iniciar sesión</button>
