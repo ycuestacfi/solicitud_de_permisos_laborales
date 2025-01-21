@@ -27,7 +27,7 @@ session_start();
                 </figure>
             </article>
             <h2 id="text_login">Inicia sesión</h2>
-            <form id="form-login" method="POST" action="../controller/LoginController.php">
+            <form id="form-login" method="POST" action="/solicitud_de_permisos_laborales/app/controller/loginController.php">
                 <label for="usuario" class="label-login">Usuario:</label>
                 <input type="text" id="usuario" name="usuario" required pattern="[a-z0-9]{5,25}" tabindex="1" title="Ingrese su usuario"><br><br>
                 <label for="password" class="label-login">Contraseña:</label>

@@ -11,6 +11,20 @@ class DepartamentoModel {
     {
         $this->db = ConectService::conectar();
     }
+    // obtiene los datos para manejo de solicitudes
+    public function departamentos_data($id_departamento) {
+        if (isset($id_departamento)) {
+            $sql = "SELECT  usuarios.nombres,usuarios.apellidos,usuarios.correo
+                    FROM usuarios 
+                    INNER JOIN departamentos ON usuarios.id_usuario = departamentos.id_lider 
+                    WHERE departamentos.id_departamento = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$id_departamento]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }else{
+            return null;
+        }
+    }
 
     // Obtener todos los departamentos con el nombre del líder
     public function getDepartamentos() {
