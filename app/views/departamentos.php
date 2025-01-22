@@ -1,4 +1,5 @@
-<?php if (session_status() == PHP_SESSION_NONE) { session_start(); }
+<?php 
+if (session_status() == PHP_SESSION_NONE) { session_start(); }
 
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     // Si no ha iniciado sesión, redirigir al login

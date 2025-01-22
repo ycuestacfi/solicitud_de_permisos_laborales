@@ -2,7 +2,7 @@
     session_start();
 }
 include_once '../controller/solicitudController.php';
-$solocitudcontroller = new SolicitudController();
+$solicitudController = new SolicitudController();
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     // Si no ha iniciado sesión, redirigir al login
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
@@ -244,9 +244,10 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                 try {
                     $resultado = $solicitudController->procesarFormulario();
                     if ($resultado) {
-                        echo '<div class="alert alert-success">Solicitud enviada correctamente</div>';
+                        echo '<div class="alert alert-success">Solicitud enviada correctamente</div>'. $resultado;
                     } else {
-                        echo '<div class="alert alert-error">Error al procesar la solicitud</div>';
+                        echo '<div class="alert alert-error">Error al procesar la solicitud</div>' . $resultado;
+                        echo '<br>';
                     }
                 } catch (Exception $e) {
                     error_log($e->getMessage());

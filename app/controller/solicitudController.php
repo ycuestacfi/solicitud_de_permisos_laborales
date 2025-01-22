@@ -1,11 +1,45 @@
 <?php
+
 require_once __DIR__ . '/../models/SolicitudModel.php';
 
 class SolicitudController {
-    private $solicitudModel;
+    public $solicitudModel;
 
     public function __construct() {
         $this->solicitudModel = new solicitudModel();
+    }
+
+    // Método para cambiar el estado de la solicitud
+    public function cambiarEstadoSolicitud($id_solicitud, $estado) {
+        try {
+            // Llamamos al modelo para actualizar el estado de la solicitud en la base de datos
+            $resultado = $this->solicitudModel->actualizarEstado($id_solicitud, $estado);
+
+            // Si la actualización fue exitosa, redirigimos o mostramos un mensaje
+            if ($resultado) {
+                // Aquí se redirige a una página o se pasa una variable de éxito
+                return $resultado;
+            } else {
+                // return "No se pudo actualizar el estado.";
+                return $resultado;
+            }
+        } catch (Exception $e) {
+            // Si ocurre algún error, lo capturamos y mostramos el mensaje
+            return "Error al actualizar el estado: " . $e->getMessage();
+        }
+    }
+
+    public function solicitudesDeDepartamento($id_departamento){
+        if (!$id_departamento) {
+            return json_encode(['error' => 'El ID del departamento es obligatorio']);
+        } else {
+            $solicitudes = $this->solicitudModel->solicitudesDeDepartamento($id_departamento);
+            if ($solicitudes) {
+                return $solicitudes;
+            } else {
+                return json_encode(['error' => 'No se encontraron solicitudes en tu departamento']);
+            }
+        }
     }
 
     public function solicitudesRealizadas($cedula, $id_departamento) {
@@ -64,7 +98,7 @@ class SolicitudController {
         $hora_de_salida = $_POST['hora_de_salida'];
         $hora_de_llegada = $_POST['hora_de_llegada'];
         $observaciones = $_POST['observaciones'];
-        $evidencias = $_FILES['evidencias']; // Para manejar archivos
+        // $evidencias = $_FILES['evidencias']; // Para manejar archivos
         $tipo_permiso = $_POST['tipo_permiso'];
     
         // Variables específicas para permisos laborales
@@ -106,8 +140,9 @@ class SolicitudController {
                 $municipio_del_desplazamiento,
                 $lugar_desplazamiento,
                 $medio_de_transporte,
-                $placa_vehiculo,
-                $evidencias
+                $placa_vehiculo
+                // ,
+                // $evidencias
             );
     
             if ($registroExitoso) {
@@ -115,15 +150,44 @@ class SolicitudController {
                 $email_lider = $this->solicitudModel->lideres_proceso($departamento);
                 if ($email_lider) {
                     $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
-                    return header("Location: /permisos/app/views/solicitudes.php");
+                    // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
+                    exit;
                 }
             }
     
             return $registroExitoso;
         } catch (Exception $e) {
             error_log("Error en procesarFormulario: " . $e->getMessage());
-            return false;
+            // return false;
+            return json_encode(['error' => 'Error al procesar la solicitud' . $e->getMessage()]); 
         }
+    }
+
+    // Método para manejar las solicitudes PUT
+    public function procesarPutRequest() {
+        // Verificar si la solicitud es PUT
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            // Obtener los datos en formato JSON del cuerpo de la solicitud
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            // Verificar que los datos necesarios estén presentes
+            if (isset($data['idSolicitud']) && isset($data['nuevoEstado'])) {
+                // Llamar a la función cambiarEstadoSolicitud con los datos recibidos
+                $resultado = $this->cambiarEstadoSolicitud($data['idSolicitud'], $data['nuevoEstado']);
+                
+                // Responder con los resultados en formato JSON
+                echo json_encode(['resultado' => "Estado cambiado."]);
+            } else {
+                // Si faltan parámetros, responder con un error
+                echo json_encode(['error' => 'Faltan parámetros']);
+            }
+        } 
     }
     
 }
+
+// Instanciar el controlador
+$solicitudController = new SolicitudController();
+
+// Procesar la solicitud PUT
+$solicitudController->procesarPutRequest();

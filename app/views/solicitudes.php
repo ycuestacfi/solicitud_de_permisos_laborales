@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
     header("Location: login.php");
     exit();
 }
@@ -76,7 +77,7 @@ $respuesta_solicitudes = $solicitudes['solicitudes'];
                         <td class="td_solicitud">
                             <?php echo htmlspecialchars($_SESSION['nombres'] . ' ' . $_SESSION['apellidos']); ?>
                         </td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso['nombre']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_solicitud']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
                     </tr>

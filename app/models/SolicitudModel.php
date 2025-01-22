@@ -8,17 +8,43 @@ class solicitudModel {
         $this->db = ConectService::conectar();
     }
 
+    public function actualizarEstado($id_solicitud, $estado){
+        // Asegúrate de que $id_solicitud es un valor entero
+        $id_solicitud = (int) $id_solicitud;
+
+        // La consulta SQL con parámetros nombrados
+        $sql = "UPDATE solicitudes SET estado = :estado WHERE id_solicitud = :id_solicitud";
+
+        // Preparamos la consulta con la conexión de la base de datos
+        $stmt = $this->db->prepare($sql);
+
+        // Ejecutamos la consulta pasando los valores como un arreglo asociativo
+        $stmt->execute([
+            ':estado' => $estado,
+            ':id_solicitud' => $id_solicitud
+        ]);
+        return $stmt->rowCount();
+    }
+
+    public function solicitudesDeDepartamento($id_departamento){
+        $sql = "SELECT * FROM solicitudes WHERE id_departamento = ? AND estado = 'pendiente'";
+        $smtp = $this->db->prepare($sql);
+        $smtp->execute([$id_departamento]);
+        return $smtp->fetchAll(PDO::FETCH_ASSOC);
+    }
+
      // Método para registrar una solicitud en la base de datos
-     public function registrarSolicitud($nombre, $email, $departamento, $fecha_solicitud, $fecha_permiso, $hora_salida, $hora_llegada, $observaciones, $tipo_permiso) {
+     public function registrarSolicitud($nombre, $email, $cedula, $departamento, $fecha_solicitud, $fecha_permiso, $hora_salida, $hora_llegada, $observaciones, $tipo_permiso) {
         // Consulta para insertar los datos en la tabla de solicitudes
-        $sql = "INSERT INTO solicitudes (nombres, email, departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_llegada, observaciones, tipo_permiso) 
-                VALUES (:nombre, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso)";
+        $sql = "INSERT INTO solicitudes (nombre, cedula, correo, id_departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_ingreso, observaciones, tipo_permiso) 
+                VALUES (:nombre, :cedula, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso)";
         
         $stmt = $this->db->prepare($sql);
         
         // Enlace de parámetros
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':cedula', $cedula);
         $stmt->bindParam(':departamento', $departamento);
         $stmt->bindParam(':fecha_solicitud', $fecha_solicitud);
         $stmt->bindParam(':fecha_permiso', $fecha_permiso);
@@ -78,7 +104,7 @@ class solicitudModel {
 
     public function lideres_proceso($id_departamento){
         if (isset($id_departamento)){
-            $sql = "SELECT usuarios.correo,usuarios.nombres  FROM usuarios INNER JOIN departamentos ON usuarios.id_usuario = departamentos.id_lider INNER JOIN usuarios AS usuarios2 ON usuarios2.id_departamento = departamentos.id_departamento WHERE usuarios2.id_usuario = ? ";
+            $sql = "SELECT usuarios.nombres,usuarios.correo  FROM usuarios INNER JOIN departamentos ON usuarios.id_usuario = departamentos.id_lider INNER JOIN usuarios AS usuarios2 ON usuarios2.id_departamento = departamentos.id_departamento WHERE usuarios2.id_usuario = ? ";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$id_departamento]);
             return $stmt->fetchColumn();

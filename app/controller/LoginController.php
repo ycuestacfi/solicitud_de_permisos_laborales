@@ -57,7 +57,7 @@ class LoginController {
                 $icono = "error";
                
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
                 exit();
             }
         } else {
@@ -67,7 +67,7 @@ class LoginController {
                 $icono = "error";
                 
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
                 exit();
         }
     }
@@ -77,7 +77,7 @@ class LoginController {
     public function cerrarSesion() {
         // Cerrar sesión y eliminar cookies
         SessionHelper::cerrarSesion();
-        CookieHelper::eliminarCookies();
+        // CookieHelper::eliminarCookies();
         // Redirigir al login después de cerrar la sesión
         header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
         exit();

@@ -37,8 +37,8 @@ class ConectService {
         // Conexion a BD SIIS Pg 15
         $contrasena = "";
         $usuario = "root";
-        $BD = "sdp";
-        // $BD = "solicitud_permisos";
+        // $BD = "sdp";
+         $BD = "solicitud_permisos";
         $rutaServidor = "localhost";
         $puerto = "3306";
 
