@@ -7,11 +7,32 @@ document.addEventListener('DOMContentLoaded', () => {
         hiddenInput: document.getElementById('tipo_permiso'),
         envioSolicitud: document.getElementById('btn-enviar-permiso'),
         permisoLaboral: document.getElementById('permiso-laboral'),
-        medioTransporteSeleccion: document.getElementById('medio_transporte_seleccion'),
+        medioTransporteSeleccion: document.getElementById('medio-transporte-seleccion'),
         medioTransporteOpciones: document.getElementById('medio-transporte-opciones'),
         medioTransporteInput: document.getElementById('medio_de_transporte'),
         placaVehiculoInput: document.getElementById('placa_vehiculo'),
+        formulario: document.getElementById('formulario-solicitud'),
     };
+
+    const campos = elements.formulario.querySelectorAll('input, textarea');
+
+    elements.envioSolicitud.disabled = true;
+
+    // Obtener los campos por sus IDs y eliminar el atributo 'required'
+    const camposAEliminarRequerido = [
+        'motivo_del_desplazamiento',
+        'Departamento_de_desplazamiento',
+        'municipio_del_desplazamiento',
+        'lugar_desplazamiento'
+    ];
+    
+    // Iterar sobre los IDs de los campos y quitar el atributo 'required'
+    camposAEliminarRequerido.forEach(id => {
+        const campo = document.getElementById(id);
+        if (campo) {
+        campo.removeAttribute('required');
+        }
+    });
 
     /**
      * Toggle visibility of a given element
@@ -88,10 +109,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+/**
+ * Verifica si todos los campos del formulario están completos.
+ * Si todos los campos tienen valor, habilita el botón de envío.
+ * 
+ * @param {Event} event - El evento que se dispara cuando un campo cambia su valor.
+ */
+const verificarCampos = (event) => {
+    let todosCompletos = true;
+
+    // Definir los IDs de los campos que no se deben validar
+    const camposIgnorados = ['motivo_del_desplazamiento', 'Departamento_de_desplazamiento', 'municipio_del_desplazamiento', 'lugar_desplazamiento', 'medio_de_transporte', 'placa_vehiculo', 'placa_vehicular', 'tipo_permiso'];
+
+    // Verificar si todos los campos están completos, excluyendo los campos con ciertos id
+    campos.forEach(campo => {
+        if (!camposIgnorados.includes(campo.id) && campo.value.trim() === '') {
+        todosCompletos = false;
+        }
+    });
+
+    // Habilitar o deshabilitar el botón dependiendo del estado de los campos
+    elements.envioSolicitud.disabled = !todosCompletos;
+  };
+  
+  /**
+   * Agrega un evento a cada campo para verificar su estado cada vez que el valor cambie.
+   */
+  const agregarEventos = () => {
+    // Añadir el evento de verificación de los campos
+    campos.forEach(campo => {
+      campo.addEventListener('input', verificarCampos);
+    });
+  };
+
     // Event listeners
     elements.selectedOption.addEventListener('click', () => toggleVisibility(elements.dropdownOptions));
     elements.dropdownOptions.addEventListener('click', handleDropdownSelection);
     elements.medioTransporteSeleccion.addEventListener('click', () => toggleVisibility(elements.medioTransporteOpciones));
     elements.medioTransporteOpciones.addEventListener('click', handleTransportSelection);
     document.addEventListener('click', closeDropdownsOnClickOutside);
+    agregarEventos();
 });

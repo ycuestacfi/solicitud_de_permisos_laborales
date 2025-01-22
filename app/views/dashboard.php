@@ -1,4 +1,5 @@
-<?php if (session_status() == PHP_SESSION_NONE) {
+<?php 
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -7,6 +8,15 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+require_once __DIR__ . '/../controller/solicitudController.php';
+
+// Ahora, pasar la conexión a la clase solicitudModel
+$solicitudController = new SolicitudController();
+
+// Obtener solicitudes
+$id_departamento = $_SESSION['id_departamento'];
+$solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento);
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -21,6 +31,51 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
 
 </head>
 <body>
+<!-- Modal para mostrar mensajes -->
+<div id="modalMensaje" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <p id="mensajeModal"></p>
+    </div>
+</div>
+
+<!-- Estilos del modal -->
+<style>
+    .modal {
+        display: none; /* Ocultamos el modal por defecto */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
     <?php
     $prueba1 = [
         ['nombre' => 'Juan Pérez', 'departamento' => 'Ventas', 'lider_aprobador' => 'Carlos Torralba', 'fecha_solicitud' => '2024-10-15', 'estado' => 'Aprobado'],
@@ -31,7 +86,8 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
         ['nombre' => 'Ana García', 'departamento' => 'Contabilidad', 'lider_aprobador' => 'John Medina', 'fecha_solicitud' => '2024-10-14', 'estado' => 'Pendiente'],
         ['nombre' => 'Ana García', 'departamento' => 'Contabilidad', 'lider_aprobador' => 'John Medina', 'fecha_solicitud' => '2024-10-14', 'estado' => 'Pendiente'],
         
-    ]; ?>
+    ]; 
+    ?>
 <!-- <header>
         <h1>Título de la Página</h1>
         <nav>
@@ -65,7 +121,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
             <?php if ($_SESSION['rol'] == 'administrador'){
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
                 } ?>
-            <li><a href="/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
     </nav>
@@ -75,8 +131,6 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
             <thead>
                 <tr>
                     <th >Nombre</th>
-                    <th >Departamento</th>
-                    <th >Líder Aprobador</th>
                     <th >Fecha Solicitud</th>
                     <th >Estado</th>
                     <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
@@ -85,17 +139,15 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($prueba1 as $pruebas1): ?>
+                <?php foreach ($solicitudes as $pruebas1): ?>
                 <tr>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre']); ?></td>
-                    <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['departamento']); ?></td>
-                    <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['lider_aprobador']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_solicitud']); ?></td>
-                    <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
+                    <td class="td_solicitud" id="estado_<?php echo $pruebas1['id_solicitud'];?>"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
                     <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
                     <td class="td_solicitud">
-                        <button class="btn_accion_solicitud"><i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-claro);"></i></button>
-                        <button class="btn_accion_solicitud"><i class="fa-regular fa-circle-xmark" style="font-size: 22px; color:red;"></i></button>
+                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('aprobada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-claro);"></i></button>
+                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('rechazada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-xmark" style="font-size: 22px; color:red;"></i></button>
                     </td>
                     <?php endif; ?>
                 </tr>
@@ -109,5 +161,6 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     </footer>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
 </body>
 </html>

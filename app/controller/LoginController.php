@@ -49,7 +49,7 @@ class LoginController {
                 $icono = "error";
                
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
                 exit();
             }
         } else {
@@ -59,7 +59,7 @@ class LoginController {
                 $icono = "error";
                 
                 // Redirigir a la página de login con parámetros GET
-                header("Location: /solicitud_de_permisos_laborales/app/views/login.php?titulo=" . urlencode($titulo) . "&mensaje=" . urlencode($mensaje) . "&icono=" . urlencode($icono));
+                header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
                 exit();
         }
     }

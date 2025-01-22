@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+    // Si no ha iniciado sesión, redirigir al login
     header("Location: login.php");
     exit();
 }
@@ -77,15 +78,7 @@ $respuesta_solicitudes = $solicitudes;
                         <td class="td_solicitud">
                             <?php echo htmlspecialchars($_SESSION['nombres'] . ' ' . $_SESSION['apellidos']); ?>
                         </td>
-                        
-                        <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['identificador_solicitud']); ?></td>
-                        <?php if (!empty($departamento_data)): ?>
-                        <td class="td_solicitud">
-                            <?php echo htmlspecialchars($departamento_data['nombres'] . ' ' . $departamento_data['apellidos']); ?>
-                        </td>
-                        <?php else: ?>
-                            <td colspan="2" class="td_solicitud">No hay datos disponibles para este departamento.</td>
-                        <?php endif; ?>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso['nombre']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_solicitud']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
                     </tr>
