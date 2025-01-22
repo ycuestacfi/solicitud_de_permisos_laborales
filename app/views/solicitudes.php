@@ -47,7 +47,7 @@ $respuesta_solicitudes = $solicitudes;
                     <div></div>
                     <div></div>
                     <div></div>
-                </div>
+                </div>  
                 <ul id="menu">
                     <li><a href="dashboard.php">Inicio</a></li>
                     <li><a href="solicitudes.php">Mis solicitudes</a></li>

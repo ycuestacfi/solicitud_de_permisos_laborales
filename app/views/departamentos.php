@@ -5,6 +5,11 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+
+include_once '../controller/departamentoController.php';
+
+$departamentocontroler = new departamentoControler();
+$departamentos = $departamentocontroler->listarDepartamentos()
 ?>
 
 <!DOCTYPE html>
@@ -69,27 +74,33 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
 
         <!-- Tabla de Departamentos -->
         <h2>Departamentos Existentes</h2>
-        <table border="1">
+        <table style="border: solid 1px var(--blanco);" class="tabla-departamentos">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Líder</th>
-                    <th>Acciones</th>
+                    <th>ID Departamento</th>
+                    <th>Nombre del Departamento</th>
+                    <th>Nombre del Líder</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php foreach ($departamentos as $departamento): ?>
+            <tbody style="background-color: var(--blanco);">
+                <?php if (!empty($departamentos)): ?>
+                    <?php foreach ($departamentos as $departamento): ?>
+                        <tr >
+                            <td style="border:solid 1px var(--blanco); text-align: center;"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
+                            <td style="border:solid 1px var(--blanco); "><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
+                            <td style="border:solid 1px var(--blanco); ">
+                                <?php 
+                                // Si no hay líder asignado, mostrar un mensaje
+                                echo htmlspecialchars(!empty($departamento['lider_nombre'] . $departamento['lider_apellido']) ? $departamento['lider_nombre'] .' '. $departamento['lider_apellido'] : 'Sin líder asignado'); 
+                                ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
                     <tr>
-                        <td><?php echo $departamento['id_departamento']; ?></td>
-                        <td><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
-                        <td><?php echo htmlspecialchars($departamento['lider_nombre']); ?></td>
-                        <td>
-                            <a href="departamentos/editar/<?php echo $departamento['id_departamento']; ?>">Editar</a> |
-                            <a href="departamentos/eliminar/<?php echo $departamento['id_departamento']; ?>" onclick="return confirm('¿Estás seguro de que quieres eliminar este departamento?');">Eliminar</a>
-                        </td>
+                        <td colspan="3">No hay departamentos disponibles.</td>
                     </tr>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </tbody>
         </table>
     </main>

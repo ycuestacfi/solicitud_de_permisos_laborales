@@ -28,7 +28,7 @@ class DepartamentoModel {
 
     // Obtener todos los departamentos con el nombre del líder
     public function getDepartamentos() {
-        $query = "SELECT d.id_departamento, d.nombre_departamento, u.nombre AS lider_nombre
+        $query = "SELECT d.id_departamento, d.nombre_departamento, d.id_lider , u.nombres AS lider_nombre,u.apellidos AS lider_apellido
                   FROM departamentos d
                   LEFT JOIN usuarios u ON d.id_lider = u.id_usuario";
         $result = $this->db->query($query);
