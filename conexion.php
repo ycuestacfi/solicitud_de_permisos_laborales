@@ -2,52 +2,23 @@
 // encabezado
 header("ACCESS-CONTROL-ALLOW-ORIGIN: *");
 class ConectService {
-    // private $pdo;
-
-    
-    // public function __construct() {
-    //     $dbhost = "localhost";
-    //     $dbport = "3306";
-    //     $dbuser = "root";
-    //     $dbpassword = "";
-    //     // $dbname = "prueba_solicitud";
-    //     $dbname = "sdp";
-
-    //     $dsn = "mysql:host=$dbhost;dbname=$dbname;dbport=$dbport;; ";
-    //     $options = [
-    //         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    //         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    //         PDO::ATTR_EMULATE_PREPARES   => false,
-    //     ];
-
-    //     try {
-    //         $this->pdo = new PDO($dsn, $dbuser, $dbpassword, $options);
-    //     } catch (\PDOException $e) {
-    //         throw new \PDOException($e->getMessage(), (int)$e->getCode());
-    //     }
-    // }
-
-    // public function getConnection() {
-    //     return $this->pdo;
-    // }
-
 
     static public function conectar()
     {
-        // Conexion a BD SIIS Pg 15
-        $contrasena = "";
-        $usuario = "root";
-        //$BD = "sdp";
-         $BD = "solicitud_permisos";
-        $rutaServidor = "localhost";
-        $puerto = "3306";
+     
+        //local
+             $rutaServidor = "localhost";
+             $puerto = "3306";
+             $usuario = "root";
+             $contrasena = "";
+             $BD = "solicitud_permisos";
 
-        // Conexion a BD Sigho Pg 16
-        // $contrasena = "123456789";
-        // $usuario = "postgres";
-        // $BD = "sigho";
-        // $rutaServidor = "127.0.0.1";
-        // $puerto = "5433";
+        // real
+            // $contrasena = "Pr0v1d3nc14$#cfip2025*";
+            // $usuario = "junior47895_solicitud_permisos_desarrolladores";
+            // $BD = "junior47895_solicitud_permisos_laborales";
+            // $rutaServidor = "167.114.11.220";
+            // $puerto = "2083";
 
         $base_de_datos = null;
 

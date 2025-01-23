@@ -1,4 +1,0 @@
-CREATE TABLE departamentos (id_departamento bigint, id_lider bigint, nombre_departamento text);
-CREATE TABLE usuarios (id_usuario bigint, id_departamento bigint, contrasena text, apellido text, nombre text, rol text, correo text, estado text, cedula character varying(16), usuario text);
-CREATE TABLE historial_solicitudes (id_historial bigint, estado text, id_solicitud bigint, id_departamento bigint, identificador_solicitud character varying(20), fecha_permiso date, fecha_cambio timestamp without time zone);
-CREATE TABLE solicitudes (hora_salida time without time zone, fecha_solicitud timestamp without time zone, correo text, fecha_permiso date, hora_ingreso time without time zone, identificador_solicitud character varying(20), cedula character varying(16), nombre text, observaciones text, ultima_modificacion timestamp without time zone, estado text, id_departamento bigint, id_solicitud integer);

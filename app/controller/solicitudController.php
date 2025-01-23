@@ -42,7 +42,7 @@ class SolicitudController {
         }
     }
 
-    public function solicitudesRealizadas($cedula, $id_departamento) {
+    public function solicitudesRealizadas($cedula) {
         // Si no se proporciona la cédula, retorna un array vacío
         if (!$cedula) {
             return [];

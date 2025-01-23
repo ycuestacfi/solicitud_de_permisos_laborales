@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../../conexion.php';
+ require_once __DIR__ . '/../../conexion.php';
+// include_once '../../conexion.php';
 class UserModel {
     private $db;
 
@@ -68,8 +69,13 @@ class UserModel {
         return $stmt->execute([$nombre, $apellido, $cedula, $correo, $departamento, $rol, $password, $usuario]);
     }
 
-    public function identificarLider(){
-        
+    public function selecionar_lider(){
+        $sql = "SELECT usuarios.nombres,usuarios.apellidos,usuarios.cedula,usuarios.estado FROM usuarios ";
+        $stmt = $this->db->prepare($sql);
+        // $stmt->execute([$rol]);
+        $stmt->execute($sql);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: false;
     }
 
     public function envioSolicitudLiderProceso($id_departamento_solicitante){

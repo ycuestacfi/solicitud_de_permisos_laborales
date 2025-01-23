@@ -6,11 +6,24 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+if ($_SESSION['rol'] != 'administrador') {
+    // Si no es administrador, redirigir al dashboard
+    header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php ");
+    exit();
+}
 
 include_once '../controller/departamentoController.php';
+include_once '../controller/UserController.php';
 
+$rol = $_SESSION['rol'];
 $departamentocontroler = new departamentoControler();
-$departamentos = $departamentocontroler->listarDepartamentos()
+$usercontroler = new UserController();
+$departamentos = $departamentocontroler->listarDepartamentos();
+if ($rol === "administrador"){
+    $usuarios_selecion_lider = $usercontroler->selecion_de_lider($rol);
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -48,33 +61,53 @@ $departamentos = $departamentocontroler->listarDepartamentos()
         <h1>Gestión de Departamentos</h1>
 
         <!-- Formulario para crear o editar departamento -->
-        <?php if (isset($departamento)): ?>
-            <h2>Editar Departamento</h2>
-        <?php else: ?>
-            <h2>Crear Nuevo Departamento</h2>
-        <?php endif; ?>
-
-        <form action="departamentos/<?php echo isset($departamento) ? 'actualizar/' . $departamento['id_departamento'] : 'guardar'; ?>" method="POST">
+        
+    <section id="crear_departamento">
+        <form action="" method="POST">
             <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
 
             <label for="nombre_departamento">Nombre del Departamento</label>
-            <input type="text" id="nombre_departamento" name="nombre_departamento" value="<?php echo isset($departamento) ? htmlspecialchars($departamento['nombre_departamento']) : ''; ?>" required>
+            <input type="text" id="nombre_departamento" name="nombre_departamento" required>
 
             <label for="id_lider">Líder</label>
             <select id="id_lider" name="id_lider">
                 <option value="">Seleccione un líder</option>
-                <?php foreach ($usuarios as $usuario): ?>
-                    <option value="<?php echo $usuario['id_usuario']; ?>" <?php echo (isset($departamento) && $departamento['id_lider'] == $usuario['id_usuario']) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($usuario['nombre']); ?>
-                    </option>
-                <?php endforeach; ?>
+                <option value=""></option>
             </select>
 
-            <button type="submit"><?php echo isset($departamento) ? 'Actualizar Departamento' : 'Crear Departamento'; ?></button>
+            <button type="submit"></button>
         </form>
+    </section>
+
+
+    <section id="actualizar_departamento">
+        <?php if (!empty($usuarios_selecion_lider));?>
+        <form action="" method="POST">
+                <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
+
+                <label for="nombre_departamento">Nombre del Departamento</label>
+                <input type="text" id="nombre_departamento" name="nombre_departamento" required>
+
+                <label for="id_lider">Líder</label>
+                <select id="id_lider" name="id_lider">
+                    <option value="">Seleccione un líder</option>
+                    <?php foreach ($usuarios_selecion_lider as $usuario): ?>
+                        <option value="<?php echo $usuario['nombres']; ?>" >
+                            <?php echo htmlspecialchars($usuario['nombres']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+            <button type="submit"> actualizar departamento</button>
+        </form>
+    </section>
+
+
+        
 
         <!-- Tabla de Departamentos -->
-        <h2>Departamentos Existentes</h2>
+         <section>
+         <h2>Departamentos Existentes</h2>
         <table style="border: solid 1px var(--blanco);" class="tabla-departamentos">
             <thead>
                 <tr>
@@ -104,6 +137,8 @@ $departamentos = $departamentocontroler->listarDepartamentos()
                 <?php endif; ?>
             </tbody>
         </table>
+         </section>
+        
     </main>
 </body>
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-01-2025 a las 16:21:39
+-- Tiempo de generación: 22-01-2025 a las 15:54:38
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -66,13 +66,6 @@ CREATE TABLE `historial_solicitudes` (
   `identificador_solicitud` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `historial_solicitudes`
---
-
-INSERT INTO `historial_solicitudes` (`id_historial`, `id_solicitud`, `id_departamento`, `fecha_permiso`, `estado`, `fecha_cambio`, `identificador_solicitud`) VALUES
-(1, 2, 1, '2025-01-20', 'pendiente', '2025-01-19 02:34:08', 'SOL-000001');
-
 -- --------------------------------------------------------
 
 --
@@ -81,26 +74,43 @@ INSERT INTO `historial_solicitudes` (`id_historial`, `id_solicitud`, `id_departa
 
 CREATE TABLE `solicitudes` (
   `id_solicitud` int(11) NOT NULL,
+  `identificador_solicitud` varchar(50) NOT NULL,
   `nombre` varchar(100) NOT NULL,
-  `cedula` varchar(16) NOT NULL,
+  `cedula` int(11) NOT NULL,
   `correo` varchar(100) NOT NULL,
   `id_departamento` int(11) NOT NULL,
-  `fecha_solicitud` timestamp NOT NULL DEFAULT current_timestamp(),
+  `fecha_solicitud` datetime NOT NULL DEFAULT current_timestamp(),
   `fecha_permiso` date NOT NULL,
   `hora_salida` time NOT NULL,
   `hora_ingreso` time NOT NULL,
   `observaciones` text DEFAULT NULL,
-  `estado` varchar(50) NOT NULL DEFAULT 'pendiente',
-  `ultima_modificacion` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `identificador_solicitud` varchar(20) NOT NULL
+  `tipo_permiso` varchar(19) NOT NULL,
+  `evidencia` varchar(255) DEFAULT NULL,
+  `motivo_del_desplamiento` varchar(150) DEFAULT NULL,
+  `departamento_de_desplazamiento` varchar(150) DEFAULT NULL,
+  `municipio_desplazamiento` varchar(150) DEFAULT NULL,
+  `lugar_desplazamiento` varchar(150) DEFAULT NULL,
+  `medio_transporte` enum('MOTOCICLETA','AUTOMOVIL','TRANSPORTE PUBLICO','AVION') DEFAULT NULL,
+  `placa_vehiculo` varchar(20) DEFAULT NULL,
+  `estado` enum('pendiente','aprobada','rechazada') DEFAULT 'pendiente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `solicitudes`
 --
 
-INSERT INTO `solicitudes` (`id_solicitud`, `nombre`, `cedula`, `correo`, `id_departamento`, `fecha_solicitud`, `fecha_permiso`, `hora_salida`, `hora_ingreso`, `observaciones`, `estado`, `ultima_modificacion`, `identificador_solicitud`) VALUES
-(2, 'Yeffer Cuesta', '1078460223', 'yecuesta@providenciacfi.com', 1, '2025-01-19 02:34:08', '2025-01-20', '09:00:00', '13:00:00', 'Necesito permiso para una cita médica.', 'pendiente', '2025-01-19 02:34:08', 'SOL-000001');
+INSERT INTO `solicitudes` (`id_solicitud`, `identificador_solicitud`, `nombre`, `cedula`, `correo`, `id_departamento`, `fecha_solicitud`, `fecha_permiso`, `hora_salida`, `hora_ingreso`, `observaciones`, `tipo_permiso`, `evidencia`, `motivo_del_desplamiento`, `departamento_de_desplazamiento`, `municipio_desplazamiento`, `lugar_desplazamiento`, `medio_transporte`, `placa_vehiculo`, `estado`) VALUES
+(1, 'SOLICITUD-00001', 'yeffer', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-09 12:36:27', '2025-01-09', '14:35:10', '18:35:10', 'na', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'pendiente'),
+(3, 'SOLICITUD-00002', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-21 00:00:00', '2025-01-22', '11:17:00', '23:17:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pendiente'),
+(4, 'SOLICITUD-00003', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pendiente'),
+(5, 'SOLICITUD-00004', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada'),
+(6, 'SOLICITUD-00005', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada'),
+(7, 'SOLICITUD-00006', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada'),
+(8, 'SOLICITUD-00007', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
+(9, 'SOLICITUD-00008', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
+(10, 'SOLICITUD-00009', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-31 00:00:00', '2025-02-01', '15:33:00', '16:44:00', 'l', 'calamidad domestica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
+(11, 'SOLICITUD-00010', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-31 00:00:00', '2025-02-01', '15:33:00', '16:44:00', 'l', 'calamidad domestica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
+(12, 'SOLICITUD-00011', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-31 00:00:00', '2025-02-01', '15:33:00', '16:44:00', 'l', 'calamidad domestica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada');
 
 -- --------------------------------------------------------
 
@@ -110,24 +120,26 @@ INSERT INTO `solicitudes` (`id_solicitud`, `nombre`, `cedula`, `correo`, `id_dep
 
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
-  `cedula` varchar(16) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `apellido` varchar(100) NOT NULL,
-  `usuario` varchar(50) NOT NULL,
-  `contrasena` varchar(255) NOT NULL,
-  `correo` varchar(100) NOT NULL,
+  `cedula` int(16) NOT NULL,
+  `nombres` varchar(50) NOT NULL,
+  `apellidos` varchar(50) NOT NULL,
+  `usuario` varchar(128) NOT NULL,
+  `contrasena` varchar(128) NOT NULL,
+  `correo` varchar(64) NOT NULL,
   `id_departamento` int(11) DEFAULT NULL,
-  `rol` enum('solicitante','lider_aprobador','administrador','seguridad','TI') NOT NULL,
-  `estado` varchar(20) NOT NULL DEFAULT 'activo'
+  `rol` enum('solicitante','lider_aprobador','administrador','seguridad','sistem_admin') NOT NULL,
+  `estado` enum('activo','inactivo','suspendido') DEFAULT 'activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombre`, `apellido`, `usuario`, `contrasena`, `correo`, `id_departamento`, `rol`, `estado`) VALUES
-(1, '1078460223', 'Yeffer', 'Cuesta Mena', 'ycuesta', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta@providenciacfi.com', 1, 'administrador', 'activo'),
-(2, '123456789', 'Juan', 'Perez', 'juanperez', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'juanperez@example.com', 1, 'solicitante', 'activo');
+INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombres`, `apellidos`, `usuario`, `contrasena`, `correo`, `id_departamento`, `rol`, `estado`) VALUES
+(1, 12345678, 'prueba_lider', 'primera', 'pruebas', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'prueba123@prueba.com', 1, 'lider_aprobador', 'activo'),
+(4, 1078460223, 'yeffer', 'cuesta mena', 'ycuesta', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta@providenciacfi.com', 1, 'administrador', 'activo'),
+(7, 1114812664, 'Jonathan David', 'Hoyos Valencia', 'john1', 'e877e926d1c38e2e29ef110506de018fe03b2e2339fdc00aed341366a22fb1db8b5e8a6b6479eaa8899da27dfec0f06aab3b8c8f34649f3ef233876dcd46037a', 'jhonatandavidhv@gmail.com', 1, 'administrador', 'activo'),
+(8, 777, 'Valencia Hoyos', 'Jonathan David', 'Samuro', 'e877e926d1c38e2e29ef110506de018fe03b2e2339fdc00aed341366a22fb1db8b5e8a6b6479eaa8899da27dfec0f06aab3b8c8f34649f3ef233876dcd46037a', 'Correoprueba@gmail.com', 1, 'lider_aprobador', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -138,24 +150,15 @@ INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombre`, `apellido`, `usuario`,
 --
 ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`id_departamento`),
-  ADD KEY `fk_lider` (`id_lider`);
-
---
--- Indices de la tabla `historial_solicitudes`
---
-ALTER TABLE `historial_solicitudes`
-  ADD PRIMARY KEY (`id_historial`),
-  ADD KEY `fk_historial_solicitud` (`id_solicitud`),
-  ADD KEY `fk_historial_departamento` (`id_departamento`);
+  ADD KEY `id_lider` (`id_lider`);
 
 --
 -- Indices de la tabla `solicitudes`
 --
 ALTER TABLE `solicitudes`
   ADD PRIMARY KEY (`id_solicitud`),
-  ADD UNIQUE KEY `identificador_solicitud` (`identificador_solicitud`),
-  ADD KEY `fk_solicitud_departamento` (`id_departamento`),
-  ADD KEY `fk_solicitud_usuario` (`cedula`);
+  ADD KEY `id_departamento` (`id_departamento`),
+  ADD KEY `cedula` (`cedula`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -163,9 +166,7 @@ ALTER TABLE `solicitudes`
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
   ADD UNIQUE KEY `cedula` (`cedula`),
-  ADD UNIQUE KEY `usuario` (`usuario`),
-  ADD UNIQUE KEY `correo` (`correo`),
-  ADD KEY `fk_usuario_departamento` (`id_departamento`);
+  ADD UNIQUE KEY `correo` (`correo`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -175,25 +176,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `departamentos`
 --
 ALTER TABLE `departamentos`
-  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
-
---
--- AUTO_INCREMENT de la tabla `historial_solicitudes`
---
-ALTER TABLE `historial_solicitudes`
-  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitudes`
 --
 ALTER TABLE `solicitudes`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
@@ -203,27 +198,14 @@ ALTER TABLE `usuarios`
 -- Filtros para la tabla `departamentos`
 --
 ALTER TABLE `departamentos`
-  ADD CONSTRAINT `fk_lider` FOREIGN KEY (`id_lider`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `historial_solicitudes`
---
-ALTER TABLE `historial_solicitudes`
-  ADD CONSTRAINT `fk_historial_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_historial_solicitud` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitudes` (`id_solicitud`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `departamentos_ibfk_1` FOREIGN KEY (`id_lider`) REFERENCES `usuarios` (`id_usuario`);
 
 --
 -- Filtros para la tabla `solicitudes`
 --
 ALTER TABLE `solicitudes`
-  ADD CONSTRAINT `fk_solicitud_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_solicitud_usuario` FOREIGN KEY (`cedula`) REFERENCES `usuarios` (`cedula`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `usuarios`
---
-ALTER TABLE `usuarios`
-  ADD CONSTRAINT `fk_usuario_departamento` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `solicitudes_ibfk_1` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id_departamento`),
+  ADD CONSTRAINT `solicitudes_ibfk_2` FOREIGN KEY (`cedula`) REFERENCES `usuarios` (`cedula`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

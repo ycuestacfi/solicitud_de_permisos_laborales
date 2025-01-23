@@ -3,10 +3,19 @@ require_once __DIR__ . '/../models/UserModel.php';
 class UserController {
     private $userModel;
 
-    public function __construct($userModel) {
-        $this->userModel = $userModel;
+    public function __construct() {
+        // Guardar la conexión en una propiedad de la clase
+        $this->userModel = new UserModel();
     }
 
+    public function selecion_de_lider($rol){
+        $usuarios = $this->userModel->selecionar_lider($rol);
+        if($usuarios){
+            return $usuarios;
+        }else{
+            return 'No se encontraron usuarios';
+        }
+    }
 
     public function registrarUsuario($nombres, $apellidos, $cedula, $correo, $departamento, $rol, $usuario, $password) {
         // Verificar duplicados

@@ -31,5 +31,6 @@ class departamentoControler {
             return 'No se encontraron departamentos establecidos';
         }
     }
+    
 }
 ?>
