@@ -19,10 +19,14 @@ $rol = $_SESSION['rol'];
 $departamentocontroler = new departamentoControler();
 $usercontroler = new UserController();
 $departamentos = $departamentocontroler->listarDepartamentos();
-if ($rol === "administrador"){
-    $usuarios_selecion_lider = $usercontroler->selecion_de_lider($rol);
-}
-
+$usuarios_selecion_lider = $usercontroler->selecion_de_lider();  
+ 
+// if ($rol = 'administrador'){
+//     $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
+// }else{
+//     header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php ");
+//     exit();
+// }
 
 ?>
 
@@ -79,34 +83,13 @@ if ($rol === "administrador"){
         </form>
     </section>
 
-
-    <section id="actualizar_departamento">
-        <?php if (!empty($usuarios_selecion_lider));?>
-        <form action="" method="POST">
-                <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
-
-                <label for="nombre_departamento">Nombre del Departamento</label>
-                <input type="text" id="nombre_departamento" name="nombre_departamento" required>
-
-                <label for="id_lider">Líder</label>
-                <select id="id_lider" name="id_lider">
-                    <option value="">Seleccione un líder</option>
-                    <?php foreach ($usuarios_selecion_lider as $usuario): ?>
-                        <option value="<?php echo $usuario['nombres']; ?>" >
-                            <?php echo htmlspecialchars($usuario['nombres']); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-
-            <button type="submit"> actualizar departamento</button>
-        </form>
-    </section>
+ 
 
 
         
 
         <!-- Tabla de Departamentos -->
-         <section>
+         <section id="tabla_departamentos">
          <h2>Departamentos Existentes</h2>
         <table style="border: solid 1px var(--blanco);" class="tabla-departamentos">
             <thead>
@@ -117,7 +100,7 @@ if ($rol === "administrador"){
                 </tr>
             </thead>
             <tbody style="background-color: var(--blanco);">
-                <?php if (!empty($departamentos)): ?>
+                <?php if (($departamentos)): ?>
                     <?php foreach ($departamentos as $departamento): ?>
                         <tr >
                             <td style="border:solid 1px var(--blanco); text-align: center;"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>

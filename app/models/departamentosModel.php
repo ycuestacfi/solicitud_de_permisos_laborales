@@ -28,16 +28,26 @@ class DepartamentoModel {
 
     // Obtener todos los departamentos con el nombre del líder
     public function getDepartamentos() {
-        $query = "SELECT d.id_departamento, d.nombre_departamento, d.id_lider , u.nombres AS lider_nombre,u.apellidos AS lider_apellido
+        try {
+            $query = "SELECT d.id_departamento, d.nombre_departamento, d.id_lider , u.nombres AS lider_nombre,u.apellidos AS lider_apellido
                   FROM departamentos d
                   LEFT JOIN usuarios u ON d.id_lider = u.id_usuario";
-        $result = $this->db->query($query);
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();  // Ejecuta la consulta
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);  // Obtiene los resultados
+
+            return $result;  // Retorna los resultados obtenidos
+
+        } catch (PDOException $e) {
+            // Manejo de errores si la consulta falla
+            error_log("Error en getDepartamentos: " . $e->getMessage());
+            return false;  // Retorna false en caso de error
+        }
     }
 
     // Obtener todos los usuarios para asignarlos como líderes
     public function getUsuarios() {
-        $query = "SELECT id_usuario, nombre FROM usuarios";
+        $query = "SELECT id_usuario, nombres FROM usuarios";  // Cambié 'nombre' por 'nombres'
         $result = $this->db->query($query);
         return $result->fetchAll(PDO::FETCH_ASSOC);
     }

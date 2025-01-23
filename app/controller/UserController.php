@@ -8,8 +8,8 @@ class UserController {
         $this->userModel = new UserModel();
     }
 
-    public function selecion_de_lider($rol){
-        $usuarios = $this->userModel->selecionar_lider($rol);
+    public function selecion_de_lider(){
+        $usuarios = $this->userModel->selecionar_lider();
         if($usuarios){
             return $usuarios;
         }else{
