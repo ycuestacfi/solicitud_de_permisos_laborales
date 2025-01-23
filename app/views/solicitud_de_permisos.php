@@ -8,6 +8,18 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+// Obtener la fecha actual
+$fechaActual = new DateTime();
+
+// Formatear la fecha actual en el formato 'YYYY-MM-DD'
+$fechaActualFormato = $fechaActual->format('Y-m-d');
+
+// Obtener la fecha dentro de 30 días
+$fechaDentro30Dias = new DateTime();
+$fechaDentro30Dias->modify('+30 days');
+
+// Formatear la fecha dentro de 30 días en el formato 'YYYY-MM-DD'
+$fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -35,7 +47,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     
     <main>
     <section id="navigation">
-    <nav>
+    <!-- <nav>
         <figure style="margin:0; padding:0; width:150px;">
             <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
         </figure>
@@ -55,6 +67,29 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
         <ul id="contenedor_btn_salir">
         <li><a   href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión </a></li>
         </ul>
+    </nav> -->
+    <nav>
+        <figure style="margin:0; padding:0; width:150px;">
+            <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+        </figure>
+        <div id="btn_menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        
+        <ul id="menu">
+            <li><a href="dashboard.php">Inicio</a></li>
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="departamentos.php">Departamentos</a></li>
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            <li><a href="rechazadas.php">Rechazadas</a></li>
+            <?php if ($_SESSION['rol'] == 'administrador'){
+                    echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
+                } ?>
+            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+        </ul>
+         
     </nav>
     
 </section>
@@ -62,7 +97,11 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
             <a id="Bienvenidos" >
                 <?php echo 'Bienvenido '. $_SESSION['nombres']  ." ". $_SESSION['apellidos'] ; ?>
             </a> 
-            <form action="" method="POST" id="formulario-solicitud" >     
+            <form action="" method="POST" id="formulario-solicitud" >  
+                    <input 
+                    value="<?php echo $_SESSION['rol']; ?>" 
+                    type="hidden" name="rol" id="rol" required>
+
                 <h1 id="title_form">Formulario De Solicitud</h1>
 
                 <input class="input_solicitud" 
@@ -95,13 +134,16 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
                     type="date" id="fecha_de_solicitud" 
                     name="fecha_de_solicitud" 
                     title="Selecciona la fecha en que estás realizando la solicitud" 
-                    required >
+                    value="<?php echo $fechaActualFormato; ?>"
+                    hidden>
 
                 <input class="input_solicitud" 
                     placeholder="Selecciona la fecha del permiso" 
                     type="date" id="fecha_de_permiso" 
                     name="fecha_de_permiso" 
                     title="Selecciona la fecha del permiso solicitado" 
+                    max="<?php echo $fechaDentro30DiasFormato; ?>"
+                    min="<?php echo $fechaActualFormato; ?>"
                     required>
 
                 <input class="input_solicitud" 
@@ -272,6 +314,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     </footer>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
     <!-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         const dropdown = document.getElementById('contenedor-permiso');

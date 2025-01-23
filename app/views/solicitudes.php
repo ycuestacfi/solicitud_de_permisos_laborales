@@ -60,35 +60,36 @@ $respuesta_solicitudes = $solicitudes['solicitudes'];
                 </ul>
             </nav>
         </section>
-
-        <table id="tabla_registros">
-            <thead>
-                <tr>
-                    <th>Nombre del solicitante</th>
-                    <th>Líder Aprobador</th>
-                    <th>Fecha Solicitud</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($respuesta_solicitudes) ): ?>
-                    <?php foreach ($respuesta_solicitudes as $solicitud): ?>
+        <div class="tabla_registro">
+            <table id="tabla_registros" style="height: 100% ;width: 100%;">
+                <thead>
                     <tr>
-                        <td class="td_solicitud">
-                            <?php echo htmlspecialchars($_SESSION['nombres'] . ' ' . $_SESSION['apellidos']); ?>
-                        </td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_solicitud']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
+                        <th>Nombre del solicitante</th>
+                        <th>Líder Aprobador</th>
+                        <th>Fecha Solicitud</th>
+                        <th>Estado</th>
                     </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4">No se encontraron solicitudes. Puedes realizar una nueva.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php if (!empty($respuesta_solicitudes) ): ?>
+                        <?php foreach ($respuesta_solicitudes as $solicitud): ?>
+                        <tr>
+                            <td class="td_solicitud">
+                                <?php echo htmlspecialchars($_SESSION['nombres'] . ' ' . $_SESSION['apellidos']); ?>
+                            </td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_solicitud']); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="4">No se encontraron solicitudes. Puedes realizar una nueva.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </main>
 
     <footer>

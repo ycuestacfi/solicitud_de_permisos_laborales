@@ -37,7 +37,7 @@ class SolicitudController {
             if ($solicitudes) {
                 return $solicitudes;
             } else {
-                return json_encode(['error' => 'No se encontraron solicitudes en tu departamento']);
+                return false;
             }
         }
     }
@@ -100,6 +100,7 @@ class SolicitudController {
         $observaciones = $_POST['observaciones'];
         // $evidencias = $_FILES['evidencias']; // Para manejar archivos
         $tipo_permiso = $_POST['tipo_permiso'];
+        $rol = $_POST['rol'];
     
         // Variables específicas para permisos laborales
         $motivo_del_desplazamiento = "";
@@ -123,6 +124,7 @@ class SolicitudController {
         }
     
         try {
+            if ($rol !== "lider_aprobador") {
             // Llamar al modelo para registrar la solicitud con todos los campos
             $registroExitoso = $this->solicitudModel->registrarSolicitud(
                 $nombre,
@@ -156,6 +158,41 @@ class SolicitudController {
             }
     
             return $registroExitoso;
+            } else {
+                // Llamar al modelo para registrar la solicitud con todos los campos
+                $registroExitoso = $this->solicitudModel->registrarSolicitud(
+                    $nombre,
+                    $email,
+                    $cedula,
+                    $departamento,
+                    $fecha_de_solicitud,
+                    $fecha_de_permiso,
+                    $hora_de_salida,
+                    $hora_de_llegada,
+                    $observaciones,
+                    $tipo_permiso,
+                    $motivo_del_desplazamiento,
+                    $departamento_de_desplazamiento,
+                    $municipio_del_desplazamiento,
+                    $lugar_desplazamiento,
+                    $medio_de_transporte,
+                    $placa_vehiculo
+                    // ,
+                    // $evidencias
+                );
+        
+                if ($registroExitoso) {
+                    // Obtener el email del líder del proceso
+                    $email_lider = $this->solicitudModel->lideres_proceso($departamento);
+                    if ($email_lider) {
+                        $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
+                        // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
+                        exit;
+                    }
+                }
+        
+                return $registroExitoso;
+            }
         } catch (Exception $e) {
             error_log("Error en procesarFormulario: " . $e->getMessage());
             // return false;
@@ -184,6 +221,36 @@ class SolicitudController {
         } 
     }
     
+    public function historico() {
+        $historicos = $this->solicitudModel->historico();
+        if ($historicos) {
+            return $historicos;
+        } else {
+            return json_encode(['error' => 'No se encontraron ningun historico']);
+        }
+    }
+
+    public function horaIngreso() {
+        $aceptadas = $this->solicitudModel->hora_ingreso();
+        if ($aceptadas) {
+            return $aceptadas;
+        } else {
+            return json_encode(['error' => 'No se encontraron solicitudes de llegada pendientes']);
+        }
+    }
+
+    public function edicionHora($hora,$id) {
+
+        $resultado = $this->solicitudModel->edicionHora($hora,$id);
+
+        if ($resultado) {
+            return $resultado;
+        } else {
+            return json_encode(['error' => 'No se puedo editar la hora de llegada']);
+        }
+
+    }
+
 }
 
 // Instanciar el controlador

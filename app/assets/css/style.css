@@ -99,33 +99,48 @@ main {
    
 }
 /* CSS para gestion de solicitudes */
-#tabla_registros{
-     border: solid 2px var(--blanco);
-     width: 75%; 
-     max-height: 60%;
-     padding: 10px;
-     position: absolute; 
-     left: 50%; 
-     top: 50%;
-     transform:  translateX(-50%) translatey(-50%); 
-     background-color: var(--azul-verde); 
-    
+.tabla_registro {
+    border: solid 2px var(--blanco);
+    width: 75%; 
+    max-height: 60%;  /* Ajusta la altura máxima */
+    padding: 10px;
+    position: absolute; 
+    left: 50%; 
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: var(--azul-verde);
+    overflow-y: auto;  /* Activar el scroll vertical cuando sea necesario */
 }
-#tabla_registros thead tr th{
-    background-color:var(--verde-claro); 
-    border:solid 2px var(--blanco);
+
+#tabla_registros thead {
+    position: sticky;
+    top: 0; /* El encabezado se quedará en la parte superior */
+    background-color: var(--verde-claro); /* Fondo del encabezado */
+    z-index: 1; /* Asegura que el encabezado se mantenga encima del tbody */
+    padding: 0;
+    margin: 0;
+}
+
+/* Estilos para el encabezado de la tabla */
+.tabla_registro thead tr th {
+    background-color: var(--verde-claro); 
+    border: solid 2px var(--blanco);
     text-align: center;
 }
-.td_solicitud{
-    border:solid 1px var(--blanco);
-     color: var(--blanco);
-     text-align:center;
+
+/* Estilos para las celdas de la tabla */
+.td_solicitud {
+    border: solid 1px var(--blanco);
+    color: var(--blanco);
+    text-align: center;
 }
-.btn_accion_solicitud{
+
+/* Estilos para los botones de acción */
+.btn_accion_solicitud {
     height: 40px;
-    background:none;  
-    border:none; 
-    width:40px;
+    background: none;  
+    border: none; 
+    width: 40px;
 }
 #observaciones{
 height: 80px;

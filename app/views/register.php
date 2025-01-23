@@ -14,7 +14,7 @@ include_once '../controller/UserController.php';
 
 // Obtener la conexión a la base de datos
 $db = new ConectService();
-$pdo = $db->getConnection();
+// $pdo = $db->getConnection();
 
 // Instanciar modelo y controlador
 $userModel = new UserModel($pdo);

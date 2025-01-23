@@ -8,11 +8,6 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
-
-if ($_SESSION['rol'] !== "lider_aprobador") {
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
-    exit();
-}
 require_once __DIR__ . '/../controller/solicitudController.php';
 
 // Ahora, pasar la conexión a la clase solicitudModel
@@ -20,7 +15,7 @@ $solicitudController = new SolicitudController();
 
 // Obtener solicitudes
 $id_departamento = $_SESSION['id_departamento'];
-$solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento);
+$solicitudes = $solicitudController->horaIngreso();
 
 ?>
 <!DOCTYPE html>
@@ -115,7 +110,6 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
                     echo '<li><a href="historico.php"> Historico </a></li>';
                 } ?>
-            <li><a href="historico.php"> Historico </a></li>
             <li><a href="solicitudes_hora_ingreso.php"> Aceptadas </a></li>
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
@@ -128,33 +122,42 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                 <tr>
                     <th >Nombre</th>
                     <th >Fecha Solicitud</th>
-                    <th >Estado</th>
-                    <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
-                    <th >Acciones</th>
-                    <?php endif; ?>
+                    <th >Hora de ingreso</th>
+                    <th >Accion</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if ($solicitudes):?>
                 <?php foreach ($solicitudes as $pruebas1): ?>
-                <tr>
+                <tr id ="tr-<?php echo $pruebas1['id_solicitud'];?>">
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_solicitud']); ?></td>
-                    <td class="td_solicitud" id="estado_<?php echo $pruebas1['id_solicitud'];?>"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
-                    <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
+                    <td class="td_solicitud" ><?php echo htmlspecialchars($pruebas1['hora_ingreso']); ?></td>
                     <td class="td_solicitud">
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('aprobada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-claro);"></i></button>
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('rechazada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-xmark" style="font-size: 22px; color:red;"></i></button>
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('eliminada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa fa-trash-can" style="font-size: 22px; color:grey;"></i></button>
+                        <button class="btn_accion_solicitud" onclick="editarHora('editar', <?php echo $pruebas1['id_solicitud'];?>)" id="btn_hora_<?php echo $pruebas1['id_solicitud'];?>"><i class="fa fa-pencil-alt" style="font-size: 22px; color:#A9A9A9;"></i></button>
+                        <!-- Formulario oculto para seleccionar la hora -->
+                        <div class="contenerdor_accion_solicitud" id="hora-selector-<?php echo $pruebas1['id_solicitud'];?>" style="display:none;width:200px;">
+                            <form action="" method="POST" id="edicion-hora">
+                                <input type="hidden" id="id_solicitud" name="id_solicitud" value="<?php echo $pruebas1['id_solicitud'];?>">
+                                <label for="hora-input">Hora llegada:</label>
+                                <input type="time" id="hora-input" name="hora-input" min="7:00" max="16:00" title="Por favor ingrese la hora de llegada" required>
+                                <button type="submit">></button>
+                            </form>
+                        </div>
                     </td>
-                    <?php endif; ?>
                 </tr>
                 <?php endforeach; ?>
-                <?php else:?>
-                    <td class="td_solicitud" colspan="4">No tienes solicitudes pendientes en tu departamento</td>
-                <?php endif; ?>
             </tbody>
         </table>
+        <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                try {
+                    $resultado = $solicitudController->edicionHora($_POST['hora-input'],$_POST['id_solicitud']);
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                    echo '<div class="alert alert-error">Error inesperado</div>';
+                }
+            }
+            ?>
     </div>
     </main>
 
@@ -163,6 +166,6 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     </footer>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/editar_hora.js"></script>
 </body>
 </html>

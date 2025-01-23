@@ -9,6 +9,7 @@ class SessionHelper {
         $_SESSION['id_departamento'] = $usuario['id_departamento'];
         $_SESSION['rol'] = $usuario['rol'];
         $_SESSION['estado'] = $usuario['estado'];
+        $_SESSION['id_usuario'] = $usuario['id_usuario'];
     }
 
     public static function cerrarSesion() {

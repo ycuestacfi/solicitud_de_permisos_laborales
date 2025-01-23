@@ -61,7 +61,7 @@ header{
 
     
     <header>
-        <nav>
+        <!-- <nav>
 
             <ul>
                 <p>Tipos de solicitudes</p>
@@ -78,6 +78,29 @@ header{
             <a href="/cierre_de_sesion.php" id="btn_salir">
                 Cerrar sesión
             </a>
+        </nav> -->
+        <nav>
+            <figure style="margin:0; padding:0; width:150px;">
+                <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+            </figure>
+            <div id="btn_menu">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            
+            <ul id="menu">
+                <li><a href="dashboard.php">Inicio</a></li>
+                <li><a href="solicitudes.php">Mis solicitudes</a></li>
+                <li><a href="departamentos.php">Departamentos</a></li>
+                <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+                <li><a href="rechazadas.php">Rechazadas</a></li>
+                <?php if ($_SESSION['rol'] == 'administrador'){
+                        echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
+                    } ?>
+                <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+            </ul>
+            
         </nav>
     </header>
     <main>

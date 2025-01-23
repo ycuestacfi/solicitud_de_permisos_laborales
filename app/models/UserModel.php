@@ -11,7 +11,7 @@ class UserModel {
     
     public function verificarCredenciales($usuario, $password) {
         // Consulta SQL corregida
-        $sql = "SELECT nombres, apellidos, cedula, correo, id_departamento, rol,estado FROM usuarios WHERE usuario = ? AND contrasena = ?";
+        $sql = "SELECT id_usuario,nombres, apellidos, cedula, correo, id_departamento, rol,estado FROM usuarios WHERE usuario = ? AND contrasena = ?";
         $stmt = $this->db->prepare($sql);
         if ($stmt === false) {
             throw new Exception("Error en la preparación de la consulta: " . implode(":", $this->db->errorInfo()));
