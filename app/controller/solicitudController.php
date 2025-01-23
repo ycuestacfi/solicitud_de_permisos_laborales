@@ -42,25 +42,17 @@ class SolicitudController {
         }
     }
 
-    public function solicitudesRealizadas($cedula, $id_departamento) {
+    public function solicitudesRealizadas($cedula) {
         // Si no se proporciona la cédula, retorna un array vacío
         if (!$cedula) {
             return [];
         }
     
         try {
-            // Obtén el líder asociado al proceso
-            $lider = $this->solicitudModel->lideres_proceso($id_departamento);
-    
             // Obtén las solicitudes realizadas por el usuario
             $soli = $this->solicitudModel->solicitudes_realizadas($cedula);
-    
             // Procesa el resultado para combinar
-            $resultado = [
-                'solicitudes' => $soli,
-                'lider' => $lider,
-            ];
-    
+                $resultado = $soli;
             return $resultado;
     
         } catch (Exception $e) {

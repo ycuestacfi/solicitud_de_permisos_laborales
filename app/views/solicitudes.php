@@ -1,25 +1,28 @@
-<?php 
+<?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
-    // Si no ha iniciado sesión, redirigir al login
     header("Location: login.php");
     exit();
 }
-require_once __DIR__ . '/../controller/solicitudController.php';
 
-// Ahora, pasar la conexión a la clase solicitudModel
+include_once '../controller/SolicitudController.php';
+include_once '../controller/departamentoController.php';
+
 $solicitudController = new SolicitudController();
+$departamentocontroler = new departamentoControler();
 
-// Obtener solicitudes
 $cedula = $_SESSION['cedula'];
 $id_departamento = $_SESSION['id_departamento'];
-$solicitudes = $solicitudController->solicitudesRealizadas($cedula,$id_departamento);
 
-$lider_proceso = $solicitudes['lider'];
-$respuesta_solicitudes = $solicitudes['solicitudes'];
+$departamento_data = $departamentocontroler->getDepartamentodata($id_departamento);
+$solicitudes = $solicitudController->solicitudesRealizadas($cedula);
+
+
+$respuesta_solicitudes = $solicitudes;
+
 
 ?>
 <!DOCTYPE html>
@@ -37,25 +40,21 @@ $respuesta_solicitudes = $solicitudes['solicitudes'];
             <nav>
                 <figure style="margin:0; padding:0; width:150px;">
                     <a href="dashboard.php">
-                        <img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt="">
+                        <img src="/solicitud_permisos/app/assets/img/logocfipblanco.png" style="width: 100%;" alt="">
                     </a>
                 </figure>
                 <div id="btn_menu">
                     <div></div>
                     <div></div>
                     <div></div>
-                </div>
-                
+                </div>  
                 <ul id="menu">
                     <li><a href="dashboard.php">Inicio</a></li>
                     <li><a href="solicitudes.php">Mis solicitudes</a></li>
+                    <li><a href="departamentos.php">Departamentos</a></li>
                     <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
                     <li><a href="rechazadas.php">Rechazadas</a></li>
-                    <?php if ($_SESSION['rol'] == 'administrador'){
-                            echo '<li><a href="register.php">Registrar Usuarios</a></li>';
-                        } ?>
-                </ul>
-                <ul id="contenedor_btn_salir">
+                    <?php if ($_SESSION['rol'] == 'administrador'){ echo '<li><a href="register.php"> Registrar Usuarios</a></li>'; } ?>
                     <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
                 </ul>
             </nav>
@@ -95,7 +94,7 @@ $respuesta_solicitudes = $solicitudes['solicitudes'];
     <footer>
         <p>&copy; 2024 Copyright: Aviso de privacidad, Términos y condiciones. Todos los derechos reservados.</p>
     </footer>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
+    <script src="/solicitud_permisos/app/assets/js/main.js"></script>
+    <script src="/solicitud_permisos/app/assets/js/menu.js"></script>
 </body>
 </html>
