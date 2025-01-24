@@ -157,8 +157,8 @@ class solicitudModel {
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= "From: no-reply@tudominio.com" . "\r\n"; // Cambia a tu dominio
 
-        // return mail($to, $subject, $message, $headers);
-        return "alert($to, $subject, $message, $headers)";
+        return mail($to, $subject, $message, $headers);
+        // return "alert($to, $subject, $message, $headers)";
     }
 
     public function solicitudes_realizadas($cedula){
