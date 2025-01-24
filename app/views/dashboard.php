@@ -10,7 +10,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
 }
 
 if ($_SESSION['rol'] !== "lider_aprobador" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
     exit();
 }
 require_once __DIR__ . '/../controller/solicitudController.php';
@@ -108,22 +108,22 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
         <ul id="menu">
             
             
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>';
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>';
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
             
             
             <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
-            <?php if ($_SESSION['rol'] == 'administrador'){
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
                     
                     echo '<li><a href="departamentos.php">Departamentos</a></li>';
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
                     echo '<li><a href="historico.php"> Historico </a></li>';
                 }
             ?>
-            <?php if ($_SESSION['rol'] == 'seguridad'){
+            <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
                     echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
                 }
             ?>
@@ -140,7 +140,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     <th >Nombre</th>
                     <th >Fecha Solicitud</th>
                     <th >Estado</th>
-                    <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
+                    <?php if ($_SESSION['rol'] == 'lider_aprobador' || $_SESSION['rol']== 'TI' || $_SESSION['rol']== 'administrador'): ?>
                     <th >Acciones</th>
                     <?php endif; ?>
                 </tr>
@@ -152,7 +152,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_solicitud']); ?></td>
                     <td class="td_solicitud" id="estado_<?php echo $pruebas1['id_solicitud'];?>"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
-                    <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
+                    <?php if ($_SESSION['rol'] == 'lider_aprobador' || $_SESSION['rol']== 'TI' || $_SESSION['rol']== 'administrador'): ?>
                     <td class="td_solicitud">
                         <button class="btn_accion_solicitud" onclick="procesarSolicitud('aprobada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-claro);"></i></button>
                         <button class="btn_accion_solicitud" onclick="procesarSolicitud('rechazada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-xmark" style="font-size: 22px; color:red;"></i></button>

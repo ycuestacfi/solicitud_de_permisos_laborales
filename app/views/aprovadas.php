@@ -8,6 +8,10 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /app/views/login.php ");
     exit();
 }
+if ($_SESSION['rol'] !== "seguridad" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
+    exit();
+}
 
 include_once './estructure/head.php'?>
         
