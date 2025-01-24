@@ -9,7 +9,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     exit();
 }
 
-if ($_SESSION['rol'] !== "lider_aprobador") {
+if ($_SESSION['rol'] !== "lider_aprobador" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
@@ -106,17 +106,28 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
         </div>
         
         <ul id="menu">
-            <li><a href="dashboard.php">Inicio</a></li>
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="departamentos.php">Departamentos</a></li>
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-            <li><a href="rechazadas.php">Rechazadas</a></li>
+            
+            
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>';
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>';
+            
+            
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
+                echo '<li><a href="dashboard.php">Inicio</a></li>';
+            }
+            ?>
             <?php if ($_SESSION['rol'] == 'administrador'){
+                    
+                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
                     echo '<li><a href="historico.php"> Historico </a></li>';
-                } ?>
-            <li><a href="historico.php"> Historico </a></li>
-            <li><a href="solicitudes_hora_ingreso.php"> Aceptadas </a></li>
+                }
+            ?>
+            <?php if ($_SESSION['rol'] == 'seguridad'){
+                    echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
+                }
+            ?>
+            
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          

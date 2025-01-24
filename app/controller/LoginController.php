@@ -41,7 +41,11 @@ class LoginController {
                       
                         header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php");
                         exit();
-                }
+                } elseif ($_SESSION['rol'] === 'seguridad') {
+                      
+                    header("Location: /solicitud_de_permisos_laborales/app/views/aprovadas.php");
+                    exit();
+            }
             } else {
                 // Si el estado del usuario no es "activo", redirigir o mostrar mensaje
                 $mensaje = "Usuario inactivo, por favor contacte al administrador.";

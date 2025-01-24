@@ -20,13 +20,6 @@ $departamentocontroler = new departamentoControler();
 $usercontroler = new UserController();
 $departamentos = $departamentocontroler->listarDepartamentos();
 $usuarios_selecion_lider = $usercontroler->selecion_de_lider();  
- 
-// if ($rol = 'administrador'){
-//     $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
-// }else{
-//     header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php ");
-//     exit();
-// }
 
 ?>
 
