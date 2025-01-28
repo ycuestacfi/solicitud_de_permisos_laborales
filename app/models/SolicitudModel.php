@@ -198,7 +198,8 @@ class solicitudModel {
     }
 
     public function historico() {
-        $stmt = $this->db->prepare("SELECT historial_solicitudes.*, departamentos.nombre_departamento FROM historial_solicitudes INNER JOIN departamentos ON departamentos.id_departamento = historial_solicitudes.id_departamento;");
+        $sql = "SELECT historial_solicitudes.* , departamentos.nombre_departamento FROM historial_solicitudes INNER JOIN departamentos ON departamentos.id_departamento = historial_solicitudes.id_departamento WHERE departamentos.id_departamento = historial_solicitudes.id_departamento";
+        $stmt = $this->db->prepare($sql);
         // Ejecutar la consulta
         $stmt->execute();
 

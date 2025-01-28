@@ -123,10 +123,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     echo '<li><a href="historico.php"> Historico </a></li>';
                 }
             ?>
-            <?php if ($_SESSION['rol'] == 'seguridad'){
-                    echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
-                }
-            ?>
+          
             
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>

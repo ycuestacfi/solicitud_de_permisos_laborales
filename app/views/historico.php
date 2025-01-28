@@ -129,15 +129,17 @@ $solicitudes = $solicitudController->historico();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($solicitudes as $pruebas1): ?>
-                    <tr>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['identificador_solicitud']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_permiso']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre_departamento']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_cambio']); ?></td>
+                   
+                    <tr> 
+                        
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitudes); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitudes['estado']); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitudes['fecha_permiso']); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitudes['nombre_departamento']); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($solicitudes['fecha_cambio']); ?></td>
+                        
                     </tr>
-                    <?php endforeach; ?>
+                   
                 </tbody>
             </table>
         </div>

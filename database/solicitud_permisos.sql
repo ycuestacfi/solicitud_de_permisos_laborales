@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-01-2025 a las 15:54:38
+-- Tiempo de generación: 24-01-2025 a las 20:45:42
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,7 +39,7 @@ CREATE TABLE `departamentos` (
 
 INSERT INTO `departamentos` (`id_departamento`, `nombre_departamento`, `id_lider`) VALUES
 (1, 'Tecnología Informática', 1),
-(2, 'Academicas', NULL),
+(2, 'Academicas', 7),
 (3, 'Almacen y logistica', NULL),
 (4, 'Big bag', NULL),
 (5, 'Calidad', NULL),
@@ -66,6 +66,24 @@ CREATE TABLE `historial_solicitudes` (
   `identificador_solicitud` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `historial_solicitudes`
+--
+
+INSERT INTO `historial_solicitudes` (`id_historial`, `id_solicitud`, `id_departamento`, `fecha_permiso`, `estado`, `fecha_cambio`, `identificador_solicitud`) VALUES
+(1, 17, 1, '2025-01-29', 'aprobada', '2025-01-22 23:37:43', 'SOLICITUD-00017'),
+(2, 17, 1, '2025-01-29', 'rechazada', '2025-01-22 23:37:45', 'SOLICITUD-00017'),
+(3, 17, 3, '2025-01-29', 'eliminada', '2025-01-22 23:37:46', 'SOLICITUD-00017'),
+(4, 17, 1, '2025-01-29', 'aprobada', '2025-01-22 23:37:47', 'SOLICITUD-00017'),
+(5, 17, 1, '2025-01-29', 'rechazada', '2025-01-22 23:37:48', 'SOLICITUD-00017'),
+(6, 0, 1, '2025-01-23', 'aprobada', '2025-01-22 23:48:13', 'SOLICITUD-00008'),
+(7, 0, 1, '2025-01-23', 'rechazada', '2025-01-22 23:48:14', 'SOLICITUD-00008'),
+(8, 0, 1, '2025-01-23', 'eliminada', '2025-01-22 23:48:15', 'SOLICITUD-00008'),
+(9, 0, 1, '2025-01-23', 'aprobada', '2025-01-22 23:48:18', 'SOLICITUD-00008'),
+(10, 0, 1, '2025-01-23', 'rechazada', '2025-01-22 23:48:19', 'SOLICITUD-00008'),
+(11, 0, 1, '2025-01-23', 'eliminada', '2025-01-22 23:48:21', 'SOLICITUD-00008'),
+(12, 0, 1, '2025-01-23', 'aprobada', '2025-01-22 23:48:23', 'SOLICITUD-00008');
+
 -- --------------------------------------------------------
 
 --
@@ -90,9 +108,9 @@ CREATE TABLE `solicitudes` (
   `departamento_de_desplazamiento` varchar(150) DEFAULT NULL,
   `municipio_desplazamiento` varchar(150) DEFAULT NULL,
   `lugar_desplazamiento` varchar(150) DEFAULT NULL,
-  `medio_transporte` enum('MOTOCICLETA','AUTOMOVIL','TRANSPORTE PUBLICO','AVION') DEFAULT NULL,
+  `medio_transporte` enum('MOTOCICLETA','AUTOMOVIL','TRANSPORTE PUBLICO','AVION') NOT NULL,
   `placa_vehiculo` varchar(20) DEFAULT NULL,
-  `estado` enum('pendiente','aprobada','rechazada') DEFAULT 'pendiente'
+  `estado` enum('pendiente','aprobada','rechazada','eliminada') DEFAULT 'pendiente'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -100,17 +118,25 @@ CREATE TABLE `solicitudes` (
 --
 
 INSERT INTO `solicitudes` (`id_solicitud`, `identificador_solicitud`, `nombre`, `cedula`, `correo`, `id_departamento`, `fecha_solicitud`, `fecha_permiso`, `hora_salida`, `hora_ingreso`, `observaciones`, `tipo_permiso`, `evidencia`, `motivo_del_desplamiento`, `departamento_de_desplazamiento`, `municipio_desplazamiento`, `lugar_desplazamiento`, `medio_transporte`, `placa_vehiculo`, `estado`) VALUES
-(1, 'SOLICITUD-00001', 'yeffer', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-09 12:36:27', '2025-01-09', '14:35:10', '18:35:10', 'na', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'pendiente'),
-(3, 'SOLICITUD-00002', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-21 00:00:00', '2025-01-22', '11:17:00', '23:17:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pendiente'),
-(4, 'SOLICITUD-00003', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'pendiente'),
-(5, 'SOLICITUD-00004', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada'),
-(6, 'SOLICITUD-00005', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada'),
-(7, 'SOLICITUD-00006', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada'),
-(8, 'SOLICITUD-00007', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
-(9, 'SOLICITUD-00008', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-25 00:00:00', '2025-01-27', '00:58:00', '04:03:00', 'o', 'cita medica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
-(10, 'SOLICITUD-00009', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-31 00:00:00', '2025-02-01', '15:33:00', '16:44:00', 'l', 'calamidad domestica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
-(11, 'SOLICITUD-00010', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-31 00:00:00', '2025-02-01', '15:33:00', '16:44:00', 'l', 'calamidad domestica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'rechazada'),
-(12, 'SOLICITUD-00011', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-01-31 00:00:00', '2025-02-01', '15:33:00', '16:44:00', 'l', 'calamidad domestica', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'aprobada');
+(1, 'SOLICITUD-00001', 'yeffer', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-09 12:36:27', '2025-01-09', '14:35:10', '09:09:00', 'na', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'pendiente'),
+(2, 'SOLICITUD-00002', 'prueba', 12345678, 'ejemplo@gmail.com', 1, '2025-01-22 08:58:07', '2025-01-23', '09:58:07', '15:58:07', 'n/a', 'personal', '', NULL, NULL, NULL, NULL, 'MOTOCICLETA', 'CQW-5F', 'pendiente'),
+(3, 'SOLICITUD-00003', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'rechazada'),
+(4, 'SOLICITUD-00004', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(5, 'SOLICITUD-00005', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 2, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'pendiente'),
+(6, 'SOLICITUD-00006', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(7, 'SOLICITUD-00007', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'rechazada'),
+(8, 'SOLICITUD-00008', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(9, 'SOLICITUD-00009', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '00:00:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'rechazada'),
+(10, 'SOLICITUD-00010', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(11, 'SOLICITUD-00011', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(12, 'SOLICITUD-00012', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-23 00:00:00', '2025-01-23', '09:12:00', '21:12:00', 'h', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'eliminada'),
+(13, 'SOLICITUD-00013', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-31 00:00:00', '2025-01-31', '11:07:00', '23:07:00', 'o', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'rechazada'),
+(14, 'SOLICITUD-00014', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-31 00:00:00', '2025-01-31', '11:07:00', '23:07:00', 'o', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(15, 'SOLICITUD-00015', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-31 00:00:00', '2025-01-31', '11:07:00', '23:07:00', 'o', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'rechazada'),
+(16, 'SOLICITUD-00016', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-31 00:00:00', '2025-01-31', '11:07:00', '23:07:00', 'o', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'aprobada'),
+(17, 'SOLICITUD-00017', 'yeffer cuesta mena', 1078460223, 'ycuesta@providenciacfi.com', 1, '2025-01-29 00:00:00', '2025-01-29', '11:13:00', '23:14:00', 'a', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'rechazada'),
+(18, 'SOLICITUD-00018', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 1, '2025-02-14 00:00:00', '2025-02-14', '15:23:00', '16:23:00', 'a', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'pendiente'),
+(19, 'SOLICITUD-00019', 'Jonathan David Hoyos Valencia', 1114812664, 'jhonatandavidhv@gmail.com', 2, '2025-02-14 00:00:00', '2025-02-14', '15:23:00', '16:23:00', 'a', 'personal', NULL, NULL, NULL, NULL, NULL, 'MOTOCICLETA', NULL, 'pendiente');
 
 -- --------------------------------------------------------
 
@@ -136,10 +162,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombres`, `apellidos`, `usuario`, `contrasena`, `correo`, `id_departamento`, `rol`, `estado`) VALUES
-(1, 12345678, 'prueba_lider', 'primera', 'pruebas', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'prueba123@prueba.com', 1, 'lider_aprobador', 'activo'),
+(1, 12345678, 'prueba', 'primera', 'pruebas', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'prueba123@prueba.com', 1, 'lider_aprobador', 'activo'),
 (4, 1078460223, 'yeffer', 'cuesta mena', 'ycuesta', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'ycuesta@providenciacfi.com', 1, 'administrador', 'activo'),
-(7, 1114812664, 'Jonathan David', 'Hoyos Valencia', 'john1', 'e877e926d1c38e2e29ef110506de018fe03b2e2339fdc00aed341366a22fb1db8b5e8a6b6479eaa8899da27dfec0f06aab3b8c8f34649f3ef233876dcd46037a', 'jhonatandavidhv@gmail.com', 1, 'administrador', 'activo'),
-(8, 777, 'Valencia Hoyos', 'Jonathan David', 'Samuro', 'e877e926d1c38e2e29ef110506de018fe03b2e2339fdc00aed341366a22fb1db8b5e8a6b6479eaa8899da27dfec0f06aab3b8c8f34649f3ef233876dcd46037a', 'Correoprueba@gmail.com', 1, 'lider_aprobador', 'activo');
+(7, 1114812664, 'Jonathan David', 'Hoyos Valencia', 'john1', '78d01695043d2c2fa35561ab3f4b663aaf8332cac666f0d59124a0ace3b49f4e5f003997c7168c67a5dac2bf68a54c786d91d30763c173edda3c799b3eae4977', 'jhonatandavidhv@gmail.com', 2, 'lider_aprobador', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -151,6 +176,12 @@ INSERT INTO `usuarios` (`id_usuario`, `cedula`, `nombres`, `apellidos`, `usuario
 ALTER TABLE `departamentos`
   ADD PRIMARY KEY (`id_departamento`),
   ADD KEY `id_lider` (`id_lider`);
+
+--
+-- Indices de la tabla `historial_solicitudes`
+--
+ALTER TABLE `historial_solicitudes`
+  ADD PRIMARY KEY (`id_historial`);
 
 --
 -- Indices de la tabla `solicitudes`
@@ -179,16 +210,22 @@ ALTER TABLE `departamentos`
   MODIFY `id_departamento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
+-- AUTO_INCREMENT de la tabla `historial_solicitudes`
+--
+ALTER TABLE `historial_solicitudes`
+  MODIFY `id_historial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT de la tabla `solicitudes`
 --
 ALTER TABLE `solicitudes`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Restricciones para tablas volcadas
