@@ -8,7 +8,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
-if ( $_SESSION['rol'] !== "administrador" || $_SESSION['rol'] !== "TI") {
+if ( $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
     header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
     exit();
 }
