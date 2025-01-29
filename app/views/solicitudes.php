@@ -9,7 +9,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     exit();
 }
 require_once __DIR__ . '/../controller/solicitudController.php';
-include_once __DIR__ . '../controller/departamentoController.php';
+include_once __DIR__ . '/../controller/departamentoController.php';
 
 $solicitudController = new SolicitudController();
 $departamentocontroler = new departamentoControler();
@@ -96,7 +96,7 @@ $respuesta_solicitudes = $solicitudes['solicitudes'];
                             <td class="td_solicitud">
                                 <?php echo htmlspecialchars($solicitud['identificador_solicitud']); ?>
                             </td>
-                            <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso['nombres']); ?></td>
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_permiso']); ?></td>
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['hora_salida']); ?></td>
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['hora_ingreso']); ?></td>

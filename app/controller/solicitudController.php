@@ -10,13 +10,16 @@ class SolicitudController {
     }
 
     // Método para cambiar el estado de la solicitud
-    public function cambiarEstadoSolicitud($id_solicitud, $estado) {
+    public function cambiarEstadoSolicitud($datos) {
         try {
             // Llamamos al modelo para actualizar el estado de la solicitud en la base de datos
-            $resultado = $this->solicitudModel->actualizarEstado($id_solicitud, $estado);
+            $resultado = $this->solicitudModel->actualizarEstado($datos['idSolicitud'], $datos['nuevoEstado']);
 
             // Si la actualización fue exitosa, redirigimos o mostramos un mensaje
             if ($resultado) {
+
+                $this->solicitudModel->enviarCorreoEstado($datos);
+
                 // Aquí se redirige a una página o se pasa una variable de éxito
                 return $resultado;
             } else {
@@ -148,8 +151,9 @@ class SolicitudController {
             );
     
             if ($registroExitoso) {
-                $email_lider = "";
-                $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
+                // Obtener el email del líder del proceso
+                $info_lider = $this->solicitudModel->lideres_proceso($departamento);
+                $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);
                 // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
                 exit;
             
@@ -181,8 +185,8 @@ class SolicitudController {
         
                 if ($registroExitoso) {
                     // Obtener el email del líder del proceso
-                    $email_lider = $this->solicitudModel->lideres_proceso($departamento);
-                    $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
+                    $info_lider = $this->solicitudModel->lideres_proceso($departamento);
+                    $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);
                     // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
                     exit;
                     
@@ -207,7 +211,7 @@ class SolicitudController {
             // Verificar que los datos necesarios estén presentes
             if (isset($data['idSolicitud']) && isset($data['nuevoEstado'])) {
                 // Llamar a la función cambiarEstadoSolicitud con los datos recibidos
-                $resultado = $this->cambiarEstadoSolicitud($data['idSolicitud'], $data['nuevoEstado']);
+                $resultado = $this->cambiarEstadoSolicitud($data);
                 
                 // Responder con los resultados en formato JSON
                 echo json_encode(['resultado' => "Estado cambiado."]);

@@ -170,7 +170,7 @@ background-size: 16px 16px;
     flex-direction: column;
     align-items: center;
     display: flex;
-    top: 60%;
+    top: 55%;
     position: absolute;
     left: 50%;
     background-color: var(--azul-verde);

@@ -40,7 +40,7 @@ class ConectService {
         // $BD = "sdp";
          $BD = "solicitud_permisos";
         $rutaServidor = "localhost";
-        $puerto = "3306";
+        $puerto = "3307";
 
         // Conexion a BD Sigho Pg 16
         // $contrasena = "123456789";

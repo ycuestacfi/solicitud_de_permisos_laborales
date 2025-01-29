@@ -166,32 +166,6 @@ class solicitudModel {
         }
     }
 
-    // Método para enviar un correo con la información de la solicitud
-    public function enviarCorreo($nombre, $email_lider, $tipo_permiso) {
-        $to = $email_lider; // Destinatario
-        $subject = "Confirmación de Solicitud de Permiso";
-        $message = "
-        <html>
-        <head>
-        <title>Solicitud de Permiso</title>
-        </head>
-        <body>
-        <h2>Hola, $nombre</h2>
-        <p>Tu solicitud de permiso de tipo <strong>$tipo_permiso</strong> ha sido recibida correctamente.</p>
-        <p>Recibirás una notificación sobre su estado pronto.</p>
-        </body>
-        </html>
-        ";
-
-        // Para enviar el correo en formato HTML
-        $headers = "MIME-Version: 1.0" . "\r\n";
-        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-        $headers .= "From: no-reply@tudominio.com" . "\r\n"; // Cambia a tu dominio
-
-        // return mail($to, $subject, $message, $headers);
-        return "alert($to, $subject, $message, $headers)";
-    }
-
     public function solicitudes_realizadas($cedula){
         $sql = "SELECT * FROM solicitudes WHERE cedula = ? ORDER BY fecha_solicitud DESC";
         $smtp = $this->db->prepare($sql);
@@ -218,7 +192,7 @@ class solicitudModel {
             // SELECT usuarios.nombres,usuarios.correo  FROM usuarios INNER JOIN departamentos ON usuarios.id_usuario = departamentos.id_lider INNER JOIN usuarios AS usuarios2 ON usuarios2.id_departamento = departamentos.id_departamento WHERE usuarios2.id_usuario = ? 
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$id_departamento]);
-            return $stmt->fetchColumn();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 
@@ -270,6 +244,233 @@ class solicitudModel {
         } else {
             return false; // Si no se actualizó ninguna fila
         }
+    }
+
+    // Método para enviar un correo con la información de la solicitud
+    public function enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider) {
+        // $to = $email_lider; // Destinatario
+        // $subject = "Confirmación de Solicitud de Permiso";
+        // $message = "
+        // <html>
+        // <head>
+        // <title>Solicitud de Permiso</title>
+        // </head>
+        // <body>
+        // <h2>Hola, $nombre</h2>
+        // <p>Tu solicitud de permiso de tipo <strong>$tipo_permiso</strong> ha sido recibida correctamente.</p>
+        // <p>Recibirás una notificación sobre su estado pronto.</p>
+        // </body>
+        // </html>
+        // ";
+
+        // // Para enviar el correo en formato HTML
+        // $headers = "MIME-Version: 1.0" . "\r\n";
+        // $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        // $headers .= "From: no-reply@tudominio.com" . "\r\n"; // Cambia a tu dominio
+
+        // return mail($to, $subject, $message, $headers);
+        // // return "alert($to, $subject, $message, $headers)";
+        $to      = $info_lider['correo'];
+        $subject = 'Solicitud empleado ' . $nombre;
+        $mensaje = '
+            <html>
+            <head>
+            </head>
+                <body>
+                <div style="max-width: 600px; margin: 20px auto; border: solid 1px #e9e9e9; background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); padding: 20px;">
+            
+            <h2 style="color: #002A3F;">Estimado Jefe, '.$info_lider['nombres'].'</h2>
+            
+            <p style="font-size:17px; border-bottom: solid 1px #e9e9e9;
+            text-align: center;">El empleado <strong style="color:#002A3F;">  '.$nombre.'</strong> ha solicitado un permiso.</p>
+            
+            <ul style="list-style-type: none; padding: 0;">
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Numero De Documento:</strong></td>
+                        <td style="text-align: right;">'.$cedula.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Correo Del Empleado:</strong></td>
+                        <td style="text-align: right;">'.$email.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Fecha De la Solicitud:</strong></td>
+                        <td style="text-align: right;">'.$fecha_de_solicitud.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Tipo De Permiso:</strong></td>
+                        <td style="text-align: right;">'.$tipo_permiso.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Fecha Del Permiso:</strong></td>
+                        <td style="text-align: right;">'.$fecha_de_permiso.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Hora De Salida:</strong></td>
+                        <td style="text-align: right;">'.$hora_de_salida.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Hora De llegada:</strong></td>
+                        <td style="text-align: right;">'.$hora_de_llegada.'</td>
+                    </tr>
+                </table>
+            </li>
+            <li style="font-size: 20px; border-bottom: solid 1px #e9e9e9;">
+                <table style="width: 100%; border-spacing: 0;">
+                    <tr>
+                        <td style="text-align: left;"><strong>Observaciones:</strong></td>
+                        <td style="text-align: right;">'.$observaciones.'</td>
+                    </tr>
+                </table>
+            </li>
+        </ul>
+
+        
+            <p><strong style="color:#002A3F;">¡Hola! Para gestionar esta solicitud, haz clic en el botón de abajo. Serás redirigido automáticamente para completar la acción.</strong></p>
+        
+            
+            <a href="http://localhost/solicitud_de_permisos_laborales/app/views/dashboard.php" style="display: block; width: 200px; margin: 20px auto; padding: 10px; background-color: #002A3F; color: #FFFFFF; text-align: center; text-decoration: none; border-radius: 8px;">Responder Solicitud</a>
+        
+            
+        
+            </div>
+            </body>
+            <html>
+            
+            Gracias.
+            ';
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: jhoyos@providenciacfi.com \r\n";
+            $headers .= "CC: ycuesta@providenciacfi.com \r\n";
+            
+            // 'X-Mailer: PHP/' . phpversion();
+        mail($to, $subject, $mensaje, $headers);
+        // if (mail($to, $subject, $mensaje, $headers)) {
+        //     echo "Correo enviado";
+        // } else {
+        //     echo "Error al enviar el correo";
+        // }
+    }
+
+    public function enviarCorreoEstado($datos) {
+        $to      = $datos['email']; // Correo del usuario
+        $subject = 'Estado de tu solicitud de solicitud de permiso';
+
+        $mensaje = '
+            <html>
+            <head>
+            </head>
+                <body>
+                <div style="max-width: 600px; margin: 20px auto; border: solid 1px #e9e9e9; background-color: #FFFFFF; border-radius: 8px; overflow: hidden; box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); padding: 20px;">
+
+            <h2 style="color: #002A3F;">Hola, '.$datos['nombre'].'</h2>
+
+            <p style="font-size:17px; border-bottom: solid 1px #e9e9e9; text-align: center;">
+                Tu solicitud de permiso ha sido <strong style="color:#002A3F;">'.$datos['nuevoEstado'].'</strong>.
+            </p>
+
+            <ul style="list-style-type: none; padding: 0;">
+                <li style="font-size: 18px; border-bottom: solid 1px #e9e9e9;">
+                    <table style="width: 100%; border-spacing: 0;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Codigo de solicitud:</strong></td>
+                            <td style="text-align: right;">'.$datos['identificador'].'</td>
+                        </tr>
+                    </table>
+                </li>
+
+                <li style="font-size: 18px; border-bottom: solid 1px #e9e9e9;">
+                    <table style="width: 100%; border-spacing: 0;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Tipo de Permiso:</strong></td>
+                            <td style="text-align: right;">'.$datos['tipo_permiso'].'</td>
+                        </tr>
+                    </table>
+                </li>
+                <li style="font-size: 18px; border-bottom: solid 1px #e9e9e9;">
+                    <table style="width: 100%; border-spacing: 0;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Fecha del Permiso:</strong></td>
+                            <td style="text-align: right;">'.$datos['fecha_permiso'].'</td>
+                        </tr>
+                    </table>
+                </li>
+                <li style="font-size: 18px; border-bottom: solid 1px #e9e9e9;">
+                    <table style="width: 100%; border-spacing: 0;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Hora de Salida:</strong></td>
+                            <td style="text-align: right;">'.$datos['hora_salida'].'</td>
+                        </tr>
+                    </table>
+                </li>
+                <li style="font-size: 18px; border-bottom: solid 1px #e9e9e9;">
+                    <table style="width: 100%; border-spacing: 0;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Hora de Ingreso:</strong></td>
+                            <td style="text-align: right;">'.$datos['hora_llegada'].'</td>
+                        </tr>
+                    </table>
+                </li>
+                <li style="font-size: 18px; border-bottom: solid 1px #e9e9e9;">
+                    <table style="width: 100%; border-spacing: 0;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Observaciones:</strong></td>
+                            <td style="text-align: right;">'.$datos['observaciones'].'</td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+
+            <p style="font-size:16px; color:#333;">
+                Para más detalles sobre tu solicitud, puedes ingresar al sistema utilizando el siguiente botón:
+            </p>
+
+            <a href="http://localhost/solicitud_de_permisos_laborales/app/views/solicitudes.php" 
+            style="display: block; width: 200px; margin: 20px auto; padding: 10px; background-color: #002A3F; color: #FFFFFF; text-align: center; text-decoration: none; border-radius: 8px;">
+            Ver mi solicitud
+            </a>
+
+            <p style="text-align: center; font-size: 14px; color: #666;">
+                Si tienes alguna duda, por favor contacta con el área de Talento Humano.
+            </p>
+
+            </div>
+            </body>
+            </html>
+        ';
+
+        $headers  = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+        $headers .= "From: jhoyos@providenciacfi.com \r\n";
+
+        mail($to, $subject, $mensaje, $headers);
     }
 
 }

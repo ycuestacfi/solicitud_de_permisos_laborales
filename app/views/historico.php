@@ -106,15 +106,14 @@ $solicitudes = $solicitudController->historico();
         
         <ul id="menu">
             
-            
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-            
-            
             <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
+            
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            
             <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
                     
                     echo '<li><a href="departamentos.php">Departamentos</a></li>';

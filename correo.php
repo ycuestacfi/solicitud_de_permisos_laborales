@@ -111,13 +111,13 @@ if (mail($to, $subject, $mensaje, $headers)) {
 ?>
 
 <?php
-var mensaje = `
+$mensaje = `
 <table   cellpadding="0" cellspacing="0" style="width:100%; margin:0 auto; border-radius:5px;border:1px solid #e9e9e9">
     <thead >
         
         <tr >
             <td style=" margin: 0px 0px 40px 40% ;   justify-content: center; display: flex;">
-                Solicitud ${solicitudId}
+                Solicitud $solicitudId
             </td>
             
         </tr>
@@ -133,7 +133,7 @@ var mensaje = `
         
         <tr >
             <td style="padding-left: 40px">
-                Estimado solicitante ${celdaNombre} su solicitud fue ${accion === 'aceptar' ? 'aprobada' : 'rechazada'} por tu supervisor
+                Estimado solicitante $celdaNombre su solicitud fue $accion === 'aceptar' ? 'aprobada' : 'rechazada' por tu supervisor
             </td>
         </tr>
     </thead>
@@ -160,7 +160,7 @@ var mensaje = `
                             <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
                     border-left: none;
                     border-right: none;
-                    width: 40%; padding-left: 20px; border-top: none;  ">${celdaNombre}</td>
+                    width: 40%; padding-left: 20px; border-top: none;  ">$celdaNombre</td>
                         </tr>
                         <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
                 border-left: none;
@@ -169,17 +169,17 @@ var mensaje = `
                         <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
                 border-left: none;
                 border-right: none;
-                width: 40%; padding-left: 20px; border-top: none;  ">${celdaCc}</td>
+                width: 40%; padding-left: 20px; border-top: none;  ">$celdaCc</td>
                     </tr>
                         <tr>
                             <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
                     border-left: none;
                     border-right: none;
-                    width: 40%; padding-left: 20px; border-top: none;  ">Su solicitud con ID ${solicitudId} ha sido: </td>
+                    width: 40%; padding-left: 20px; border-top: none;  ">Su solicitud con ID $solicitudId ha sido: </td>
                             <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
                     border-left: none;
                     border-right: none;
-                    width: 40%; padding-left: 20px; border-top: none;  ">${accion === 'aceptar' ? 'aprobada' : 'rechazada'}</td>
+                    width: 40%; padding-left: 20px; border-top: none;  ">$accion === 'aceptar' ? 'aprobada' : 'rechazada'</td>
                         </tr>
                         <tr>
                             <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
@@ -189,7 +189,7 @@ var mensaje = `
                             <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
                     border-left: none;
                     border-right: none;
-                    width: 40%; padding-left: 20px; border-top: none; margin-bottom: 50px; ">${comentario}</td>
+                    width: 40%; padding-left: 20px; border-top: none; margin-bottom: 50px; ">$comentario</td>
                         </tr>
                        
                     </tbody>

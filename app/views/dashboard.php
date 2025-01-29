@@ -48,52 +48,94 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
 
 <!-- Estilos del modal -->
 <style>
-    .modal {
-        display: none; /* Ocultamos el modal por defecto */
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
-    }
-    
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }
-    
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
+/* Estilo del Modal */
+.modal {
+    display: none; /* Ocultar por defecto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro con transparencia */
+    z-index: 9999;
+    padding-top: 100px;
+    text-align: center;
+}
 
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
+/* Contenido del Modal */
+.modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    position: relative;
+    top:20%;
+}
+
+/* Estilo de la X para cerrar */
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Mensaje dentro del modal */
+#mensajeConfirmacion {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Contenedor de los botones */
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Estilo de los botones */
+.modal-buttons button {
+    background-color: #4CAF50; /* Verde para el "Sí" */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo del botón "Sí" */
+.modal-buttons button:first-child {
+    background-color: #4CAF50;
+}
+
+.modal-buttons button:first-child:hover {
+    background-color: #45a049;
+}
+
+/* Estilo del botón "No" */
+.modal-buttons button:nth-child(2) {
+    background-color: #f44336; /* Rojo para el "No" */
+}
+
+.modal-buttons button:nth-child(2):hover {
+    background-color: #e53935;
+}
 </style>
-<!-- <header>
-        <h1>Título de la Página</h1>
-        <nav>
-            <ul>
-                <li><a href="#home" style="color: white;">Inicio</a></li>
-                <li><a href="#about" style="color: white;">Acerca de</a></li>
-                <li><a href="#services" style="color: white;">Servicios</a></li>
-                <li><a href="#contact" style="color: white;">Contacto</a></li>
-            </ul>
-        </nav>
-    </header> -->
     
     <main>
     <section id="navigation">
@@ -109,15 +151,14 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
         
         <ul id="menu">
             
-            
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-            
-            
             <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
+            
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            
             <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
                     
                     echo '<li><a href="departamentos.php">Departamentos</a></li>';
@@ -151,9 +192,9 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                 </tr>
             </thead>
             <tbody>
-                <?php if ($solicitudes):?>
+                <?php if ($solicitudes): ?>
                 <?php foreach ($solicitudes as $pruebas1): ?>
-                <tr>
+                <tr id="fila_<?php echo $pruebas1['id_solicitud']; ?>">
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['identificador_solicitud']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['cedula']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre']); ?></td>
@@ -162,23 +203,85 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['hora_ingreso']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['tipo_permiso']); ?></td>
                     <td class="td_solicitud">
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud4('evidencia', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
+                        <button class="btn_accion_solicitud" 
+                            onclick="procesarSolicitud4('evidencia', <?php echo $pruebas1['id_solicitud']; ?>)">
+                            <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
+                        </button>
                     </td>
-                    <td class="td_solicitud" id="estado_<?php echo $pruebas1['id_solicitud'];?>"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
+                    <td class="td_solicitud" id="estado_<?php echo $pruebas1['id_solicitud']; ?>">
+                        <?php echo htmlspecialchars($pruebas1['estado']); ?>
+                    </td>
+
                     <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
                     <td class="td_solicitud">
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('aprobada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('rechazada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa-regular fa-circle-xmark" style="font-size: 22px; color:red;"></i></button>
-                        <button class="btn_accion_solicitud" onclick="procesarSolicitud('eliminada', <?php echo $pruebas1['id_solicitud'];?>)"><i class="fa fa-trash-can" style="font-size: 22px; color:grey;"></i></button>
+                        <button class="btn_accion_solicitud" 
+                            onclick="procesarSolicitudConConfirmacion(
+                                'aprobada', 
+                                <?php echo $pruebas1['id_solicitud']; ?>, 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['identificador_solicitud'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['nombre'])); ?>', 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['correo'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['tipo_permiso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['fecha_permiso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['hora_salida'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['hora_ingreso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['observaciones'])); ?>'
+                            )">
+                            <i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-corporativo);"></i>
+                        </button>
+
+                        <button class="btn_accion_solicitud" 
+                            onclick="procesarSolicitudConConfirmacion(
+                                'rechazada', 
+                                <?php echo $pruebas1['id_solicitud']; ?>, 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['identificador_solicitud'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['nombre'])); ?>', 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['correo'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['tipo_permiso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['fecha_permiso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['hora_salida'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['hora_ingreso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['observaciones'])); ?>'
+                            )">
+                            <i class="fa-regular fa-circle-xmark" style="font-size: 22px; color:red;"></i>
+                        </button>
+
+                        <button class="btn_accion_solicitud" 
+                            onclick="procesarSolicitudConConfirmacion(
+                                'eliminada', 
+                                <?php echo $pruebas1['id_solicitud']; ?>, 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['identificador_solicitud'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['nombre'])); ?>', 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['correo'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['tipo_permiso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['fecha_permiso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['hora_salida'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['hora_ingreso'])); ?>',
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['observaciones'])); ?>'
+                            )">
+                            <i class="fa fa-trash-can" style="font-size: 22px; color:grey;"></i>
+                        </button>
                     </td>
                     <?php endif; ?>
                 </tr>
                 <?php endforeach; ?>
-                <?php else:?>
-                    <td class="td_solicitud" colspan="4">No tienes solicitudes pendientes en tu departamento</td>
+                <?php else: ?>
+                    <td class="td_solicitud" colspan="9">No tienes solicitudes pendientes en tu departamento</td>
                 <?php endif; ?>
             </tbody>
+
         </table>
+    </div>
+    <!-- Modal de Confirmación -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <p id="mensajeConfirmacion">¿Estás seguro de que deseas realizar esta acción?</p>
+            <div class="modal-buttons">
+                <button id="btnConfirmar" onclick="realizarAccion()">Sí</button>
+                <button onclick="cerrarModal()">No</button>
+            </div>
+        </div>
     </div>
     </main>
 
@@ -187,7 +290,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     </footer>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/estado_solicitud.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
 </body>
 </html>
