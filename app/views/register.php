@@ -8,6 +8,10 @@ if (!isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+if ( $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
+    exit();
+}
 // Cargar dependencias
 include_once __DIR__ . '/estructure/head.php';
 include_once '../controller/UserController.php';

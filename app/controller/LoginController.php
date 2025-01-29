@@ -5,7 +5,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../models/UserModel.php';
-// require_once __DIR__ . '/../helpers/CookieHelper.php';
 require_once __DIR__ . '/../helpers/SessionHelper.php';
 
 
@@ -34,13 +33,6 @@ class LoginController {
                 // Iniciar sesión si las credenciales son válidas
                 SessionHelper::iniciarSesion($usuario);
 
-                // $misSolicitudes = $this->solicitudModel->solicitudes_realizadas($usuario['cedula']);
-                // var_dump($misSolicitudes);
-                // Si el usuario marcó "Recordarme", guardar las cookies
-                if (isset($_POST['remember_me'])) {
-                    CookieHelper::guardarCookies($usuario_log);
-                }
-
                 // Redirigir según el rol del usuario
                 if ($_SESSION['rol'] === 'solicitante') {   
                     header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
@@ -49,6 +41,10 @@ class LoginController {
                       
                         header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php");
                         exit();
+                } elseif ($_SESSION['rol'] === 'seguridad') {
+                      
+                    header("Location: /solicitud_de_permisos_laborales/app/views/aprovadas.php");
+                    exit();
                 }
             } else {
                 // Si el estado del usuario no es "activo", redirigir o mostrar mensaje
@@ -77,7 +73,6 @@ class LoginController {
     public function cerrarSesion() {
         // Cerrar sesión y eliminar cookies
         SessionHelper::cerrarSesion();
-        // CookieHelper::eliminarCookies();
         // Redirigir al login después de cerrar la sesión
         header("Location: /solicitud_de_permisos_laborales/app/views/login.php");
         exit();

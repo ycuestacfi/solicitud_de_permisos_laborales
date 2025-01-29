@@ -1,6 +1,6 @@
 <?php
 // video para configuracion de sendmail y funcion mail local https://www.youtube.com/watch?v=U129sKnLoDA
-$to      = 'jhoyosAS@providenciacfi.com';
+$to      = 'jhoyos@colegioprovidencia.edu.co';
 $subject = 'the subject';
 $mensaje = '
      <html>

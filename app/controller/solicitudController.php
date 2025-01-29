@@ -148,13 +148,11 @@ class SolicitudController {
             );
     
             if ($registroExitoso) {
-                // Obtener el email del líder del proceso
-                $email_lider = $this->solicitudModel->lideres_proceso($departamento);
-                if ($email_lider) {
-                    $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
-                    // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
-                    exit;
-                }
+                $email_lider = "";
+                $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
+                // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
+                exit;
+            
             }
     
             return $registroExitoso;
@@ -184,11 +182,10 @@ class SolicitudController {
                 if ($registroExitoso) {
                     // Obtener el email del líder del proceso
                     $email_lider = $this->solicitudModel->lideres_proceso($departamento);
-                    if ($email_lider) {
-                        $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
-                        // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
-                        exit;
-                    }
+                    $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
+                    // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
+                    exit;
+                    
                 }
         
                 return $registroExitoso;

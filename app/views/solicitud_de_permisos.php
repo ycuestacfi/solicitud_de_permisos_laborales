@@ -1,6 +1,7 @@
 <?php if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+include_once '../controller/departamentoController.php';
 include_once '../controller/solicitudController.php';
 $solicitudController = new SolicitudController();
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
@@ -8,11 +9,15 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+
+$departamentocontroler = new departamentoControler();
+
 // Obtener la fecha actual
 $fechaActual = new DateTime();
 
 // Formatear la fecha actual en el formato 'YYYY-MM-DD'
 $fechaActualFormato = $fechaActual->format('Y-m-d');
+$fechaActualFormatoHora = $fechaActual->format('Y-m-d H:i:s');
 
 // Obtener la fecha dentro de 30 días
 $fechaDentro30Dias = new DateTime();
@@ -20,6 +25,9 @@ $fechaDentro30Dias->modify('+30 days');
 
 // Formatear la fecha dentro de 30 días en el formato 'YYYY-MM-DD'
 $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
+
+$id_departamento = $_SESSION['id_departamento'];
+$departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -79,14 +87,28 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
         </div>
         
         <ul id="menu">
-            <li><a href="dashboard.php">Inicio</a></li>
+            
+            
             <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="departamentos.php">Departamentos</a></li>
             <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-            <li><a href="rechazadas.php">Rechazadas</a></li>
-            <?php if ($_SESSION['rol'] == 'administrador'){
+            
+            
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
+                echo '<li><a href="dashboard.php">Inicio</a></li>';
+            }
+            ?>
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
+                    
+                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
-                } ?>
+                    echo '<li><a href="historico.php"> Historico </a></li>';
+                }
+            ?>
+            <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
+                    echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
+                }
+            ?>
+            
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
@@ -109,7 +131,7 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
                     value="<?php echo $_SESSION['nombres'] ,' ', $_SESSION['apellidos']; ?>" 
                     type="text" name="nombre" id="nombre" 
                     title="Rellene el campo con su Nombre y Apellido"  
-                    pattern="[A-Za-z\s]{2,}" minlength="2" required>
+                    pattern="[A-Za-z\s]{2,}" minlength="2" required readonly>
 
                 <input class="input_solicitud" 
                     type="email" id="correo" 
@@ -131,10 +153,10 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
 
                 <input class="input_solicitud" 
                     placeholder="Selecciona la fecha de solicitud" 
-                    type="date" id="fecha_de_solicitud" 
+                    type="datetime" id="fecha_de_solicitud" 
                     name="fecha_de_solicitud" 
                     title="Selecciona la fecha en que estás realizando la solicitud" 
-                    value="<?php echo $fechaActualFormato; ?>"
+                    value="<?php echo $fechaActualFormatoHora; ?>"
                     hidden>
 
                 <input class="input_solicitud" 
@@ -147,18 +169,22 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
                     required>
 
                 <input class="input_solicitud" 
-                    placeholder="Ejemplo: 09:00" 
+                    placeholder="Ejemplo: 07:00 a.m" 
                     type="time" id="hora_de_salida" 
                     name="hora_de_salida" 
                     title="Indica la hora de salida" 
-                    required>
+                    required 
+                    min="07:00" 
+                    max="16:00">
 
                 <input class="input_solicitud" 
-                    placeholder="Ejemplo: 17:00" 
+                    placeholder="Ejemplo: 4:00 p.m" 
                     type="time" id="hora_de_llegada" 
                     name="hora_de_llegada" 
                     title="Indica la hora de llegada" 
-                    required>
+                    required 
+                    min="07:00" 
+                    max="16:00">
 
                 <textarea class="input_solicitud" 
                         placeholder="Agrega observaciones adicionales aquí" 
@@ -188,61 +214,24 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
                 <button type="submit" id="btn-enviar-permiso">Enviar solicitud</button>
 
                  <div id="permiso-laboral" class="permiso-laboral">
+
                     <input class="input_solicitud" 
-                        type="text" name="motivo_del_desplamiento" 
+                        type="text" name="motivo_del_desplazamiento" 
                         required id="motivo_del_desplazamiento" 
                         placeholder="¿Cuál es el motivo de tu salida?" 
                         title="Indica el motivo de tu salida">
 
-                    <input class="input_solicitud" 
-                        type="text" name="departamento_de_desplazamiento" 
-                        required id="Departamento_de_desplazamiento" 
-                        placeholder="¿Cuál es tu departamento de destino?" 
-                        title="Indica tu departamento de destino">
+                    <label for="departamento">Departamento de desplazamiento:</label>
+                    <select class="input_solicitud" id="departamento_de_desplazamiento" name="departamento_de_desplazamiento" required>
+                        <option value="">Seleccione un departamento</option>
+                    </select>
+                
 
-
-                        <!-- // lista de departamentos 
-                        Amazonas
-                        Antioquía
-                        Arauca
-                        Atlántico
-                        Bolívar
-                        Boyacá
-                        Caldas
-                        Caquetá
-                        Casanare
-                        Cauca
-                        Cesar
-                        Chocó
-                        Córdoba
-                        Cundinamarca
-                        Guainía
-                        Guaviare
-                        Huila
-                        La Guajira
-                        Magdalena
-                        Meta
-                        Nariño
-                        Norte de Santander
-                        Putumayo
-                        Quindío
-                        Risaralda
-                        San Andrés y Providencia
-                        Santander
-                        Sucre
-                        Tolima
-                        Valle del Cauca
-                        Vaupés
-                        Vichada
-                        Bogotá D.C.
-                        usar https://api-colombia.com/swagger/index.html para consumir api de departamentos y municipios
- -->
-
-                    <input type="text" class="input_solicitud" 
-                        placeholder="¿A qué municipio te diriges?" 
-                        id="municipio_del_desplazamiento" 
-                        required name="municipio_del_desplazamiento" 
-                        title="Indica el municipio al que te diriges">
+                
+                    <label for="municipio">Municipio de desplazamiento:</label>
+                    <select class="input_solicitud" style="color:black;" id="municipio_del_desplazamiento" name="municipio_del_desplazamiento" required disabled>
+                        <option value="">Seleccione un municipio</option>
+                    </select>
 
                     <input type="text" class="input_solicitud" 
                         placeholder="¿Cuál es tu lugar de desplazamiento?" 
@@ -251,34 +240,28 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
                         title="Indica el lugar al que te desplazas"> 
 
                     <!-- Select de Medio de Transporte -->
-                 <div id="medio-transporte-contenedor" class="contenedor-permiso">
-                    <div id="medio-transporte-seleccion" class="selected-option">Seleccione un medio de transporte</div>
-                    <ul id="medio-transporte-opciones" class="select-options">
-                        <li data-value="MOTOCICLETA">Motocicleta</li>
-                        <li data-value="AUTOMOVIL">Automóvil</li>
-                        <li data-value="TRANSPORTE PUBLICO">Transporte Público</li>
-                        <li data-value="AVION">Avión</li>
-                    </ul>
-                    <input type="hidden"  name="medio_de_transporte" id="medio_de_transporte" /> 
-                 </div>
+                    <div id="medio-transporte-contenedor" class="contenedor-permiso">
+                        <div id="medio-transporte-seleccion" class="selected-option">Seleccione un medio de transporte</div>
+                        <ul id="medio-transporte-opciones" class="select-options">
+                            <li data-value="MOTOCICLETA">Motocicleta</li>
+                            <li data-value="AUTOMOVIL">Automóvil</li>
+                            <li data-value="TRANSPORTE PUBLICO">Transporte Público</li>
+                            <li data-value="AVION">Avión</li>
+                        </ul>
+                        <input type="hidden"  name="medio_de_transporte" id="medio_de_transporte" /> 
+                    </div>
 
-                Campo de Placa de Vehículo
-                <input 
-                    type="text" 
-                    class="input_solicitud" 
-                    placeholder="Ingrese la placa de su vehículo (si aplica)" 
-                    id="placa_vehiculo" 
-                    name="placa_vehiculo" 
-                    title="Indica la placa de tu vehículo (si aplica)" 
-                    style="display: none;" />
-
-
-                    <input type="text" class="input_solicitud" 
-                        placeholder="Ingrese la placa de su vehículo" 
-                        id="placa_vehicular" name="placa_vehicular" 
-                        title="Indica la placa de tu vehículo">
+                    Campo de Placa de Vehículo
+                    <input 
+                        type="text" 
+                        class="input_solicitud" 
+                        placeholder="Ingrese la placa de su vehículo (si aplica)" 
+                        id="placa_vehiculo" 
+                        name="placa_vehiculo" 
+                        title="Indica la placa de tu vehículo (si aplica)" />
 
                     <button type="submit" id="btn-enviar-permiso-laboral">Enviar solicitud</button>
+                    
                 </div> 
             </form>
             <?php
@@ -312,9 +295,9 @@ $fechaDentro30DiasFormato = $fechaDentro30Dias->format('Y-m-d');
     <footer >
         <p>&copy; 2024 Copyright: Aviso de privacidad, Términos y condiciones. Todos los derechos reservados.</p>
     </footer>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
     <!-- <script>
     document.addEventListener('DOMContentLoaded', () => {
         const dropdown = document.getElementById('contenedor-permiso');

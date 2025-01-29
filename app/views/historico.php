@@ -8,6 +8,10 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
+if ( $_SESSION['rol'] !== "administrador" || $_SESSION['rol'] !== "TI") {
+    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
+    exit();
+}
 require_once __DIR__ . '/../controller/solicitudController.php';
 
 // Ahora, pasar la conexión a la clase solicitudModel
@@ -27,7 +31,7 @@ $solicitudes = $solicitudController->historico();
     <!-- iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
-
+    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
 
 </head>
 <body>
@@ -101,16 +105,28 @@ $solicitudes = $solicitudController->historico();
         </div>
         
         <ul id="menu">
-            <li><a href="dashboard.php">Inicio</a></li>
+            
+            
             <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="departamentos.php">Departamentos</a></li>
             <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-            <li><a href="rechazadas.php">Rechazadas</a></li>
-            <?php if ($_SESSION['rol'] == 'administrador'){
+            
+            
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
+                echo '<li><a href="dashboard.php">Inicio</a></li>';
+            }
+            ?>
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
+                    
+                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
                     echo '<li><a href="historico.php"> Historico </a></li>';
-                } ?>
-            <li><a href="historico.php"> Historico </a></li>
+                }
+            ?>
+            <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
+                    echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
+                }
+            ?>
+            
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
@@ -121,7 +137,7 @@ $solicitudes = $solicitudController->historico();
             <table id="tabla_registros" style="height: 100% ;width: 100%;">
                 <thead>
                     <tr>
-                        <th >N° Solicitud</th>
+                        <th >Codigo de Solicitudes</th>
                         <th >Estado</th>
                         <th >Fecha de permiso</th>
                         <th >Departamento</th>
@@ -129,6 +145,7 @@ $solicitudes = $solicitudController->historico();
                     </tr>
                 </thead>
                 <tbody>
+                    
                     <?php foreach ($solicitudes as $pruebas1): ?>
                     <tr>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['identificador_solicitud']); ?></td>
@@ -136,8 +153,9 @@ $solicitudes = $solicitudController->historico();
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_permiso']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre_departamento']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_cambio']); ?></td>
-                    </tr>
+                    </tr>    
                     <?php endforeach; ?>
+                
                 </tbody>
             </table>
         </div>
@@ -150,5 +168,6 @@ $solicitudes = $solicitudController->historico();
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/busqueda.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
 </body>
 </html>
