@@ -43,7 +43,7 @@ class LoginController {
                         exit();
                 } elseif ($_SESSION['rol'] === 'seguridad') {
                       
-                    header("Location: /solicitud_de_permisos_laborales/app/views/aprovadas.php");
+                    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes_hora_ingreso.php");
                     exit();
                 }
             } else {

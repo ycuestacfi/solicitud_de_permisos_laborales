@@ -18,8 +18,21 @@ require_once __DIR__ . '/../controller/solicitudController.php';
 $solicitudController = new SolicitudController();
 
 // Obtener solicitudes
-$id_departamento = $_SESSION['id_departamento'];
 $solicitudes = $solicitudController->horaIngreso();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hora-input']) && isset($_POST['id_solicitud'])) {
+    $hora_llegada = $_POST['hora-input'];
+    $id_solicitud = $_POST['id_solicitud'];
+    
+    // Validar que la hora esté dentro del rango permitido
+    $hora = strtotime($hora_llegada);
+    $min_hora = strtotime('07:00');
+    $max_hora = strtotime('16:00');
+    
+    if ($hora >= $min_hora && $hora <= $max_hora) {
+        // Aquí tu código actual para actualizar la base de datos
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -31,7 +44,7 @@ $solicitudes = $solicitudController->horaIngreso();
     <!-- iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
-
+    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
 
 </head>
 <body>
@@ -136,34 +149,35 @@ $solicitudes = $solicitudController->horaIngreso();
         <table id="tabla_registros" style="height: 100% ;width: 100%;">
             <thead>
                 <tr>
+                    <th >Codigo de solicitudes</th>
                     <th >Nombre</th>
                     <th >Fecha Permiso</th>
+                    <th >Hora de salida</th>
                     <th >Hora de ingreso</th>
+                    <th >Tipo permiso</th>
                     <th >Accion</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if ($solicitudes == '{"error":"No se encontraron solicitudes de llegada pendientes"}') :?>
                     <tr>
-                        <td class="td_solicitud" colspan="4"> No se encontraron solicitudes para el dia de hoy</td>
+                        <td class="td_solicitud" colspan="7"> No se encontraron solicitudes para el dia de hoy</td>
                     </tr>
                     <?php else :?>
                 <?php foreach ($solicitudes as $pruebas1): ?>
                 <tr id ="tr-<?php echo $pruebas1['id_solicitud'];?>">
+                    <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['identificador_solicitud']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_permiso']); ?></td>
+                    <td class="td_solicitud" ><?php echo htmlspecialchars($pruebas1['hora_salida']); ?></td>
                     <td class="td_solicitud" ><?php echo htmlspecialchars($pruebas1['hora_ingreso']); ?></td>
+                    <td class="td_solicitud" ><?php echo htmlspecialchars($pruebas1['tipo_permiso']); ?></td>
                     <td class="td_solicitud">
-                        <button class="btn_accion_solicitud" onclick="editarHora('editar', <?php echo $pruebas1['id_solicitud'];?>)" id="btn_hora_<?php echo $pruebas1['id_solicitud'];?>"><i class="fa fa-pencil-alt" style="font-size: 22px; color:#A9A9A9;"></i></button>
-                        <!-- Formulario oculto para seleccionar la hora -->
-                        <div class="contenerdor_accion_solicitud" id="hora-selector-<?php echo $pruebas1['id_solicitud'];?>" style="display:none;width:200px;">
-                            <form action="" method="POST" id="edicion-hora">
-                                <input type="hidden" id="id_solicitud" name="id_solicitud" value="<?php echo $pruebas1['id_solicitud'];?>">
-                                <label for="hora-input">Hora llegada:</label>
-                                <input type="time" id="hora-input" name="hora-input" min="7:00" max="16:00" title="Por favor ingrese la hora de llegada" required>
-                                <button type="submit">></button>
-                            </form>
-                        </div>
+                    <button onclick="editarHora(<?php echo $pruebas1['id_solicitud']; ?>)" 
+                        class="btn_accion_solicitud" 
+                        id="btn_hora_<?php echo $pruebas1['id_solicitud']; ?>">
+                        <i class="fa fa-pencil-alt" style="font-size: 22px; color:#A9A9A9;"></i>
+                    </button>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -181,6 +195,36 @@ $solicitudes = $solicitudController->horaIngreso();
             }
             ?>
     </div>
+    <!-- Modal para editar hora -->
+    <div id="horaModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4);">
+        <div class="modal-content" style="background-color: white; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 300px; border-radius: 5px;">
+            <h3>Editar Hora de Llegada de la <?php echo htmlspecialchars($pruebas1['identificador_solicitud']);?></h3>
+            <form id="formEditarHora" method="POST" action="">
+                <input type="hidden" id="modal_id_solicitud" name="id_solicitud" value="">
+                <div style="margin: 15px 0;">
+                    <label for="hora-input">Hora de llegada:</label>
+                    <input type="time" 
+                        id="hora-input" 
+                        name="hora-input" 
+                        min="07:00" 
+                        max="16:00" 
+                        required 
+                        style="width: 100%; padding: 5px; margin-top: 5px;">
+                </div>
+                <div style="text-align: right;">
+                    <button type="button" 
+                            onclick="cerrarModal()" 
+                            style="margin-right: 10px; padding: 5px 10px;">
+                        Cancelar
+                    </button>
+                    <button type="submit" 
+                            style="padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 3px;">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     </main>
 
     <footer>
@@ -189,5 +233,6 @@ $solicitudes = $solicitudController->horaIngreso();
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/editar_hora.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
 </body>
 </html>

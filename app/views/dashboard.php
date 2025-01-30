@@ -220,6 +220,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                                 <?php echo $pruebas1['id_solicitud']; ?>, 
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['identificador_solicitud'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['nombre'])); ?>', 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['cedula'])); ?>', 
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['correo'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['tipo_permiso'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['fecha_permiso'])); ?>',
@@ -236,6 +237,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                                 <?php echo $pruebas1['id_solicitud']; ?>, 
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['identificador_solicitud'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['nombre'])); ?>', 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['cedula'])); ?>', 
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['correo'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['tipo_permiso'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['fecha_permiso'])); ?>',
@@ -252,6 +254,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                                 <?php echo $pruebas1['id_solicitud']; ?>, 
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['identificador_solicitud'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['nombre'])); ?>', 
+                                '<?php echo addslashes(htmlspecialchars($pruebas1['cedula'])); ?>', 
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['correo'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['tipo_permiso'])); ?>',
                                 '<?php echo addslashes(htmlspecialchars($pruebas1['fecha_permiso'])); ?>',
@@ -266,7 +269,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                 </tr>
                 <?php endforeach; ?>
                 <?php else: ?>
-                    <td class="td_solicitud" colspan="9">No tienes solicitudes pendientes en tu departamento</td>
+                    <td class="td_solicitud" colspan="10">No tienes solicitudes pendientes en tu departamento</td>
                 <?php endif; ?>
             </tbody>
 

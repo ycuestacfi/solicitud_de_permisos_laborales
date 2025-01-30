@@ -12,6 +12,8 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
 
 $departamentocontroler = new departamentoControler();
 
+date_default_timezone_set('America/Bogota');
+
 // Obtener la fecha actual
 $fechaActual = new DateTime();
 
@@ -113,10 +115,8 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
             required readonly hidden />
 
             <input class="input_solicitud" 
-            placeholder="Selecciona la fecha de solicitud" 
             type="datetime" id="fecha_de_solicitud" 
             name="fecha_de_solicitud" 
-            title="Selecciona la fecha en que estás realizando la solicitud" 
             value="<?php echo $fechaActualFormatoHora; ?>"
             hidden>
 
@@ -178,21 +178,21 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
                 <div id="permiso-laboral" class="permiso-laboral">
 
                 <input class="input_solicitud" 
-                    type="text" name="motivo_del_desplazamiento" 
-                    required id="motivo_del_desplazamiento" 
-                    placeholder="¿Cuál es el motivo de tu salida?" 
-                    title="Indica el motivo de tu salida">
+                type="text" name="motivo_del_desplazamiento" 
+                required id="motivo_del_desplazamiento" 
+                placeholder="¿Cuál es el motivo de tu salida?" 
+                title="Indica el motivo de tu salida">
 
                 <label for="departamento">Departamento de desplazamiento:</label>
                 <select class="input_solicitud" id="departamento_de_desplazamiento" name="departamento_de_desplazamiento" required>
                     <option value="">Seleccione un departamento</option>
+                    <option value="Valle del cauca">Valle del cauca</option>
                 </select>
-            
-
             
                 <label for="municipio">Municipio de desplazamiento:</label>
                 <select class="input_solicitud" style="color:black;" id="municipio_del_desplazamiento" name="municipio_del_desplazamiento" required disabled>
                     <option value="">Seleccione un municipio</option>
+                    <option value="El cerrito">El cerrito</option>
                 </select>
 
                 <input type="text" class="input_solicitud" 
