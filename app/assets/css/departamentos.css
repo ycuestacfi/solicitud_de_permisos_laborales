@@ -1,0 +1,17 @@
+#form_gestion_departamentos{
+    display: flex
+;
+    flex-direction: column;
+    min-width: 300px;
+    padding: 10px;
+    border: solid 1px var(--verde-corporativo);
+    background: var(--azul-verde);
+    max-width: 600px;
+}
+#tabla_registros{
+    background-color: var(--azul-verde);
+}
+#tabla_registros td{
+    background-color: var(--azul-verde);
+    color: white;
+}

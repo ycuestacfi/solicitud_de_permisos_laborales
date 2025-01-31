@@ -34,6 +34,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Departamentos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/departamentos.css">
 </head>
 <body>
     <main>
@@ -81,8 +82,8 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
 
         <!-- Formulario para crear o editar departamento -->
         
-    <section id="crear_departamento">
-    <form action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
+    <section id="gestion_departamentos">
+    <form  id="form_gestion_departamentos" action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
     <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
 
     <label for="nombre_departamento">Nombre del Departamento</label>
@@ -119,7 +120,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
         <!-- Tabla de Departamentos -->
          <section id="tabla_departamentos">
          <h2>Departamentos Existentes</h2>
-        <table style="border: solid 1px var(--blanco);" class="tabla-departamentos">
+        <table id="tabla_registros"  class="tabla-departamentos">
             <thead>
                 <tr>
                     <th>ID Departamento</th>
@@ -127,13 +128,13 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                     <th>Nombre del Líder</th>
                 </tr>
             </thead>
-            <tbody style="background-color: var(--blanco);">
+            <tbody  >
                 <?php if (($departamentos)): ?>
                     <?php foreach ($departamentos as $departamento): ?>
                         <tr >
-                            <td style="border:solid 1px var(--blanco); text-align: center;"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
-                            <td style="border:solid 1px var(--blanco); "><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
-                            <td style="border:solid 1px var(--blanco); ">
+                            <td  class=td_solicitud style=" text-align: center;"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
+                            <td  class=td_solicitud ><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
+                            <td  class=td_solicitud >
                                 <?php 
                                 // Si no hay líder asignado, mostrar un mensaje
                                 echo htmlspecialchars(!empty($departamento['lider_nombre'] . $departamento['lider_apellido']) ? $departamento['lider_nombre'] .' '. $departamento['lider_apellido'] : 'Sin líder asignado'); 

@@ -331,6 +331,9 @@ footer p{
     margin: 0;
 }
 @media screen and (max-width: 800px) {
+    form{
+        width: 95% !important;
+    }
     #tabla_registros{
         width: 95%;
         height: 70%;
