@@ -143,15 +143,14 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
             type="time" id="hora_de_llegada" 
             name="hora_de_llegada" 
             title="Indica la hora de llegada" 
-            required 
+            required    
             min="07:00" 
             max="16:00">
 
             <textarea class="input_solicitud" 
             placeholder="Agrega observaciones adicionales aquí" 
             name="observaciones" id="observaciones" 
-            title="Escribe cualquier observación relevante" 
-            required></textarea>
+            title="Escribe cualquier observación relevante"></textarea>
 
             <label for="evidencias" id="label_file"> 
                 <i class="lni lni-file-plus-circle"></i>

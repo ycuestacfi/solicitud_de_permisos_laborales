@@ -212,7 +212,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                         <?php echo htmlspecialchars($pruebas1['estado']); ?>
                     </td>
 
-                    <?php if ($_SESSION['rol'] == 'lider_aprobador'): ?>
+                    <?php if ($_SESSION['rol'] == 'lider_aprobador' || $_SESSION['rol']== 'TI' || $_SESSION['rol']== 'administrador'): ?>
                     <td class="td_solicitud">
                         <button class="btn_accion_solicitud" 
                             onclick="procesarSolicitudConConfirmacion(

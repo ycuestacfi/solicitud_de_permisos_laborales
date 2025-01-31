@@ -70,10 +70,10 @@ class UserModel {
     }
 
     public function selecionar_lider(){
-        $sql = "SELECT usuarios.nombres, usuarios.apellidos, usuarios.cedula, usuarios.rol, usuarios.estado FROM usuarios WHERE usuarios.rol = 'solicitante'";
+        $sql = "SELECT usuarios.id_usuario,usuarios.nombres, usuarios.apellidos, usuarios.cedula, usuarios.rol, usuarios.estado FROM usuarios WHERE usuarios.rol = 'solicitante'";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result ?: false;
     }
 

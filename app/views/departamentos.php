@@ -82,20 +82,33 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
         <!-- Formulario para crear o editar departamento -->
         
     <section id="crear_departamento">
-        <form action="" method="POST">
-            <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
+    <form action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
+    <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
 
-            <label for="nombre_departamento">Nombre del Departamento</label>
-            <input type="text" id="nombre_departamento" name="nombre_departamento" required>
+    <label for="nombre_departamento">Nombre del Departamento</label>
+    <input type="text" id="nombre_departamento" name="nombre_departamento" required>
 
-            <label for="id_lider">Líder</label>
-            <select id="id_lider" name="id_lider">
-                <option value="">Seleccione un líder</option>
-                <option value=""></option>
-            </select>
+    <label for="id_lider">Líder</label>
+    <select id="id_lider" name="id_lider">
+        <option value="">Seleccione un líder</option>
 
-            <button type="submit"></button>
-        </form>
+        <?php if (!empty($usuarios_selecion_lider)): ?>
+            <?php foreach ($usuarios_selecion_lider as $posibles_lideres): ?>
+                <option value="<?php echo htmlspecialchars($posibles_lideres['id_usuario']); ?>">
+                    <?php echo htmlspecialchars($posibles_lideres['nombres'].' '.$posibles_lideres['apellidos']); ?>
+                </option>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <option value="">No hay líderes disponibles</option>
+        <?php endif; ?>
+    </select>
+
+    <!-- Botón para crear un nuevo departamento -->
+    <button type="submit" name="accion" value="crear">Crear Departamento</button>
+
+    <!-- Botón para actualizar un departamento existente -->
+    <button type="submit" name="accion" value="actualizar">Actualizar Departamento</button>
+</form>
     </section>
 
  

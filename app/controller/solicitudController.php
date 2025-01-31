@@ -1,12 +1,15 @@
 <?php
 
 require_once __DIR__ . '/../models/SolicitudModel.php';
+require_once __DIR__ . '/../models/departamentosModel.php';
 
 class SolicitudController {
     public $solicitudModel;
+    public $departamentosModel;
 
     public function __construct() {
         $this->solicitudModel = new solicitudModel();
+        $this->departamentosModel = new DepartamentoModel();
     }
 
     // Método para cambiar el estado de la solicitud
@@ -122,7 +125,14 @@ class SolicitudController {
         $fecha_de_permiso = $_POST['fecha_de_permiso'];
         $hora_de_salida = $_POST['hora_de_salida'];
         $hora_de_llegada = $_POST['hora_de_llegada'];
-        $observaciones = $_POST['observaciones'];
+        if (!empty($observaciones)) {
+            // La variable no está vacía la declaramos
+            $observaciones = $_POST['observaciones'];
+        } else {
+            // La variable no tiene valores y la declaramos manualmente
+            $observaciones = "No se registraron observaciones en esta solicitud ";
+        }
+        
         // $evidencias = $_FILES['evidencias']; // Para manejar archivos
         $tipo_permiso = $_POST['tipo_permiso'];
         $rol = $_POST['rol'];
@@ -177,7 +187,7 @@ class SolicitudController {
                     // $evidencias
                 );
         
-                if ($registroExitoso) {
+                if ($registroExitoso == "true") {
                     // Obtener el email del líder del proceso
                     $info_lider = $this->solicitudModel->lideres_proceso($departamento);
                     // $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);

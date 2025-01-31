@@ -95,7 +95,7 @@ $respuesta_solicitudes = $solicitudes;
                             <td class="td_solicitud">
                                 <?php echo htmlspecialchars($solicitud['identificador_solicitud']); ?>
                             </td>
-                            <td class="td_solicitud"><?php echo htmlspecialchars($lider_proceso['nombres']); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($departamento_data ['nombres'].' '.$departamento_data['apellidos']); ?></td>
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['fecha_permiso']); ?></td>
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['hora_salida']); ?></td>
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['hora_ingreso']); ?></td>

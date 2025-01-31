@@ -8,6 +8,7 @@ class departamentoControler {
         $this->departamentomodel = new departamentomodel();
     }
 
+    
     // funcion para solicitudes 
     public function getDepartamentodata($id_departamento) {
         if (!empty($id_departamento)) {
