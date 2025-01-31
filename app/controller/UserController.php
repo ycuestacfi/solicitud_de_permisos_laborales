@@ -19,6 +19,7 @@ class UserController {
         }else{
             return 'No se encontraron usuarios';
         }
+        
     }
 
     public function registrarUsuario($nombres, $apellidos, $cedula, $correo, $departamento, $rol, $usuario, $password) {

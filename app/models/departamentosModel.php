@@ -26,6 +26,19 @@ class DepartamentoModel {
         }
     }
 
+    public function crearDepartamento($nombre, $idLider) {
+        $sql = "INSERT INTO departamentos (nombre_departamento, id_lider) VALUES (?, ?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$nombre, $idLider]);
+    }
+
+    // Función para actualizar un departamento existente
+    public function actualizarDepartamento($id, $nombre, $idLider) {
+        $sql = "UPDATE departamentos SET nombre_departamento = ?, id_lider = ? WHERE id_departamento = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$nombre, $idLider, $id]);
+    }
+
     // Obtener todos los departamentos con el nombre del líder
     public function getDepartamentos() {
         try {
