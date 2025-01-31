@@ -8,7 +8,25 @@ class departamentoControler {
         $this->departamentomodel = new departamentomodel();
     }
 
+    public function gestion_departamentos(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
+            $accion = $_POST['accion'];
+            $id_departamento = $_POST['id_departamento'] ?? null;
+            $nombre_departamento = $_POST['nombre_departamento'] ?? '';
+            $id_lider = $_POST['id_lider'] ?? null;
     
+            if ($accion === 'crear') {
+                $resultado = $this->departamentomodel->crearDepartamento($nombre_departamento, $id_lider);
+                echo $resultado ? "Departamento creado correctamente" : "Error al crear el departamento";
+            } elseif ($accion === 'actualizar' && !empty($id_departamento)) {
+                $resultado = $this->departamentomodel->actualizarDepartamento($id_departamento, $nombre_departamento, $id_lider);
+                echo $resultado ? "Departamento actualizado correctamente" : "Error al actualizar el departamento";
+            } else {
+                echo "Acción no válida";
+            }
+            exit();
+        }
+    }
     // funcion para solicitudes 
     public function getDepartamentodata($id_departamento) {
         if (!empty($id_departamento)) {
@@ -33,5 +51,10 @@ class departamentoControler {
         }
     }
     
+    
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['accion'])) {
+        $departamentoController = new departamentoControler();
+        $departamentoController->gestion_departamentos();
+    }
 ?>
