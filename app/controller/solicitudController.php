@@ -3,6 +3,9 @@
 require_once __DIR__ . '/../models/SolicitudModel.php';
 require_once __DIR__ . '/../models/departamentosModel.php';
 
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 class SolicitudController {
     public $solicitudModel;
     public $departamentosModel;
@@ -18,28 +21,44 @@ class SolicitudController {
             // Llamamos al modelo para actualizar el estado de la solicitud en la base de datos
             $resultado = $this->solicitudModel->actualizarEstado($datos['idSolicitud'], $datos['nuevoEstado']);
             
-            // Si la actualización fue exitosa, redirigimos o mostramos un mensaje
+            // Si la actualización fue exitosa, devolvemos una respuesta exitosa
             if ($resultado) {
-
-                $this->solicitudModel->enviarCorreoEstado($datos);
-
+    
+                // $this->solicitudModel->enviarCorreoEstado($datos);
+    
                 if ($datos['tipo_permiso'] == 'laboral' && $datos['nuevoEstado'] == 'aprobada') {
-
+    
                     $info = $this->conseguirInfoLaboral($datos['identificador']);
-
                     $this->solicitudModel->enviarCorreoLaboral($datos, $info);
-                    
                 }
-
-                // Aquí se redirige a una página o se pasa una variable de éxito
-                return $resultado;
+    
+                // Respuesta exitosa
+                echo json_encode([
+                    'success' => true,
+                    'titulo' => '¡Bien!',
+                    'texto' => 'Solicitud ' . $datos['nuevoEstado'] . ' con éxito.',
+                    'icono' => 'success'
+                ]);
+                exit(); // Asegúrate de que el script termine aquí
             } else {
-                // return "No se pudo actualizar el estado.";
-                return $resultado;
+                // Respuesta de error
+                echo json_encode([
+                    'success' => false,
+                    'titulo' => 'Vaya...',
+                    'texto' => 'Error. Por favor, intenta de nuevo.',
+                    'icono' => 'error'
+                ]);
+                exit(); // Asegúrate de que el script termine aquí
             }
         } catch (Exception $e) {
-            // Si ocurre algún error, lo capturamos y mostramos el mensaje
-            return "Error al actualizar el estado: " . $e->getMessage();
+            // Si ocurre algún error, devolvemos un mensaje de error
+            echo json_encode([
+                'success' => false,
+                'titulo' => 'Error',
+                'texto' => 'Ocurrió un error: ' . $e->getMessage(),
+                'icono' => 'error'
+            ]);
+            exit();
         }
     }
 
@@ -115,17 +134,8 @@ class SolicitudController {
         }
     }
 
-    public function procesarFormulario() {
-        // Variables comunes
-        $nombre = $_POST['nombre'];
-        $email = $_POST['email'];
-        $cedula = $_POST['cedula'];
-        $departamento = $_POST['departamento'];
-        $fecha_de_solicitud = $_POST['fecha_de_solicitud'];
-        $fecha_de_permiso = $_POST['fecha_de_permiso'];
-        $hora_de_salida = $_POST['hora_de_salida'];
-        $hora_de_llegada = $_POST['hora_de_llegada'];
-        if (!empty($observaciones)) {
+    public function procesarFormulario($nombre, $email, $cedula, $departamento, $fecha_de_solicitud, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada) {
+        if (!empty($_POST['observaciones'])) {
             // La variable no está vacía la declaramos
             $observaciones = $_POST['observaciones'];
         } else {
@@ -162,7 +172,13 @@ class SolicitudController {
             
             if ($rol == "lider_aprobador" && $departamento == "11") {
                 
-                return "El lider aprobador de administración no puede solicitar permisos";
+                $_SESSION['mensaje'] = [
+                    'titulo' => 'Error',
+                    'texto' => 'El lider aprobador de administración no puede solicitar permisos',
+                    'icono' => 'error'
+                ];
+
+                return true;
 
             } else {
                 // Llamar al modelo para registrar la solicitud con todos los campos
@@ -187,22 +203,34 @@ class SolicitudController {
                     // $evidencias
                 );
         
-                if ($registroExitoso == "true") {
+                if ($registroExitoso) { // Se evalúa si es verdadero
                     // Obtener el email del líder del proceso
                     $info_lider = $this->solicitudModel->lideres_proceso($departamento);
                     // $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);
-                    // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
-                    exit;
-                
+                    $_SESSION['mensaje'] = [
+                        'titulo' => '¡Bien!',
+                        'texto' => 'Registro de solicitud exitoso.',
+                        'icono' => 'success'
+                    ];
+                    // Redirigir a la página de solicitudes o retornar el registro exitoso
+                    header("Location: /solicitud_de_permisos_laborales/app/views/solicitud_de_permisos.php");
+                    exit();
+                } else {
+                    // Si la consulta no fue exitosa
+                    $_SESSION['mensaje'] = [
+                        'titulo' => 'Error',
+                        'texto' => 'Hubo un problema al registrar la solicitud.',
+                        'icono' => 'error'
+                    ];
+                    header("Location: /solicitud_de_permisos_laborales/app/views/solicitud_de_permisos.php");
+                    exit();
                 }
-        
-                return $registroExitoso;
 
             }
         } catch (Exception $e) {
             error_log("Error en procesarFormulario: " . $e->getMessage());
-            // return false;
-            return json_encode(['error' => 'Error al procesar la solicitud' . $e->getMessage()]); 
+            return false;
+            // return json_encode(['error' => 'Error al procesar la solicitud' . $e->getMessage()]); 
         }
     }
 
@@ -238,6 +266,15 @@ class SolicitudController {
         }
     }
 
+    public function ver_historico() {
+        $historicos = $this->solicitudModel->ver_historico();
+        if ($historicos) {
+            return $historicos;
+        } else {
+            return json_encode(['error' => 'No se encontraron ningun historico']);
+        }
+    }
+
     public function horaIngreso() {
         $aceptadas = $this->solicitudModel->hora_ingreso();
         if ($aceptadas) {
@@ -266,3 +303,19 @@ $solicitudController = new SolicitudController();
 
 // Procesar la solicitud PUT
 $solicitudController->procesarPutRequest();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    $cedula = $_POST['cedula'];
+    $departamento = $_POST['departamento'];
+    $fecha_de_solicitud = $_POST['fecha_de_solicitud'];
+    $fecha_de_permiso = $_POST['fecha_de_permiso'];
+    $hora_de_salida = $_POST['hora_de_salida'];
+    $hora_de_llegada = $_POST['hora_de_llegada'];
+
+    $solicitudController = new SolicitudController();
+
+    $solicitudController->procesarFormulario($nombre, $email, $cedula, $departamento, $fecha_de_solicitud, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada);
+}

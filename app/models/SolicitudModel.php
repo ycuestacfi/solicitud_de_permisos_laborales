@@ -175,6 +175,15 @@ class solicitudModel {
         return $resultados;
     }
 
+    public function ver_historico() {
+        $sql = "SELECT s.*, d.nombre_departamento AS nombre_departamento FROM solicitudes s JOIN departamentos d ON s.id_departamento = d.id_departamento WHERE s.estado_revision = 'terminada' ORDER BY s.fecha_permiso DESC;";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function solicitudesDeTerminadas() {
         $sql = "SELECT * FROM solicitudes WHERE estado = 'aprobada' AND estado_porteria = 'terminada' AND estado_revision = 'pendiente' ORDER BY fecha_permiso DESC;";
         $stmt = $this->db->prepare($sql);

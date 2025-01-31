@@ -107,17 +107,33 @@ async function procesarSolicitud(nuevoEstado, idSolicitud, identificador, nombre
             throw new Error(`Error HTTP: ${response.status}`);
         }
 
+        // Espera una respuesta para verificar si el proceso fue exitoso
         const data = await response.json();
-        
-        if (data.error) {
-            throw new Error(data.error);
+
+        // Si la respuesta es correcta, mostrar el mensaje de SweetAlert
+        if (data.success) {
+            Swal.fire({
+                title: data.titulo,
+                text: data.texto,
+                icon: data.icono
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'Hubo un problema procesando la solicitud.',
+                icon: 'error'
+            });
         }
 
         actualizarInterfaz(idSolicitud, nuevoEstado);
 
     } catch (error) {
         console.error('Error en la solicitud:', error);
-        mostrarNotificacion(`Error: ${error.message}`, 'error');
+        Swal.fire({
+            title: 'Error',
+            text: `Ocurrió un error: ${error.message}`,
+            icon: 'error'
+        });
     }
 }
 

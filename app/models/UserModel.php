@@ -64,7 +64,7 @@ class UserModel {
     }
 
     public function registrarUsuario($nombre, $apellido, $cedula, $correo, $departamento, $rol, $usuario, $password) {
-        $sql = "INSERT INTO usuarios (nombre, apellido, cedula, correo, id_departamento, rol, contrasena, usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuarios (nombres, apellidos, cedula, correo, id_departamento, rol, contrasena, usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$nombre, $apellido, $cedula, $correo, $departamento, $rol, $password, $usuario]);
     }

@@ -19,7 +19,7 @@ $solicitudController = new SolicitudController();
 
 // Obtener solicitudes
 $id_departamento = $_SESSION['id_departamento'];
-$solicitudes = $solicitudController->historico();
+$solicitudes = $solicitudController->ver_historico();
 
 ?>
 <!DOCTYPE html>
@@ -137,10 +137,10 @@ $solicitudes = $solicitudController->historico();
                 <thead>
                     <tr>
                         <th >Codigo de Solicitudes</th>
-                        <th >Estado</th>
                         <th >Fecha de permiso</th>
                         <th >Departamento</th>
-                        <th >Fecha de cambio</th>
+                        <th >Fecha de aprovacion</th>
+                        <th >Fecha de revision</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -148,10 +148,10 @@ $solicitudes = $solicitudController->historico();
                     <?php foreach ($solicitudes as $pruebas1): ?>
                     <tr>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['identificador_solicitud']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['estado']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_permiso']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre_departamento']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_cambio']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_estado']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_estado_revision']); ?></td>
                     </tr>    
                     <?php endforeach; ?>
                 

@@ -35,6 +35,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
@@ -138,6 +139,18 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
 </style>
     
     <main>
+    <?php
+        if (isset($_SESSION['mensaje'])) {
+            echo "<script>
+                Swal.fire({
+                    title: '" . $_SESSION['mensaje']['titulo'] . "',
+                    text: '" . $_SESSION['mensaje']['texto'] . "',
+                    icon: '" . $_SESSION['mensaje']['icono'] . "'
+                });
+            </script>";
+            unset($_SESSION['mensaje']); // Limpiar la sesión después de mostrar la alerta
+        }    
+    ?>
     <section id="navigation">
     <nav>
         <figure style="margin:0; padding:0; width:150px;">

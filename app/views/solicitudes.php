@@ -40,7 +40,7 @@ $respuesta_solicitudes = $solicitudes;
             <nav>
                 <figure style="margin:0; padding:0; width:150px;">
                     <a href="dashboard.php">
-                        <img src="/solicitud_permisos/app/assets/img/logocfipblanco.png" style="width: 100%;" alt="">
+                        <img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt="">
                     </a>
                 </figure>
                 <div id="btn_menu">

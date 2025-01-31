@@ -7,7 +7,6 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../models/UserModel.php';
 require_once __DIR__ . '/../helpers/SessionHelper.php';
 
-
 // Clase LoginController
 class LoginController {
     private $userModel;

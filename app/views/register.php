@@ -43,6 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Llamar al controlador para procesar el registro
     $resultado = $userController->registrarUsuario($nombres, $apellidos, $cedula, $correo, $departamento, $rol, $usuario, $password);
+
+    if ($resultado['error'] != 'true') {
+        // Limpiar los campos del formulario
+        $nombres = $apellidos = $cedula = $correo = $departamento = $rol = $usuario = "";
+        
+        
+    }
 }
 
 ?>
@@ -62,10 +69,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Gestión de Departamentos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/register.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
 <main>
+        <?php
+            if (isset($_SESSION['mensaje'])) {
+                echo "<script>
+                    Swal.fire({
+                        title: '" . $_SESSION['mensaje']['titulo'] . "',
+                        text: '" . $_SESSION['mensaje']['texto'] . "',
+                        icon: '" . $_SESSION['mensaje']['icono'] . "'
+                    });
+                </script>";
+                unset($_SESSION['mensaje']); // Limpiar la sesión después de mostrar la alerta
+            }
+        ?>
         <section id="navigation">
 
                 <nav>
