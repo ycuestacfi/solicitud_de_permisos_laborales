@@ -1,6 +1,6 @@
 <?php
 // video para configuracion de sendmail y funcion mail local https://www.youtube.com/watch?v=U129sKnLoDA
-$to      = 'ycuesta@providenciacfi.com';
+$to      = 'jhoyos@colegioprovidencia.edu.co';
 $subject = 'the subject';
 $mensaje = '
      <html>
@@ -107,5 +107,101 @@ if (mail($to, $subject, $mensaje, $headers)) {
 } else {
     echo "Error al enviar el correo";
 }
+
+?>
+
+<?php
+$mensaje = `
+<table   cellpadding="0" cellspacing="0" style="width:100%; margin:0 auto; border-radius:5px;border:1px solid #e9e9e9">
+    <thead >
+        
+        <tr >
+            <td style=" margin: 0px 0px 40px 40% ;   justify-content: center; display: flex;">
+                Solicitud $solicitudId
+            </td>
+            
+        </tr>
+        <br>
+        <tr style="justify-content: center;
+        display: flex;
+        font-size: 38px; margin-bottom: 60px;">
+            <td style="margin-left:20px;">
+                <strong>Solicitud de licencia o permiso laboral  </strong> 
+            </td>
+           
+        </tr>
+        
+        <tr >
+            <td style="padding-left: 40px">
+                Estimado solicitante $celdaNombre su solicitud fue $accion === 'aceptar' ? 'aprobada' : 'rechazada' por tu supervisor
+            </td>
+        </tr>
+    </thead>
+    <tbody style="align-items: center; justify-content: center; width: 80%;">
+        <tr>
+            <td style="margin-top: 50px;">
+                
+            </td>
+        </tr>
+        <tr>
+           
+            <td  style=" margin: 60px 0px 50px 10% ;   justify-content: center; display: flex;">
+                 <table style="width: 90%;  border:1px solid #e9e9e9;">
+                    <thead>
+                        
+                    </thead>
+
+                    <tbody><tr>
+                        <tr>
+                            <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                    border-left: none;
+                    border-right: none;
+                    width: 40%; padding-left: 20px; border-top: none;  ">Nombre:</td>
+                            <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                    border-left: none;
+                    border-right: none;
+                    width: 40%; padding-left: 20px; border-top: none;  ">$celdaNombre</td>
+                        </tr>
+                        <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                border-left: none;
+                border-right: none;
+                width: 40%; padding-left: 20px; border-top: none;  ">Documento: </td>
+                        <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                border-left: none;
+                border-right: none;
+                width: 40%; padding-left: 20px; border-top: none;  ">$celdaCc</td>
+                    </tr>
+                        <tr>
+                            <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                    border-left: none;
+                    border-right: none;
+                    width: 40%; padding-left: 20px; border-top: none;  ">Su solicitud con ID $solicitudId ha sido: </td>
+                            <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                    border-left: none;
+                    border-right: none;
+                    width: 40%; padding-left: 20px; border-top: none;  ">$accion === 'aceptar' ? 'aprobada' : 'rechazada'</td>
+                        </tr>
+                        <tr>
+                            <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                    border-left: none;
+                    border-right: none;
+                    width: 40%; padding-left: 20px; border-top: none;  ">Tu supervisor dejo un comentario para ti:  </td>
+                            <td style="border: solid 1px #e9e9e9; align-items: center; text-align: start;    height: 45px;
+                    border-left: none;
+                    border-right: none;
+                    width: 40%; padding-left: 20px; border-top: none; margin-bottom: 50px; ">$comentario</td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        
+    </tbody>
+</table>
+
+
+
+`;
 
 ?>

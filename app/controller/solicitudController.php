@@ -10,13 +10,24 @@ class SolicitudController {
     }
 
     // Método para cambiar el estado de la solicitud
-    public function cambiarEstadoSolicitud($id_solicitud, $estado) {
+    public function cambiarEstadoSolicitud($datos) {
         try {
             // Llamamos al modelo para actualizar el estado de la solicitud en la base de datos
-            $resultado = $this->solicitudModel->actualizarEstado($id_solicitud, $estado);
-
+            $resultado = $this->solicitudModel->actualizarEstado($datos['idSolicitud'], $datos['nuevoEstado']);
+            
             // Si la actualización fue exitosa, redirigimos o mostramos un mensaje
             if ($resultado) {
+
+                $this->solicitudModel->enviarCorreoEstado($datos);
+
+                if ($datos['tipo_permiso'] == 'laboral' && $datos['nuevoEstado'] == 'aprobada') {
+
+                    $info = $this->conseguirInfoLaboral($datos['identificador']);
+
+                    $this->solicitudModel->enviarCorreoLaboral($datos, $info);
+                    
+                }
+
                 // Aquí se redirige a una página o se pasa una variable de éxito
                 return $resultado;
             } else {
@@ -26,6 +37,19 @@ class SolicitudController {
         } catch (Exception $e) {
             // Si ocurre algún error, lo capturamos y mostramos el mensaje
             return "Error al actualizar el estado: " . $e->getMessage();
+        }
+    }
+
+    public function conseguirInfoLaboral($identificador) {
+        if ($identificador != null) {
+            $info = $this->solicitudModel->infoLaboral($identificador);
+            if ($info) {
+                return $info;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -42,7 +66,16 @@ class SolicitudController {
         }
     }
 
-    public function solicitudesRealizadas($cedula) {
+    public function solicitudesDeTerminadas(){
+        $aprovadas = $this->solicitudModel->solicitudesDeTerminadas();
+        if ($aprovadas) {
+            return $aprovadas;
+        } else {
+            return json_encode(['error' => 'No se encontro ninguna sollitud']);
+        }
+    }
+
+    public function solicitudesRealizadas($cedula, $id_departamento) {
         // Si no se proporciona la cédula, retorna un array vacío
         if (!$cedula) {
             return [];
@@ -116,40 +149,11 @@ class SolicitudController {
         }
     
         try {
-            if ($rol !== "lider_aprobador") {
-            // Llamar al modelo para registrar la solicitud con todos los campos
-            $registroExitoso = $this->solicitudModel->registrarSolicitud(
-                $nombre,
-                $email,
-                $cedula,
-                $departamento,
-                $fecha_de_solicitud,
-                $fecha_de_permiso,
-                $hora_de_salida,
-                $hora_de_llegada,
-                $observaciones,
-                $tipo_permiso,
-                $motivo_del_desplazamiento,
-                $departamento_de_desplazamiento,
-                $municipio_del_desplazamiento,
-                $lugar_desplazamiento,
-                $medio_de_transporte,
-                $placa_vehiculo
-                // ,
-                // $evidencias
-            );
-    
-            if ($registroExitoso) {
-                // Obtener el email del líder del proceso
-                $email_lider = $this->solicitudModel->lideres_proceso($departamento);
-                if ($email_lider) {
-                    $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
-                    // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
-                    exit;
-                }
-            }
-    
-            return $registroExitoso;
+            
+            if ($rol == "lider_aprobador" && $departamento == "11") {
+                
+                return "El lider aprobador de administración no puede solicitar permisos";
+
             } else {
                 // Llamar al modelo para registrar la solicitud con todos los campos
                 $registroExitoso = $this->solicitudModel->registrarSolicitud(
@@ -175,15 +179,15 @@ class SolicitudController {
         
                 if ($registroExitoso) {
                     // Obtener el email del líder del proceso
-                    $email_lider = $this->solicitudModel->lideres_proceso($departamento);
-                    if ($email_lider) {
-                        $this->solicitudModel->enviarCorreo($nombre, $email_lider, $tipo_permiso);
-                        // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
-                        exit;
-                    }
+                    $info_lider = $this->solicitudModel->lideres_proceso($departamento);
+                    // $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);
+                    // return header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
+                    exit;
+                
                 }
         
                 return $registroExitoso;
+
             }
         } catch (Exception $e) {
             error_log("Error en procesarFormulario: " . $e->getMessage());
@@ -194,6 +198,8 @@ class SolicitudController {
 
     // Método para manejar las solicitudes PUT
     public function procesarPutRequest() {
+        // Limpiar cualquier salida previa
+        ob_clean();
         // Verificar si la solicitud es PUT
         if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
             // Obtener los datos en formato JSON del cuerpo de la solicitud
@@ -202,10 +208,10 @@ class SolicitudController {
             // Verificar que los datos necesarios estén presentes
             if (isset($data['idSolicitud']) && isset($data['nuevoEstado'])) {
                 // Llamar a la función cambiarEstadoSolicitud con los datos recibidos
-                $resultado = $this->cambiarEstadoSolicitud($data['idSolicitud'], $data['nuevoEstado']);
+                $resultado = $this->cambiarEstadoSolicitud($data);
                 
                 // Responder con los resultados en formato JSON
-                echo json_encode(['resultado' => "Estado cambiado."]);
+                echo json_encode(['resultado' => 'Estado cambiado.']);
             } else {
                 // Si faltan parámetros, responder con un error
                 echo json_encode(['error' => 'Faltan parámetros']);
@@ -213,8 +219,8 @@ class SolicitudController {
         } 
     }
     
-    public function historico() {
-        $historicos = $this->solicitudModel->historico();
+    public function historico($datos) {
+        $historicos = $this->solicitudModel->historico($datos);
         if ($historicos) {
             return $historicos;
         } else {

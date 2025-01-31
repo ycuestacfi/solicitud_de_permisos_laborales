@@ -2,6 +2,7 @@
 require_once '../solicitud_de_permisos_laborales/app/controller/LoginController.php';
 require_once '../solicitud_de_permisos_laborales/conexion.php'; // Conexión a la base de datos
 
+// Establecer la zona horaria de Colombia
 $loginController = new LoginController();
 
 // Verificar si es necesario cerrar sesión por ser viernes después de las 4 PM

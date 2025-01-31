@@ -1,14 +1,18 @@
 <?php 
-if (session_status() == PHP_SESSION_NONE) { session_start(); }
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
+if (!isset($_SESSION['estado'])) {
+    if ($_SESSION['estado'] !== "activo"){
     // Si no ha iniciado sesión, redirigir al login
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
+    }
 }
-if ($_SESSION['rol'] != 'administrador' || $_SESSION['rol'] != 'TI') {
-    // Si no es administrador, redirigir al dashboard
-    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
+
+if ($_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
 
@@ -47,15 +51,14 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                 
                 <ul id="menu">
             
-            
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-            
-            
             <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
+            
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            
             <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
                     
                     echo '<li><a href="departamentos.php">Departamentos</a></li>';

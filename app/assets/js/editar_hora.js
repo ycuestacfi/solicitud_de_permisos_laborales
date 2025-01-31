@@ -1,46 +1,48 @@
-// Función para mostrar el selector de hora
-function editarHora(action, id) {
-    // Mostrar los elementos con la clase 'btn_accion_solicitud'
-    let botonesAccion = document.querySelectorAll('.btn_accion_solicitud');
-    botonesAccion.forEach(function(btn) {
-        btn.style.display = 'inline-block'; // Mostrar
-    });
-
-    // Ocultar los elementos con la clase 'contenedor_accion_solicitud'
-    let contenedoresAccion = document.querySelectorAll('.contenerdor_accion_solicitud');
-    contenedoresAccion.forEach(function(contenedor) {
-        contenedor.style.display = 'none'; // Ocultar
-    });
-
-    const horaSelector = document.getElementById("hora-selector-"+id);
-    horaSelector.style.display = "inline-block";
-
-    const btn = document.getElementById('btn_hora_'+id);
-    btn.style.display = "none";
-
-    // Establecer el rango del selector de hora
+function editarHora(id) {
+    // Mostrar el modal
+    const modal = document.getElementById('horaModal');
+    modal.style.display = 'block';
+    
+    // Establecer el ID de la solicitud en el formulario
+    document.getElementById('modal_id_solicitud').value = id;
+    
+    // Establecer hora por defecto
     const ahora = new Date();
     let horaActual = ahora.getHours();
-    let minutoActual = ahora.getMinutes();
+    let minutos = ahora.getMinutes();
+    
+    // Asegurarse de que la hora esté dentro del rango permitido (7am - 4pm)
+    if (horaActual < 7) horaActual = 7;
+    if (horaActual > 16) horaActual = 16;
+    
+    const horaFormateada = `${String(horaActual).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+    document.getElementById('hora-input').value = horaFormateada;
+}
 
-    let minHora = horaActual;
-    if (minutoActual > 0) {
-        minutoActual = 0;
-        minHora = horaActual + 1;
+function cerrarModal() {
+    const modal = document.getElementById('horaModal');
+    modal.style.display = 'none';
+}
+
+// Cerrar modal al hacer clic fuera
+window.onclick = function(event) {
+    const modal = document.getElementById('horaModal');
+    if (event.target === modal) {
+        cerrarModal();
     }
-
-    // Agregar un evento para detectar clics fuera de los elementos
-    document.addEventListener('click', function(event) {
-        // Comprobar si el clic fue fuera del botón y el selector
-        if (!horaSelector.contains(event.target) && !btn.contains(event.target)) {
-            // Si fue fuera, ocultamos el selector y mostramos el botón
-            horaSelector.style.display = 'none';
-            btn.style.display = 'inline-block';
-        }
-    });
 }
 
-function ocultarFila() {
-    const fila = document.getElementById("")
+// Manejar el envío del formulario
+document.getElementById('formEditarHora').onsubmit = function(e) {
+    const idSolicitud = document.getElementById('modal_id_solicitud').value;
+    const fila = document.getElementById(`fila_${idSolicitud}`);
+    
+    if (fila) {
+        // Efecto de desvanecimiento
+        fila.style.transition = 'opacity 0.5s ease-out';
+        fila.style.opacity = '0';
+        setTimeout(() => {
+            fila.remove();
+        }, 500);
+    }
 }
-
