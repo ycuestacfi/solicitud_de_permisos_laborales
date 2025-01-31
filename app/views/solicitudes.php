@@ -17,7 +17,7 @@ $cedula = $_SESSION['cedula'];
 $id_departamento = $_SESSION['id_departamento'];
 
 $departamento_data = $departamentocontroler->getDepartamentodata($id_departamento);
-$solicitudes = $solicitudController->solicitudesRealizadas($cedula,$id_departamento);
+$solicitudes = $solicitudController->solicitudesRealizadas($cedula);
 
 
 $respuesta_solicitudes = $solicitudes;

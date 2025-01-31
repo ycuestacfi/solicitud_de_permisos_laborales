@@ -124,7 +124,7 @@ class solicitudModel {
     }
 
     public function solicitudes_realizadas($cedula){
-        $sql = "SELECT * FROM solicitudes WHERE cedula = ? ORDER BY fecha_solicitud DESC";
+        $sql = "SELECT * FROM solicitudes WHERE cedula = ? ORDER BY fecha_solicitud DESC;";
         $smtp = $this->db->prepare($sql);
         $smtp->execute([$cedula]);
         return $smtp->fetchAll(PDO::FETCH_ASSOC);

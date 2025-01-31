@@ -24,7 +24,7 @@ class SolicitudController {
             // Si la actualización fue exitosa, devolvemos una respuesta exitosa
             if ($resultado) {
     
-                // $this->solicitudModel->enviarCorreoEstado($datos);
+                $this->solicitudModel->enviarCorreoEstado($datos);
     
                 if ($datos['tipo_permiso'] == 'laboral' && $datos['nuevoEstado'] == 'aprobada') {
     
@@ -97,7 +97,7 @@ class SolicitudController {
         }
     }
 
-    public function solicitudesRealizadas($cedula, $id_departamento) {
+    public function solicitudesRealizadas($cedula) {
         // Si no se proporciona la cédula, retorna un array vacío
         if (!$cedula) {
             return [];
@@ -206,7 +206,7 @@ class SolicitudController {
                 if ($registroExitoso) { // Se evalúa si es verdadero
                     // Obtener el email del líder del proceso
                     $info_lider = $this->solicitudModel->lideres_proceso($departamento);
-                    // $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);
+                    $this->solicitudModel->enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider);
                     $_SESSION['mensaje'] = [
                         'titulo' => '¡Bien!',
                         'texto' => 'Registro de solicitud exitoso.',
