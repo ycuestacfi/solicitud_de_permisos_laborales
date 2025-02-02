@@ -124,7 +124,7 @@ class solicitudModel {
     }
 
     public function solicitudes_realizadas($cedula){
-        $sql = "SELECT * FROM solicitudes WHERE cedula = ? ORDER BY fecha_solicitud DESC";
+        $sql = "SELECT * FROM solicitudes WHERE cedula = ? ORDER BY fecha_solicitud DESC;";
         $smtp = $this->db->prepare($sql);
         $smtp->execute([$cedula]);
         return $smtp->fetchAll(PDO::FETCH_ASSOC);
@@ -172,6 +172,15 @@ class solicitudModel {
         $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Devolver los resultados (si es necesario)
+        return $resultados;
+    }
+
+    public function ver_historico() {
+        $sql = "SELECT s.*, d.nombre_departamento AS nombre_departamento FROM solicitudes s JOIN departamentos d ON s.id_departamento = d.id_departamento WHERE s.estado_revision = 'terminada' ORDER BY s.fecha_permiso DESC;";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
 

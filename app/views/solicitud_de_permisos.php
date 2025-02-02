@@ -41,9 +41,22 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <main>
+    <?php
+        if (isset($_SESSION['mensaje'])) {
+            echo "<script>
+                Swal.fire({
+                    title: '" . $_SESSION['mensaje']['titulo'] . "',
+                    text: '" . $_SESSION['mensaje']['texto'] . "',
+                    icon: '" . $_SESSION['mensaje']['icono'] . "'
+                });
+            </script>";
+            unset($_SESSION['mensaje']); // Limpiar la sesión después de mostrar la alerta
+        }    
+    ?>
     <section id="navigation">
         <nav>
             <figure style="margin:0; padding:0; width:150px;">
@@ -81,7 +94,7 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
         </nav>
     </section>
     <section id="fondo-form" >
-        <form action="" method="POST" id="formulario-solicitud" >  
+        <form action="/solicitud_de_permisos_laborales/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" >  
                 
             <input 
             value="<?php echo $_SESSION['rol']; ?>" 
@@ -185,13 +198,13 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
                 <label for="departamento">Departamento de desplazamiento:</label>
                 <select class="input_solicitud" id="departamento_de_desplazamiento" name="departamento_de_desplazamiento" required>
                     <option value="">Seleccione un departamento</option>
-                    <option value="Valle del cauca">Valle del cauca</option>
+                   
                 </select>
             
                 <label for="municipio">Municipio de desplazamiento:</label>
                 <select class="input_solicitud" style="color:black;" id="municipio_del_desplazamiento" name="municipio_del_desplazamiento" required disabled>
                     <option value="">Seleccione un municipio</option>
-                    <option value="El cerrito">El cerrito</option>
+                    
                 </select>
 
                 <input type="text" class="input_solicitud" 
@@ -225,23 +238,6 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
                 
             </div> 
         </form>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            try {
-                $resultado = $solicitudController->procesarFormulario();
-                if ($resultado) {
-                    echo '<div class="alert alert-success">Solicitud enviada correctamente</div>'. $resultado;
-                } else {
-                    echo '<div class="alert alert-error">Error al procesar la solicitud</div>' . $resultado;
-                    echo '<br>';
-                }
-            } catch (Exception $e) {
-                error_log($e->getMessage());
-                echo '<div class="alert alert-error">Error inesperado</div>';
-            }
-        }
-        ?>
-
 
         <div id="fondo-formulario">
         

@@ -1,5 +1,9 @@
 <?php
 require_once __DIR__ . '/../models/UserModel.php';
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 class UserController {
     private $userModel;
 
@@ -15,6 +19,7 @@ class UserController {
         }else{
             return 'No se encontraron usuarios';
         }
+        
     }
 
     public function registrarUsuario($nombres, $apellidos, $cedula, $correo, $departamento, $rol, $usuario, $password) {
@@ -42,5 +47,41 @@ class UserController {
         } else {
             return ['error' => true, 'mensaje' => 'Error en el registro. Por favor, intenta de nuevo.'];
         }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+    $nombres = $_POST['nombres'];
+    $apellidos = $_POST['apellidos'];
+    $cedula = $_POST['cedula'];
+    $correo = $_POST['correo'];
+    $departamento = $_POST['departamento'];
+    $rol = $_POST['rol'];
+    $usuario = $_POST['usuario'];
+    $password = $_POST['password'];
+
+    // Instanciar el controlador
+    $userController = new UserController();
+
+    // Procesar la solicitud PUT
+    $respuesta = $userController->registrarUsuario($nombres, $apellidos, $cedula, $correo, $departamento, $rol, $usuario, $password);
+
+    if (!$respuesta['error']) {
+        $_SESSION['mensaje'] = [
+            'titulo' => '¡Bien!',
+            'texto' => 'Registro de usuario exitoso.',
+            'icono' => 'success'
+        ];
+        header("Location: /solicitud_de_permisos_laborales/app/views/register.php");
+        exit();
+    } else {
+        $_SESSION['mensaje'] = [
+            'titulo' => 'Vaya...',
+            'texto' => 'Error en el registro. Por favor, intenta de nuevo.',
+            'icono' => 'error'
+        ];
+        header("Location: /solicitud_de_permisos_laborales/app/views/register.php");
+        exit();
     }
 }
