@@ -24,6 +24,7 @@ $departamentocontroler = new departamentoControler();
 $usercontroler = new UserController();
 $departamentos = $departamentocontroler->listarDepartamentos();
 $usuarios_selecion_lider = $usercontroler->selecion_de_lider();  
+ 
 
 ?>
 
@@ -34,6 +35,15 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Departamentos</title>
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/departamentos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: #fff; margin: 15% auto; padding: 20px; width: 50%; border-radius: 8px; position: relative; }
+    .close { position: absolute; top: 10px; right: 20px; font-size: 25px; cursor: pointer; }
+</style>
 </head>
 <body>
     <main>
@@ -81,8 +91,8 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
 
         <!-- Formulario para crear o editar departamento -->
         
-    <section id="crear_departamento">
-    <form action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
+    <section id="gestion_departamentos">
+    <form  id="form_gestion_departamentos" action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
     <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
 
     <label for="nombre_departamento">Nombre del Departamento</label>
@@ -90,7 +100,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
 
     <label for="id_lider">Líder</label>
     <select id="id_lider" name="id_lider">
-        <option value="">Seleccione un líder</option>
+        <option value="4">Seleccione un líder</option>
 
         <?php if (!empty($usuarios_selecion_lider)): ?>
             <?php foreach ($usuarios_selecion_lider as $posibles_lideres): ?>
@@ -107,7 +117,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
     <button type="submit" name="accion" value="crear">Crear Departamento</button>
 
     <!-- Botón para actualizar un departamento existente -->
-    <button type="submit" name="accion" value="actualizar">Actualizar Departamento</button>
+    <!-- <button type="submit" name="accion" value="actualizar">Actualizar Departamento</button> -->
 </form>
     </section>
 
@@ -119,37 +129,77 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
         <!-- Tabla de Departamentos -->
          <section id="tabla_departamentos">
          <h2>Departamentos Existentes</h2>
-        <table style="border: solid 1px var(--blanco);" class="tabla-departamentos">
-            <thead>
-                <tr>
-                    <th>ID Departamento</th>
-                    <th>Nombre del Departamento</th>
-                    <th>Nombre del Líder</th>
+         <table id="tabla_registros" class="tabla-departamentos">
+    <thead>
+        <tr>
+            <th>ID Departamento</th>
+            <th>Nombre del Departamento</th>
+            <th>Nombre del Líder</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($departamentos)): ?>
+            <?php foreach ($departamentos as $departamento): ?>
+                <tr data-id="<?php echo $departamento['id_departamento']; ?>"
+                    data-nombre="<?php echo $departamento['nombre_departamento']; ?>"
+                    data-lider="<?php echo $departamento['id_lider']; ?>">
+                    
+                    <td class="td_solicitud"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
+                    <td class="td_solicitud"><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
+                    <?php if (!empty($departamento['lider_nombre'] && $departamento['lider_apellido'])): ?>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($departamento['lider_nombre'] . ' ' . $departamento['lider_apellido']); ?></td>
+                    <?php else: ?>
+                        <td class="td_solicitud">No hay líder asignado</td>
+                    <?php endif; ?>
+                    <td class="td_solicitud">
+                        <button style="background:none; border:none;" onclick="abrirModal(this)"><i class="fa-solid fa-pen-to-square" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody style="background-color: var(--blanco);">
-                <?php if (($departamentos)): ?>
-                    <?php foreach ($departamentos as $departamento): ?>
-                        <tr >
-                            <td style="border:solid 1px var(--blanco); text-align: center;"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
-                            <td style="border:solid 1px var(--blanco); "><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
-                            <td style="border:solid 1px var(--blanco); ">
-                                <?php 
-                                // Si no hay líder asignado, mostrar un mensaje
-                                echo htmlspecialchars(!empty($departamento['lider_nombre'] . $departamento['lider_apellido']) ? $departamento['lider_nombre'] .' '. $departamento['lider_apellido'] : 'Sin líder asignado'); 
-                                ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="3">No hay departamentos disponibles.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="4">No hay departamentos disponibles.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+<!-- Modal de actualización -->
+<!-- Modal de actualización -->
+<div id="modalActualizar" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <h2>Actualizar Departamento</h2>
+        <form id="formActualizar">
+            <input type="hidden" id="modal_id_departamento">
+            
+            <label>Nombre del Departamento:</label>
+            <input type="text" id="modal_nombre_departamento" required>
+            
+            <label>Líder del Departamento:</label>
+            <select id="modal_id_lider" required>
+            <?php if (!empty($usuarios_selecion_lider)): ?>
+            <?php foreach ($usuarios_selecion_lider as $posibles_lideres): ?>
+                <option value="<?php echo htmlspecialchars($posibles_lideres['id_usuario']); ?>">
+                    <?php echo htmlspecialchars($posibles_lideres['nombres'].' '.$posibles_lideres['apellidos']); ?>
+                </option>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <option value="">No hay líderes disponibles</option>
+        <?php endif; ?>
+            </select>
+
+            <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
+        </form>
+    </div>
+</div>
+
+
          </section>
         
     </main>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/actualizar_departamentos.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/respuesta_departamentos.js"></script>
 </body>
 </html>

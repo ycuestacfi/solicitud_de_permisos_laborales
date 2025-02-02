@@ -14,16 +14,23 @@ if ( $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
 }
 // Cargar dependencias
 
+
 include_once '../controller/UserController.php';
 
 include_once '../controller/departamentoController.php';
 $departamentocontroler = new departamentoControler();
 $departamentos = $departamentocontroler->listarDepartamentos();
+include_once '../controller/departamentoController.php';
+$departamentocontroler = new departamentoControler();
+$departamentos = $departamentocontroler->listarDepartamentos();
 // Obtener la conexión a la base de datos
+
 
 // $pdo = $db->getConnection();
 
 // Instanciar modelo y controlador
+
+$userController = new UserController();
 
 $userController = new UserController();
 
@@ -50,6 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         
     }
+
+    if ($resultado['error'] != 'true') {
+        // Limpiar los campos del formulario
+        $nombres = $apellidos = $cedula = $correo = $departamento = $rol = $usuario = "";
+        
+        
+    }
 }
 
 ?>
@@ -61,6 +75,70 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <p style="color:green;"><?php echo htmlspecialchars($resultado['mensaje']); ?></p>
 <?php endif; ?>
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Departamentos</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/register.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+<main>
+        <?php
+            if (isset($_SESSION['mensaje'])) {
+                echo "<script>
+                    Swal.fire({
+                        title: '" . $_SESSION['mensaje']['titulo'] . "',
+                        text: '" . $_SESSION['mensaje']['texto'] . "',
+                        icon: '" . $_SESSION['mensaje']['icono'] . "'
+                    });
+                </script>";
+                unset($_SESSION['mensaje']); // Limpiar la sesión después de mostrar la alerta
+            }
+        ?>
+        <section id="navigation">
+
+                <nav>
+                <figure style="margin:0; padding:0; width:150px;">
+                    <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+                </figure>
+                <div id="btn_menu">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                
+                <ul id="menu">
+            
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
+                echo '<li><a href="dashboard.php">Inicio</a></li>';
+            }
+            ?>
+            
+            <li><a href="solicitudes.php">Mis solicitudes</a></li>
+            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
+                    
+                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
+                    echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
+                    echo '<li><a href="historico.php"> Historico </a></li>';
+                }
+            ?>
+            <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
+                    echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
+                }
+            ?>
+            
+            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+        </ul>
+                
+            </nav>
+        </section>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -148,8 +226,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <option value="10">Debido a la falta de departamentos se asignará Talento Humano</option>
         <?php endif; ?>
     </datalist>
+    <input class="input_solicitud" placeholder="lista de departamentos" list="departamentos" name="departamento" required>  
+    <datalist id="departamentos">
+        <?php if ($departamentos): ?>
+            <?php foreach ($departamentos as $departamento): ?>
+                <option value="<?php echo htmlspecialchars($departamento['id_departamento']); ?>" ><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></option>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <option value="10">Debido a la falta de departamentos se asignará Talento Humano</option>
+        <?php endif; ?>
+    </datalist>
 
     <label for="rol">Seleccione el rol del usuario:</label>
+    <input class="input_solicitud" placeholder="lista de roles" list="roles" name="rol" required>
+    <datalist id="roles">
+        <option value="solicitante">Solicitante</option>
+        <option value="lider_aprobador">Líder Aprobador</option>
+        <option value="administrador">Administrador</option>
+    </datalist>
+     
     <input class="input_solicitud" placeholder="lista de roles" list="roles" name="rol" required>
     <datalist id="roles">
         <option value="solicitante">Solicitante</option>
@@ -167,6 +262,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <button type="submit" style="background-color: var(--verde-corporativo); border: solid 1px var(--blanco); width: 50%; margin: 0 auto; top: 13px; position: relative;">Registrar</button>
 </form>
 
+</main>
+</body>
+</html>
 </main>
 </body>
 </html>
