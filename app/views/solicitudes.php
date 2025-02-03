@@ -231,24 +231,33 @@ input[type="file"] {
                                     <i class="fa-regular fa-comment" style="font-size: 22px; color:#A3B8C9;"></i>
                                 </button>
 
-                                <?php if (empty($solicitud['evidencia'])): ?>
-                                    <!-- Botón para subir evidencia si no existe -->
-                                    <button class="btn_accion_solicitud" onclick="mostrarModalSubirEvidencia('<?php echo $solicitud['identificador_solicitud']; ?>')">
-                                        <i class="fa-solid fa-upload" style="font-size: 22px; color:#E6A57E;"></i>
-                                    </button>
-                                    <?php else: ?>
-                                        <?php 
-                                            $ruta = $solicitud['evidencia'];
-                                            if($ruta == "") {
-                                                $ruta_relativa = null;
-                                            } else {
-                                            $ruta_relativa = str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);
-                                            }
+                                <?php 
+                                    // Obtener la fecha de la solicitud y la fecha actual
+                                    $fechaSolicitud = new DateTime($solicitud['fecha_solicitud']); // Asegúrate de que el campo en la BD se llama 'fecha_solicitud'
+                                    $fechaActual = new DateTime();
+                                    $diferenciaDias = $fechaSolicitud->diff($fechaActual)->days; // Calcula la diferencia en días
+
+                                    // Determinar los días de tolerancia según el tipo de permiso
+                                    $diasTolerancia = ($solicitud['tipo_permiso'] === 'calamidad domestica') ? 3 : 1;
+                                    if (empty($solicitud['evidencia'])):
+                                        if ($diferenciaDias > $diasTolerancia): ?>
+                                            <!-- Mostrar icono de equis si ha pasado el tiempo permitido -->
+                                            <i class="fa-solid fa-xmark" style="font-size: 22px; color:red;"></i>
+                                        <?php else: ?>
+                                            <!-- Botón para subir evidencia si aún está dentro del tiempo permitido -->
+                                            <button class="btn_accion_solicitud" onclick="mostrarModalSubirEvidencia('<?php echo $solicitud['identificador_solicitud']; ?>')">
+                                                <i class="fa-solid fa-upload" style="font-size: 22px; color:#E6A57E;"></i>
+                                            </button>
+                                        <?php endif;
+                                    else: 
+                                        // Procesar la ruta de la evidencia
+                                        $ruta = $solicitud['evidencia'];
+                                        $ruta_relativa = ($ruta == "") ? null : str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);
                                         ?>
-                                    <!-- Botón para ver evidencia si ya existe -->
-                                    <button class="btn_accion_solicitud" onclick="verEvidencia('<?php echo $ruta_relativa; ?>')">
-                                        <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
-                                    </button>
+                                        <!-- Botón para ver evidencia si ya existe -->
+                                        <button class="btn_accion_solicitud" onclick="verEvidencia('<?php echo $ruta_relativa; ?>')">
+                                            <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
+                                        </button>
                                 <?php endif; ?>
                             </td>                        
                     </tr>
