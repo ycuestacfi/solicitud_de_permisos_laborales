@@ -167,6 +167,7 @@ class SolicitudController {
                 $placa_vehiculo = $_POST['placa_vehiculo'];
             }
         }
+        $evidenciaPath = $this->guardarArchivo();
     
         try {
             
@@ -200,7 +201,7 @@ class SolicitudController {
                     $medio_de_transporte,
                     $placa_vehiculo
                     // ,
-                    // $evidencias
+                    // $evidenciaPath
                 );
         
                 if ($registroExitoso) { // Se evalúa si es verdadero
@@ -234,6 +235,33 @@ class SolicitudController {
         }
     }
 
+    private function guardarArchivo() {
+        if (isset($_FILES['evidencias']) && $_FILES['evidencias']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/evidencias/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            
+            $file = $_FILES['evidencias'];
+            $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+            $maxFileSize = 100 * 1024 * 1024;
+            
+            if (!in_array($fileExt, $allowedExtensions)) {
+                return null;
+            } elseif ($file['size'] > $maxFileSize) {
+                return null;
+            } else {
+                $uniqueId = uniqid('solicitud_', true) . '.' . $fileExt;
+                $uploadPath = $uploadDir . $uniqueId;
+                
+                if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                    return $uploadPath;
+                }
+            }
+        }
+        return null;
+    }
     // Método para manejar las solicitudes PUT
     public function procesarPutRequest() {
         // Limpiar cualquier salida previa
