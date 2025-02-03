@@ -126,77 +126,80 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
 
         
 
-        <!-- Tabla de Departamentos -->
-         <section id="tabla_departamentos">
-         <h2>Departamentos Existentes</h2>
-         <table id="tabla_registros" class="tabla-departamentos">
-    <thead>
-        <tr>
-            <th>ID Departamento</th>
-            <th>Nombre del Departamento</th>
-            <th>Nombre del Líder</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($departamentos)): ?>
-            <?php foreach ($departamentos as $departamento): ?>
-                <tr data-id="<?php echo $departamento['id_departamento']; ?>"
-                    data-nombre="<?php echo $departamento['nombre_departamento']; ?>"
-                    data-lider="<?php echo $departamento['id_lider']; ?>">
-                    
-                    <td class="td_solicitud"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
-                    <td class="td_solicitud"><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
-                    <?php if (!empty($departamento['lider_nombre'] && $departamento['lider_apellido'])): ?>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($departamento['lider_nombre'] . ' ' . $departamento['lider_apellido']); ?></td>
-                    <?php else: ?>
-                        <td class="td_solicitud">No hay líder asignado</td>
-                    <?php endif; ?>
-                    <td class="td_solicitud">
-                        <button style="background:none; border:none;" onclick="abrirModal(this)"><i class="fa-solid fa-pen-to-square" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
-                    </td>
+<!-- Tabla de Departamentos -->
+<section id="tabla_departamentos">
+    <h2>Departamentos Existentes</h2>
+    
+    <div style="overflow-y: auto; max-height: 400px;">
+        <table id="tabla_registros" class="tabla-departamentos">
+            <thead>
+                <tr>
+                    <th>ID Departamento</th>
+                    <th>Nombre del Departamento</th>
+                    <th>Nombre del Líder</th>
+                    <th>Acciones</th>
                 </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="4">No hay departamentos disponibles.</td>
-            </tr>
-        <?php endif; ?>
-    </tbody>
-</table>
-
-<!-- Modal de actualización -->
-<!-- Modal de actualización -->
-<div id="modalActualizar" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <h2>Actualizar Departamento</h2>
-        <form id="formActualizar">
-            <input type="hidden" id="modal_id_departamento">
-            
-            <label>Nombre del Departamento:</label>
-            <input type="text" id="modal_nombre_departamento" required>
-            
-            <label>Líder del Departamento:</label>
-            <select id="modal_id_lider" required>
-            <?php if (!empty($usuarios_selecion_lider)): ?>
-            <?php foreach ($usuarios_selecion_lider as $posibles_lideres): ?>
-                <option value="<?php echo htmlspecialchars($posibles_lideres['id_usuario']); ?>">
-                    <?php echo htmlspecialchars($posibles_lideres['nombres'].' '.$posibles_lideres['apellidos']); ?>
-                </option>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <option value="">No hay líderes disponibles</option>
-        <?php endif; ?>
-            </select>
-
-            <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
-        </form>
+            </thead>
+            <tbody>
+                <?php if (!empty($departamentos)): ?>
+                    <?php foreach ($departamentos as $departamento): ?>
+                        <tr data-id="<?php echo $departamento['id_departamento']; ?>"
+                            data-nombre="<?php echo $departamento['nombre_departamento']; ?>"
+                            data-lider="<?php echo $departamento['id_lider']; ?>">
+                            
+                            <td class="td_solicitud"><?php echo htmlspecialchars($departamento['id_departamento']); ?></td>
+                            <td class="td_solicitud"><?php echo htmlspecialchars($departamento['nombre_departamento']); ?></td>
+                            <?php if (!empty($departamento['lider_nombre'] && $departamento['lider_apellido'])): ?>
+                                <td class="td_solicitud"><?php echo htmlspecialchars($departamento['lider_nombre'] . ' ' . $departamento['lider_apellido']); ?></td>
+                            <?php else: ?>
+                                <td class="td_solicitud">No hay líder asignado</td>
+                            <?php endif; ?>
+                            <td class="td_solicitud">
+                                <button style="background:none; border:none;" onclick="abrirModal(this)"><i class="fa-solid fa-pen-to-square" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="4">No hay departamentos disponibles.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
-</div>
+
+    <!-- Modal de actualización -->
+    <!-- Modal de actualización -->
+    <div id="modalActualizar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Actualizar Departamento</h2>
+            <form id="formActualizar">
+                <input type="hidden" id="modal_id_departamento">
+                
+                <label>Nombre del Departamento:</label>
+                <input type="text" id="modal_nombre_departamento" required>
+                
+                <label>Líder del Departamento:</label>
+                <select id="modal_id_lider" required>
+                <?php if (!empty($usuarios_selecion_lider)): ?>
+                <?php foreach ($usuarios_selecion_lider as $posibles_lideres): ?>
+                    <option value="<?php echo htmlspecialchars($posibles_lideres['id_usuario']); ?>">
+                        <?php echo htmlspecialchars($posibles_lideres['nombres'].' '.$posibles_lideres['apellidos']); ?>
+                    </option>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <option value="">No hay líderes disponibles</option>
+            <?php endif; ?>
+                </select>
+
+                <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
 
 
-         </section>
+</section>
         
     </main>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/actualizar_departamentos.js"></script>

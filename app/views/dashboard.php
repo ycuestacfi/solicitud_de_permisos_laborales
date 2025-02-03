@@ -35,6 +35,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
+    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/modal_evidencia.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -44,6 +45,13 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <div class="modal-content">
         <span class="close" onclick="cerrarModal()">&times;</span>
         <p id="mensajeModal"></p>
+    </div>
+</div>
+
+<div id="modalEvidencia" class="modal">
+    <div class="modal-contenido">
+        <span class="close" onclick="cerrarModalE()">&times;</span>
+        <img id="imagenEvidencia" src="" alt="Evidencia" class="imagen-evidencia">
     </div>
 </div>
 
@@ -61,6 +69,8 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     z-index: 9999;
     padding-top: 100px;
     text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Contenido del Modal */
@@ -72,42 +82,49 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     margin: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
     position: relative;
-    top:20%;
+    top: 20%;
+    max-width: 90%;
 }
 
 /* Estilo de la X para cerrar */
 .close {
-    color: #aaa;
-    font-size: 28px;
+    color: #333; /* Más oscuro */
+    font-size: 24px;
     font-weight: bold;
     position: absolute;
     top: 10px;
     right: 15px;
     cursor: pointer;
+    background: rgba(0, 0, 0, 0.1); /* Fondo circular con transparencia */
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+    background: rgba(0, 0, 0, 0.3); /* Fondo más oscuro al pasar el mouse */
+    color: #fff; /* La X se vuelve blanca */
 }
 
-/* Mensaje dentro del modal */
-#mensajeConfirmacion {
+/* Estilo del mensaje */
+#mensajeModal {
     font-size: 16px;
     margin-bottom: 20px;
     color: #333;
     font-family: 'Arial', sans-serif;
 }
 
-/* Contenedor de los botones */
+/* Botones dentro del modal de confirmación */
 .modal-buttons {
     display: flex;
     justify-content: space-around;
 }
 
-/* Estilo de los botones */
 .modal-buttons button {
     background-color: #4CAF50; /* Verde para el "Sí" */
     color: white;
@@ -217,7 +234,15 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['tipo_permiso']); ?></td>
                     <td class="td_solicitud">
                         <button class="btn_accion_solicitud" 
-                            onclick="procesarSolicitud4('evidencia', <?php echo $pruebas1['id_solicitud']; ?>)">
+                            <?php 
+                                $ruta = $pruebas1['evidencia'];
+                                if($ruta == "") {
+                                    $ruta_relativa = null;
+                                } else {
+                                $ruta_relativa = str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);
+                                }
+                            ?>
+                            onclick="mostrarEvidencia('<?php echo $ruta_relativa; ?>')">
                             <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
                         </button>
                     </td>
@@ -308,5 +333,6 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/estado_solicitud.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/evidencia.js"></script>
 </body>
 </html>

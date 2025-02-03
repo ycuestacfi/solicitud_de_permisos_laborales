@@ -94,7 +94,7 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
         </nav>
     </section>
     <section id="fondo-form" >
-        <form action="/solicitud_de_permisos_laborales/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" >  
+        <form action="/solicitud_de_permisos_laborales/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" enctype="multipart/form-data">  
                 
             <input 
             value="<?php echo $_SESSION['rol']; ?>" 
@@ -172,7 +172,8 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
 
             <input type="file" hidden name="evidencias" class="input_solicitud" 
                 id="evidencias" 
-                title="Solo se permiten archivos PDF o imágenes (JPEG, PNG, GIF).">
+                title="Solo se permiten archivos PDF o imágenes (JPEG, PNG, GIF)."
+                accept=".jpg, .jpeg, .png, .pdf">
 
             <div id="contenedor-permiso" class="contenedor-permiso">
                 <div id="selected-option" class="selected-option">Seleccione un tipo de permiso</div>

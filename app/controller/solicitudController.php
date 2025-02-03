@@ -62,6 +62,29 @@ class SolicitudController {
         }
     }
 
+    // Método para manejar las solicitudes PUT
+    public function procesarPutRequest() {
+        // Limpiar cualquier salida previa
+        ob_clean();
+        // Verificar si la solicitud es PUT
+        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+            // Obtener los datos en formato JSON del cuerpo de la solicitud
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            // Verificar que los datos necesarios estén presentes
+            if (isset($data['idSolicitud']) && isset($data['nuevoEstado'])) {
+                // Llamar a la función cambiarEstadoSolicitud con los datos recibidos
+                $resultado = $this->cambiarEstadoSolicitud($data);
+                
+                // Responder con los resultados en formato JSON
+                echo json_encode(['resultado' => 'Estado cambiado.']);
+            } else {
+                // Si faltan parámetros, responder con un error
+                echo json_encode(['error' => 'Faltan parámetros']);
+            }
+        } 
+    }
+
     public function conseguirInfoLaboral($identificador) {
         if ($identificador != null) {
             $info = $this->solicitudModel->infoLaboral($identificador);
@@ -199,9 +222,8 @@ class SolicitudController {
                     $municipio_del_desplazamiento,
                     $lugar_desplazamiento,
                     $medio_de_transporte,
-                    $placa_vehiculo
-                    // ,
-                    // $evidenciaPath
+                    $placa_vehiculo,
+                    $evidenciaPath
                 );
         
                 if ($registroExitoso) { // Se evalúa si es verdadero
@@ -237,7 +259,7 @@ class SolicitudController {
 
     private function guardarArchivo() {
         if (isset($_FILES['evidencias']) && $_FILES['evidencias']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/evidencias/';
+            $uploadDir = __DIR__ . '/../assets/evidencias/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -259,31 +281,32 @@ class SolicitudController {
                     return $uploadPath;
                 }
             }
+        }elseif (isset($_FILES['subir_evidencia']) && $_FILES['subir_evidencia']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/../assets/evidencias/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            
+            $file = $_FILES['subir_evidencia'];
+            $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf'];
+            $maxFileSize = 100 * 1024 * 1024;
+            
+            if (!in_array($fileExt, $allowedExtensions)) {
+                return null;
+            } elseif ($file['size'] > $maxFileSize) {
+                return null;
+            } else {
+                $uniqueId = uniqid('solicitud_', true) . '.' . $fileExt;
+                $uploadPath = $uploadDir . $uniqueId;
+                
+                if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+                    return $uploadPath;
+                }
+            }
         }
         return null;
-    }
-    // Método para manejar las solicitudes PUT
-    public function procesarPutRequest() {
-        // Limpiar cualquier salida previa
-        ob_clean();
-        // Verificar si la solicitud es PUT
-        if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-            // Obtener los datos en formato JSON del cuerpo de la solicitud
-            $data = json_decode(file_get_contents("php://input"), true);
-
-            // Verificar que los datos necesarios estén presentes
-            if (isset($data['idSolicitud']) && isset($data['nuevoEstado'])) {
-                // Llamar a la función cambiarEstadoSolicitud con los datos recibidos
-                $resultado = $this->cambiarEstadoSolicitud($data);
-                
-                // Responder con los resultados en formato JSON
-                echo json_encode(['resultado' => 'Estado cambiado.']);
-            } else {
-                // Si faltan parámetros, responder con un error
-                echo json_encode(['error' => 'Faltan parámetros']);
-            }
-        } 
-    }
+    } 
     
     public function historico($datos) {
         $historicos = $this->solicitudModel->historico($datos);
@@ -324,6 +347,13 @@ class SolicitudController {
 
     }
 
+    public function subirEvidencia() {
+        $evidenciaPath = $this->guardarArchivo();
+        $identificador = $_POST['identificador_solicitud'];
+
+        return $this->solicitudModel->subirEvidencia($evidenciaPath,$identificador);
+    }
+
 }
 
 // Instanciar el controlador
@@ -332,7 +362,20 @@ $solicitudController = new SolicitudController();
 // Procesar la solicitud PUT
 $solicitudController->procesarPutRequest();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+if (isset($_FILES['subir_evidencia']) && $_FILES['subir_evidencia']['error'] === UPLOAD_ERR_OK){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $solicitudController = new SolicitudController();
+        $resultado = $solicitudController->subirEvidencia();
+
+        if($resultado) {
+            header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
+        } else {
+            echo json_encode("ERROR");
+        }
+    }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' ){
 
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
@@ -347,3 +390,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $solicitudController->procesarFormulario($nombre, $email, $cedula, $departamento, $fecha_de_solicitud, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada);
 }
+

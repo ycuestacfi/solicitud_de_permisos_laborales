@@ -41,6 +41,17 @@ function cerrarModal() {
     }
 }
 
+// Cerrar el modal si se hace clic fuera de la imagen
+document.addEventListener("DOMContentLoaded", function () {
+    let modal = document.getElementById("modalConfirmacion");
+
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            cerrarModal();
+        }
+    });
+});
+
 function realizarAccion() {
     if (!accionPendiente) {
         console.error('No hay acción pendiente para procesar');

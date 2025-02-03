@@ -66,13 +66,13 @@ class solicitudModel {
     }
 
      // Método para registrar una solicitud en la base de datos
-     public function registrarSolicitud($nombre, $email, $cedula, $departamento, $fecha_solicitud, $fecha_permiso, $hora_salida, $hora_llegada, $observaciones, $tipo_permiso, $motivo_del_desplazamiento, $departamento_de_desplazamiento, $municipio_del_desplazamiento, $lugar_desplazamiento, $medio_de_transporte, $placa_vehiculo) {
+     public function registrarSolicitud($nombre, $email, $cedula, $departamento, $fecha_solicitud, $fecha_permiso, $hora_salida, $hora_llegada, $observaciones, $tipo_permiso, $motivo_del_desplazamiento, $departamento_de_desplazamiento, $municipio_del_desplazamiento, $lugar_desplazamiento, $medio_de_transporte, $placa_vehiculo, $url_evidencia) {
         // Consulta para insertar los datos en la tabla de solicitudes
         $identificador = $this -> generarIdentificador();
 
         if ($tipo_permiso !== "laboral") {
-            $sql = "INSERT INTO solicitudes (identificador_solicitud, nombre, cedula, correo, id_departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_ingreso, observaciones, tipo_permiso) 
-                    VALUES (:identificador_solicitud, :nombre, :cedula, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso)";
+            $sql = "INSERT INTO solicitudes (identificador_solicitud, nombre, cedula, correo, id_departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_ingreso, observaciones, tipo_permiso, evidencia) 
+                    VALUES (:identificador_solicitud, :nombre, :cedula, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso, :evidencia)";
             
             $stmt = $this->db->prepare($sql);
             
@@ -89,13 +89,16 @@ class solicitudModel {
             $stmt->bindParam(':hora_llegada', $hora_llegada);
             $stmt->bindParam(':observaciones', $observaciones);
             $stmt->bindParam(':tipo_permiso', $tipo_permiso);
+            $stmt->bindParam(':evidencia', $url_evidencia);
+
+            var_dump($url_evidencia);
 
             // Ejecutar la consulta
             return $stmt->execute();
 
         }else {
-            $sql = "INSERT INTO solicitudes (identificador_solicitud, nombre, cedula, correo, id_departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_ingreso, observaciones, tipo_permiso, motivo_del_desplazamiento, departamento_del_desplazamiento, municipio_del_desplazamiento, lugar_del_desplazamiento, medio_de_transporte, placa_vehiculo) 
-            VALUES (:identificador_solicitud, :nombre, :cedula, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso, :motivo_del_desplazamiento, :departamento_del_desplazamiento, :municipio_del_desplazamiento, :lugar_del_desplazamiento, :medio_de_transporte, :placa_vehiculo)";
+            $sql = "INSERT INTO solicitudes (identificador_solicitud, nombre, cedula, correo, id_departamento, fecha_solicitud, fecha_permiso, hora_salida, hora_ingreso, observaciones, tipo_permiso, evidencia, motivo_del_desplazamiento, departamento_del_desplazamiento, municipio_del_desplazamiento, lugar_del_desplazamiento, medio_de_transporte, placa_vehiculo) 
+            VALUES (:identificador_solicitud, :nombre, :cedula, :email, :departamento, :fecha_solicitud, :fecha_permiso, :hora_salida, :hora_llegada, :observaciones, :tipo_permiso, :evidencia, :motivo_del_desplazamiento, :departamento_del_desplazamiento, :municipio_del_desplazamiento, :lugar_del_desplazamiento, :medio_de_transporte, :placa_vehiculo)";
         
             $stmt = $this->db->prepare($sql);
             
@@ -111,6 +114,7 @@ class solicitudModel {
             $stmt->bindParam(':hora_llegada', $hora_llegada);
             $stmt->bindParam(':observaciones', $observaciones);
             $stmt->bindParam(':tipo_permiso', $tipo_permiso);
+            $stmt->bindParam(':evidencia', $url_evidencia);
             $stmt->bindParam(':motivo_del_desplazamiento', $motivo_del_desplazamiento);
             $stmt->bindParam(':departamento_del_desplazamiento', $departamento_de_desplazamiento);
             $stmt->bindParam(':municipio_del_desplazamiento', $municipio_del_desplazamiento);
@@ -239,6 +243,25 @@ class solicitudModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function subirEvidencia($evidenciaPath,$identificador) {
+        // Consulta SQL para actualizar la ruta de la evidencia en la base de datos
+        $sql = "UPDATE solicitudes SET evidencia = :rutaEvidencia WHERE identificador_solicitud = :idSolicitud";
+
+        // Preparar la consulta
+        $stmt = $this->db->prepare($sql);
+
+        // Enlazar los parámetros
+        $stmt->bindParam(':rutaEvidencia', $evidenciaPath);
+        $stmt->bindParam(':idSolicitud', $identificador);
+
+        // Ejecutar la consulta
+        if ($stmt->execute()) {
+            return true;  // Si la actualización fue exitosa
+        } else {
+            return false; // Si hubo un error
+        }
+    }
+
     // Método para enviar un correo con la información de la solicitud
     public function enviarCorreo($nombre, $cedula, $email, $fecha_de_solicitud, $tipo_permiso, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada, $observaciones, $info_lider) {
 
@@ -340,7 +363,7 @@ class solicitudModel {
             $headers = "MIME-Version: 1.0\r\n";
             $headers .= "Content-type: text/html; charset=UTF-8\r\n";
             $headers .= "From: jhoyos@providenciacfi.com \r\n";
-            $headers .= "CC: ycuesta@providenciacfi.com \r\n";
+            // $headers .= "CC: ycuesta@providenciacfi.com \r\n";
             
         mail($to, $subject, $mensaje, $headers);
 

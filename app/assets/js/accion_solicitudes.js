@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`${apiBaseUrl}/Department`)
     .then(response => response.json())
     .then(departamentos => {
-        console.log('Departamentos obtenidos:', departamentos);
         departamentos.forEach(departamento => {
-            console.log('Departamento cargado:', departamento.name); // <-- Agregado
             const option = document.createElement('option');
             option.value = departamento.name; // El value será el nombre del departamento
             option.textContent = departamento.name; // Texto visible será el nombre
