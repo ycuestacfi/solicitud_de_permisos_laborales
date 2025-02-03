@@ -6,7 +6,7 @@ include_once '../controller/solicitudController.php';
 $solicitudController = new SolicitudController();
 if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     // Si no ha iniciado sesión, redirigir al login
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /Sdp/app/views/login.php ");
     exit();
 }
 
@@ -40,7 +40,7 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
     <!-- iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
+    <link rel="stylesheet" href="/Sdp/app/assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -60,7 +60,7 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
     <section id="navigation">
         <nav>
             <figure style="margin:0; padding:0; width:150px;">
-                <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+                <a href="dashboard.php"><img src="/Sdp/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
             </figure>
             <div id="btn_menu">
                 <div></div>
@@ -89,12 +89,12 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
                     echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
                 }?>
                 
-                <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+                <li><a href="/Sdp/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
             </ul>
         </nav>
     </section>
     <section id="fondo-form" >
-        <form action="/solicitud_de_permisos_laborales/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" >  
+        <form action="/Sdp/app/controller/solicitudController.php" method="POST" id="formulario-solicitud" >  
                 
             <input 
             value="<?php echo $_SESSION['rol']; ?>" 
@@ -252,9 +252,9 @@ $departamentos = $departamentocontroler->getDepartamentodata($id_departamento);
     <footer >
         <p>&copy; 2024 Copyright: Aviso de privacidad, Términos y condiciones. Todos los derechos reservados.</p>
     </footer>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/accion_solicitudes.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
+    <script src="/Sdp/app/assets/js/accion_solicitudes.js"></script>
+    <script src="/Sdp/app/assets/js/main.js"></script>
+    <script src="/Sdp/app/assets/js/menu.js"></script>
 
 </body>
 </html>

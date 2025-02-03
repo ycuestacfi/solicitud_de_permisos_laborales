@@ -6,13 +6,13 @@ if (session_status() == PHP_SESSION_NONE) {
 if (!isset($_SESSION['estado'])) {
     if ($_SESSION['estado'] !== "activo"){
     // Si no ha iniciado sesión, redirigir al login
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /Sdp/app/views/login.php ");
     exit();
     }
 }
 
 if ($_SESSION['rol'] !== "lider_aprobador" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /Sdp/app/views/login.php ");
     exit();
 }
 require_once __DIR__ . '/../controller/solicitudController.php';
@@ -33,8 +33,8 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <title>Ejemplo de Estructura HTML5</title>
     <!-- iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
-    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
+    <link rel="stylesheet" href="/Sdp/app/assets/css/style.css">
+    <link rel="stylesheet" href="/Sdp/app/assets/css/tarjetas.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
@@ -154,7 +154,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <section id="navigation">
     <nav>
         <figure style="margin:0; padding:0; width:150px;">
-            <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+            <a href="dashboard.php"><img src="/Sdp/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
         </figure>
         <div id="btn_menu">
             <div></div>
@@ -181,7 +181,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
             ?>
           
             
-            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+            <li><a href="/Sdp/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
     </nav>
@@ -304,9 +304,9 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     <footer>
         <p>&copy; 2024 Mi Empresa. Todos los derechos reservados.</p>
     </footer>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/estado_solicitud.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
+    <script src="/Sdp/app/assets/js/main.js"></script>
+    <script src="/Sdp/app/assets/js/menu.js"></script>
+    <script src="/Sdp/app/assets/js/estado_solicitud.js"></script>
+    <script src="/Sdp/app/assets/js/tarjetas.js"></script>
 </body>
 </html>

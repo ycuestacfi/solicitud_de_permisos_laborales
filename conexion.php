@@ -8,10 +8,10 @@ class ConectService {
      
         //local
              $rutaServidor = "localhost";
-             $puerto = "3307";
-             $usuario = "root";
-             $contrasena = "";
-             $BD = "solicitud_permisos";
+             $puerto = "3306";
+             $usuario = "providencia_solicitud_de_permisos_laborales";
+             $contrasena = "Pr0v1d3nc14$#2025*";
+             $BD = "providencia_solicitud_de_permisos";
 
         // real
             // $contrasena = "Pr0v1d3nc14$#cfip2025*";

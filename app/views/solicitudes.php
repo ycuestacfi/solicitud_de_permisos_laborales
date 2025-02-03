@@ -31,8 +31,8 @@ $respuesta_solicitudes = $solicitudes;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Solicitudes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
-    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
+    <link rel="stylesheet" href="/Sdp/app/assets/css/style.css">
+    <link rel="stylesheet" href="/Sdp/app/assets/css/tarjetas.css">
 </head>
 <body>
     <main>
@@ -40,7 +40,7 @@ $respuesta_solicitudes = $solicitudes;
             <nav>
                 <figure style="margin:0; padding:0; width:150px;">
                     <a href="dashboard.php">
-                        <img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt="">
+                        <img src="/Sdp/app/assets/img/logocfipblanco.png" style="width: 100%;" alt="">
                     </a>
                 </figure>
                 <div id="btn_menu">
@@ -71,7 +71,7 @@ $respuesta_solicitudes = $solicitudes;
                         }
                     ?>
                     
-                    <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+                    <li><a href="/Sdp/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
                 </ul>
             </nav>
         </section>
@@ -116,8 +116,8 @@ $respuesta_solicitudes = $solicitudes;
     <footer>
         <p>&copy; 2024 Copyright: Aviso de privacidad, Términos y condiciones. Todos los derechos reservados.</p>
     </footer>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
+    <script src="/Sdp/app/assets/js/main.js"></script>
+    <script src="/Sdp/app/assets/js/menu.js"></script>
+    <script src="/Sdp/app/assets/js/tarjetas.js"></script>
 </body>
 </html>

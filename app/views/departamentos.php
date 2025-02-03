@@ -6,13 +6,13 @@ if (session_status() == PHP_SESSION_NONE) {
 if (!isset($_SESSION['estado'])) {
     if ($_SESSION['estado'] !== "activo"){
     // Si no ha iniciado sesión, redirigir al login
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /Sdp/app/views/login.php ");
     exit();
     }
 }
 
 if ($_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /Sdp/app/views/login.php ");
     exit();
 }
 
@@ -51,7 +51,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
 
                 <nav>
                 <figure style="margin:0; padding:0; width:150px;">
-                    <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+                    <a href="dashboard.php"><img src="/Sdp/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
                 </figure>
                 <div id="btn_menu">
                     <div></div>
@@ -81,7 +81,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                 }
             ?>
             
-            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+            <li><a href="/Sdp/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
                 
             </nav>
@@ -92,7 +92,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
         <!-- Formulario para crear o editar departamento -->
         
     <section id="gestion_departamentos">
-    <form  id="form_gestion_departamentos" action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
+    <form  id="form_gestion_departamentos" action="/Sdp/app/controller/departamentoController.php" method="POST">
     <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
 
     <label for="nombre_departamento">Nombre del Departamento</label>
@@ -199,7 +199,7 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
          </section>
         
     </main>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/actualizar_departamentos.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/respuesta_departamentos.js"></script>
+    <script src="/Sdp/app/assets/js/actualizar_departamentos.js"></script>
+    <script src="/Sdp/app/assets/js/respuesta_departamentos.js"></script>
 </body>
 </html>

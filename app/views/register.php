@@ -5,11 +5,11 @@ if (session_status() == PHP_SESSION_NONE) {
 
 if (!isset($_SESSION['rol'])) {
     // Si no ha iniciado sesión, redirigir al login
-    header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
+    header("Location: /Sdp/app/views/login.php ");
     exit();
 }
 if ( $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
-    header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
+    header("Location: /Sdp/app/views/solicitudes.php ");
     exit();
 }
 // Cargar dependencias
@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <nav>
                 <figure style="margin:0; padding:0; width:150px;">
-                    <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+                    <a href="dashboard.php"><img src="/Sdp/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
                 </figure>
                 <div id="btn_menu">
                     <div></div>
@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             ?>
             
-            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+            <li><a href="/Sdp/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
                 
             </nav>
@@ -168,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <nav>
                 <figure style="margin:0; padding:0; width:150px;">
-                    <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+                    <a href="dashboard.php"><img src="/Sdp/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
                 </figure>
                 <div id="btn_menu">
                     <div></div>
@@ -198,13 +198,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
             ?>
             
-            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+            <li><a href="/Sdp/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
                 
             </nav>
         </section>
 <!-- Formulario de registro de usuarios -->
-<form method="POST"  id="formulario-solicitud" action="/solicitud_de_permisos_laborales/app/controller/UserController.php">
+<form method="POST"  id="formulario-solicitud" action="/Sdp/app/controller/UserController.php">
     <h2 style="color: var(--verde-corporativo); font-size: 22px; margin:0px auto 20px; font-weight: 600;">Registro de nuevos usuarios</h2>
     
     <input type="text" class="input_solicitud" name="nombres" value="<?= htmlspecialchars($nombres) ?>" required placeholder="Ingrese los nombres del usuario:">

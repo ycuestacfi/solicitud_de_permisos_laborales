@@ -237,7 +237,7 @@ class SolicitudController {
 
     private function guardarArchivo() {
         if (isset($_FILES['evidencias']) && $_FILES['evidencias']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = __DIR__ . '/evidencias/';
+            $uploadDir = __DIR__ . '/../assets/evidencias/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
