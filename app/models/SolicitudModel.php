@@ -8,8 +8,9 @@ class solicitudModel {
         $this->db = ConectService::conectar();
     }
 
-    public function actualizarEstado($id_solicitud, $estado){
-        $sql = "UPDATE solicitudes SET estado = :estado, fecha_estado = NOW() WHERE id_solicitud = :id_solicitud";
+    public function actualizarEstado($id_solicitud, $estado, $comentario){
+
+        $sql = "UPDATE solicitudes SET estado = :estado, fecha_estado = NOW() , comentario = :comentario WHERE id_solicitud = :id_solicitud";
 
         // Asegúrate de que $id_solicitud es un valor entero
         $id_solicitud = (int) $id_solicitud;
@@ -20,7 +21,8 @@ class solicitudModel {
         // Ejecutamos la consulta pasando los valores como un arreglo asociativo
         $stmt->execute([
             ':estado' => $estado,
-            ':id_solicitud' => $id_solicitud
+            ':id_solicitud' => $id_solicitud,
+            ':comentario' => $comentario
         ]);
         // Registrar el cambio en el historial
         // $this->registrarHistorico($id_solicitud, $estado, "1");

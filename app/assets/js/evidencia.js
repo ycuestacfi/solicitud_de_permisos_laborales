@@ -1,7 +1,12 @@
 function mostrarEvidencia(url) {
     if (url == "") {
-        alert("No hay evidencia disponible.");
-        return;
+        Swal.fire({
+            title: "Evidencia",
+            text: "Esta solicitud no tiene evidencia.",
+            icon: "warning",
+            confirmButtonText: "Entendido"
+        });
+        return; // No continúa hasta que haya comentario
     }
 
     document.getElementById("imagenEvidencia").src = url;

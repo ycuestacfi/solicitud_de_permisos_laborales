@@ -19,7 +19,7 @@ class SolicitudController {
     public function cambiarEstadoSolicitud($datos) {
         try {
             // Llamamos al modelo para actualizar el estado de la solicitud en la base de datos
-            $resultado = $this->solicitudModel->actualizarEstado($datos['idSolicitud'], $datos['nuevoEstado']);
+            $resultado = $this->solicitudModel->actualizarEstado($datos['idSolicitud'], $datos['nuevoEstado'], $datos['comentario']);
             
             // Si la actualización fue exitosa, devolvemos una respuesta exitosa
             if ($resultado) {
@@ -375,7 +375,7 @@ if (isset($_FILES['subir_evidencia']) && $_FILES['subir_evidencia']['error'] ===
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' ){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["accion"]) && $_POST["accion"] != "guardar_historico") {
 
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
@@ -389,5 +389,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' ){
     $solicitudController = new SolicitudController();
 
     $solicitudController->procesarFormulario($nombre, $email, $cedula, $departamento, $fecha_de_solicitud, $fecha_de_permiso, $hora_de_salida, $hora_de_llegada);
-}
+} else if ($_SERVER["REQUEST_METHOD"] === 'POST' && isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] === 'application/json') {
 
+    // Leer el cuerpo de la solicitud
+    $jsonData = file_get_contents('php://input');  // Obtiene los datos JSON del cuerpo de la solicitud
+
+    // Decodificar los datos JSON en un array asociativo
+    $data = json_decode($jsonData, true);
+
+    // Verificar que 'accion' y 'idSolicitud' estén en los datos recibidos
+    if (isset($data["accion"]) && $data["accion"] === "Procesar") {
+        // Capturar los datos del JSON
+        $idSolicitud = $data["idSolicitud"];
+        
+        // Crear el array de datos a enviar al histórico
+        $datos = [
+            "id_solicitud" => $idSolicitud,
+            "estado" => "terminada"
+        ];
+
+        // Llamar a la función para registrar en el histórico
+        $resultado = $solicitudController->historico($datos);
+
+        // Responder con JSON
+        if ($resultado) {
+            echo json_encode([
+                "success" => true,
+                "mensaje" => "Solicitud procesada correctamente."
+            ]);
+        } else {
+            echo json_encode([
+                "success" => false,
+                "mensaje" => "Error al procesar la solicitud."
+            ]);
+        }
+    } else {
+        echo json_encode([
+            "success" => false,
+            "mensaje" => "Acción no válida."
+        ]);
+    }
+}

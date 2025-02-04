@@ -85,6 +85,16 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     top: 20%;
     max-width: 90%;
 }
+/* Asegurar que el input sea visible y bien espaciado */
+.modal-content input {
+    width: 100%; /* Que ocupe todo el ancho */
+    padding: 10px;
+    margin-top: 10px; /* Espaciado superior */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none; /* Quita el borde azul al hacer clic */
+}
 
 /* Estilo de la X para cerrar */
 .close {
@@ -117,6 +127,18 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     margin-bottom: 20px;
     color: #333;
     font-family: 'Arial', sans-serif;
+}
+
+/* Asegurar que el input de comentario sea visible */
+#comentario {
+    display: block; /* Forzar visibilidad */
+    width: calc(100% - 20px); /* Ajustar el ancho */
+    padding: 10px;
+    margin-top: 15px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 10px;
 }
 
 /* Botones dentro del modal de confirmación */
@@ -197,7 +219,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                 }
             ?>
           
-            
+            <li><a href="aprovadas.php">aprovadas</a></li>
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
@@ -233,18 +255,33 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['hora_ingreso']); ?></td>
                     <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['tipo_permiso']); ?></td>
                     <td class="td_solicitud">
-                        <button class="btn_accion_solicitud" 
-                            <?php 
-                                $ruta = $pruebas1['evidencia'];
-                                if($ruta == "") {
+                        <?php
+                            $ruta = $pruebas1['evidencia'];
+                            if($ruta == "") {
+                                ?>
+                                <button class="btn_accion_solicitud" 
+                                <?php 
                                     $ruta_relativa = null;
-                                } else {
-                                $ruta_relativa = str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);
-                                }
-                            ?>
-                            onclick="mostrarEvidencia('<?php echo $ruta_relativa; ?>')">
-                            <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
-                        </button>
+                                    
+                                    $ruta_relativa = str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);
+                                    
+                                ?>
+                                onclick="mostrarEvidencia('<?php echo $ruta_relativa; ?>')">
+                                <i class="fa-solid fa-xmark" style="font-size: 22px; color:red;"></i>
+                                </button><?php 
+                            } else {
+                                ?>
+                                <button class="btn_accion_solicitud" 
+                                <?php 
+                                    
+                                    $ruta_relativa = str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);
+                                    
+                                ?>
+                                onclick="mostrarEvidencia('<?php echo $ruta_relativa; ?>')">
+                                <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
+                                </button><?php 
+                            }
+                        ?>
                     </td>
                     <td class="td_solicitud" id="estado_<?php echo $pruebas1['id_solicitud']; ?>">
                         <?php echo htmlspecialchars($pruebas1['estado']); ?>
@@ -318,6 +355,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
         <div class="modal-content">
             <span class="close" onclick="cerrarModal()">&times;</span>
             <p id="mensajeConfirmacion">¿Estás seguro de que deseas realizar esta acción?</p>
+            <input type="text" id="comentario" name="comentario" placeholder="Comentario">
             <div class="modal-buttons">
                 <button id="btnConfirmar" onclick="realizarAccion()">Sí</button>
                 <button onclick="cerrarModal()">No</button>

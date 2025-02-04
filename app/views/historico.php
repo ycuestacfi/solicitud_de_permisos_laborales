@@ -32,66 +32,17 @@ $solicitudes = $solicitudController->ver_historico();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
+    <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/modal_evidencia.css">
 
 </head>
 <body>
-<!-- Modal para mostrar mensajes -->
-<div id="modalMensaje" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <p id="mensajeModal"></p>
+
+<div id="modalVerEvidencia" class="modal">
+    <div class="modal-contenido">
+        <span class="cerrar" onclick="cerrarModalVerEvidencia()">&times;</span>
+        <img id="imagenEvidencia" src="" alt="Evidencia" class="imagen-evidencia">
     </div>
-</div>
-
-<!-- Estilos del modal -->
-<style>
-    .modal {
-        display: none; /* Ocultamos el modal por defecto */
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
-    }
-    
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }
-    
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
-<!-- <header>
-        <h1>Título de la Página</h1>
-        <nav>
-            <ul>
-                <li><a href="#home" style="color: white;">Inicio</a></li>
-                <li><a href="#about" style="color: white;">Acerca de</a></li>
-                <li><a href="#services" style="color: white;">Servicios</a></li>
-                <li><a href="#contact" style="color: white;">Contacto</a></li>
-            </ul>
-        </nav>
-    </header> -->
-    
+</div>   
     <main>
     <section id="navigation">
     <nav>
@@ -136,21 +87,46 @@ $solicitudes = $solicitudController->ver_historico();
             <table id="tabla_registros" style="height: 100% ;width: 100%;">
                 <thead>
                     <tr>
-                        <th >Codigo de Solicitudes</th>
-                        <th >Fecha de permiso</th>
+                        <th >Codigo Solicitud</th>
+                        <th >Nombre</th>
+                        <th >N°Cedula</th>
                         <th >Departamento</th>
+                        <th >Fecha de permiso</th>
+                        <th >Hora Salida</th>
+                        <th >Hora ingreso</th>
+                        <th >Tipo de permiso</th>
+                        <th >Evidencia</th>
+                        <th >Estado</th>
                         <th >Fecha de aprovacion</th>
+                        <th >Fecha de porteria</th>
                         <th >Fecha de revision</th>
                     </tr>
                 </thead>
                 <tbody>
                     
-                    <?php foreach ($solicitudes as $pruebas1): ?>
+                    <?php 
+                    foreach ($solicitudes as $pruebas1): 
+                        // Procesar la ruta de la evidencia
+                        $ruta = $pruebas1['evidencia'];
+                        $ruta_relativa = ($ruta == "") ? null : str_replace("C:\\xampp\\htdocs\\solicitud_de_permisos_laborales\\", "http://localhost/solicitud_de_permisos_laborales/app/", $ruta);    
+                    ?>
                     <tr>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['identificador_solicitud']); ?></td>
-                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_permiso']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['cedula']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['nombre_departamento']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_permiso']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['hora_salida']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['hora_ingreso']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['tipo_permiso']); ?></td>
+                        <td class="td_solicitud">
+                            <button class="btn_accion_solicitud" onclick="verEvidencia('<?php echo $ruta_relativa; ?>')">
+                                <i class="fa-regular fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
+                            </button>
+                        </td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['estado_revision']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_estado']); ?></td>
+                        <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_estado_vigilancia']); ?></td>
                         <td class="td_solicitud"><?php echo htmlspecialchars($pruebas1['fecha_estado_revision']); ?></td>
                     </tr>    
                     <?php endforeach; ?>
@@ -168,5 +144,6 @@ $solicitudes = $solicitudController->ver_historico();
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/busqueda.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/subir_evidencia.js"></script>
 </body>
 </html>

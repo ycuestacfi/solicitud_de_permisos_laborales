@@ -58,3 +58,27 @@
     background: rgba(0, 0, 0, 0.3); /* Fondo más oscuro al pasar el mouse */
     color: #fff; /* La X se vuelve blanca */
 }
+
+/* Botón para cerrar */
+.cerrar {
+    color: #333; /* Más oscuro */
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.1); /* Fondo circular con transparencia */
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.cerrar:hover {
+    background: rgba(0, 0, 0, 0.3); /* Fondo más oscuro al pasar el mouse */
+    color: #fff; /* La X se vuelve blanca */
+}

@@ -34,6 +34,7 @@ $respuesta_solicitudes = $solicitudes;
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/modal_evidencia.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- Modal para subir evidencia -->
@@ -227,7 +228,7 @@ input[type="file"] {
                             <td class="td_solicitud"><?php echo htmlspecialchars($solicitud['estado']); ?></td>
                             <td class="td_solicitud">
                                 <button class="btn_accion_solicitud" 
-                                    onclick="abrirModalEvidencia()">
+                                    onclick="abrirModalComentario('<?php echo $solicitud['comentario']; ?>')">
                                     <i class="fa-regular fa-comment" style="font-size: 22px; color:#A3B8C9;"></i>
                                 </button>
 
@@ -242,7 +243,9 @@ input[type="file"] {
                                     if (empty($solicitud['evidencia'])):
                                         if ($diferenciaDias > $diasTolerancia): ?>
                                             <!-- Mostrar icono de equis si ha pasado el tiempo permitido -->
-                                            <i class="fa-solid fa-xmark" style="font-size: 22px; color:red;"></i>
+                                             <button class="btn_accion_solicitud" onclick="mensaje()">
+                                                <i class="fa-solid fa-xmark" style="font-size: 22px; color:red;"></i>
+                                            </button>
                                         <?php else: ?>
                                             <!-- Botón para subir evidencia si aún está dentro del tiempo permitido -->
                                             <button class="btn_accion_solicitud" onclick="mostrarModalSubirEvidencia('<?php echo $solicitud['identificador_solicitud']; ?>')">

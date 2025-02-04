@@ -25,10 +25,27 @@ function mostrarModal(accion, solicitudId, identificador, nombre, cedula, email,
 
     const mensajeElement = document.getElementById('mensajeConfirmacion');
     const modalElement = document.getElementById('modalConfirmacion');
-    
+    const comentarioInput = document.getElementById('comentario'); // Input de comentario
+
     if (mensajeElement && modalElement) {
         mensajeElement.textContent = `¿Estás seguro de que deseas ${M_accion} esta solicitud?`;
         modalElement.style.display = 'block';
+
+        if (accion === "eliminada") {
+            comentarioInput.style.display = "block";
+            comentarioInput.value = ""; // Limpiar el input antes de usarlo
+            comentarioInput.required = true; // Hacer el campo obligatorio
+        } else {
+            comentarioInput.style.display = "block";
+            comentarioInput.value = "";
+            comentarioInput.required = false;
+            btnConfirmar.disabled = false; // Habilitar el botón
+        }
+
+        // Agregar evento para activar/desactivar el botón
+        comentarioInput.addEventListener("input", function () {
+            btnConfirmar.disabled = comentarioInput.value.trim() === "";
+        });
     } else {
         console.error('Elementos del modal no encontrados');
     }
@@ -41,7 +58,7 @@ function cerrarModal() {
     }
 }
 
-// Cerrar el modal si se hace clic fuera de la imagen
+// Cerrar el modal si se hace clic fuera
 document.addEventListener("DOMContentLoaded", function () {
     let modal = document.getElementById("modalConfirmacion");
 
@@ -56,6 +73,19 @@ function realizarAccion() {
     if (!accionPendiente) {
         console.error('No hay acción pendiente para procesar');
         return;
+    }
+    
+    const comentarioInput = document.getElementById('comentario').value; // Obtener el comentario
+
+    // Validar si la acción es "eliminada" y el comentario está vacío
+    if (accionPendiente.accion === "eliminada" && comentarioInput === "") {
+        Swal.fire({
+            title: "Comentario obligatorio",
+            text: "Debes escribir un comentario antes de eliminar la solicitud.",
+            icon: "warning",
+            confirmButtonText: "Entendido"
+        });
+        return; // No continúa hasta que haya comentario
     }
 
     const { 
@@ -83,13 +113,14 @@ function realizarAccion() {
         fecha_permiso, 
         hora_salida, 
         hora_llegada, 
-        observaciones
+        observaciones,
+        comentarioInput
     );
 
     cerrarModal();
 }
 
-async function procesarSolicitud(nuevoEstado, idSolicitud, identificador, nombre, cedula, email, tipo_permiso, fecha_permiso, hora_salida, hora_llegada, observaciones) {
+async function procesarSolicitud(nuevoEstado, idSolicitud, identificador, nombre, cedula, email, tipo_permiso, fecha_permiso, hora_salida, hora_llegada, observaciones, comentario) {
     const datos = {
         idSolicitud,
         identificador,
@@ -101,7 +132,8 @@ async function procesarSolicitud(nuevoEstado, idSolicitud, identificador, nombre
         fecha_permiso,
         hora_salida,
         hora_llegada,
-        observaciones
+        observaciones,
+        comentario // Incluir el comentario en la petición
     };
 
     try {

@@ -39,6 +39,8 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/tarjetas.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 <body>
@@ -171,7 +173,7 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
                 }
             ?>
           
-            
+            <li><a href="aprovadas.php">aprovadas</a></li>
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
@@ -206,8 +208,8 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
 
                     <td class="td_solicitud">
                         <button class="btn_accion_solicitud" 
-                            onclick="procesarSolicitudConConfirmacion(this)">
-                            <i class="fa-solid fa-file-lines" style="font-size: 22px; color:var(--verde-corporativo);"></i>
+                            onclick="mostrarModal('Procesar','<?php echo $pruebas1['id_solicitud']; ?>')">
+                            <i class="fa-regular fa-circle-check" style="font-size: 22px; color:var(--verde-corporativo);"></i>
                         </button>
                     </td>
                 </tr>
@@ -225,7 +227,7 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
             <span class="close" onclick="cerrarModal()">&times;</span>
             <p id="mensajeConfirmacion">¿Estás seguro de que deseas realizar esta acción?</p>
             <div class="modal-buttons">
-                <button id="btnConfirmar" onclick="realizarAccion()">Sí</button>
+                <button id="btnConfirmar" onclick="procesarSolicitudConConfirmacion()">Sí</button>
                 <button onclick="cerrarModal()">No</button>
             </div>
         </div>
@@ -237,60 +239,6 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
     </footer>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
-    <script src="/solicitud_de_permisos_laborales/app/assets/js/estado_solicitud.js"></script>
-    <script>
-    function procesarSolicitudConConfirmacion(boton) {
-        // Buscar la fila más cercana al botón y obtener el atributo data-info
-        let fila = boton.closest("tr");
-        let datos = JSON.parse(fila.getAttribute("data-info"));
-
-        console.log("Solicitud recibida:", datos);
-
-        // Crear un formulario oculto y enviarlo al mismo archivo PHP
-        let form = document.createElement("form");
-        form.method = "POST";
-        form.action = ""; // Se envía al mismo archivo
-
-        // Agregar los datos como inputs ocultos
-        for (let key in datos) {
-            let input = document.createElement("input");
-            input.type = "hidden";
-            input.name = key;
-            input.value = datos[key];
-            form.appendChild(input);
-        }
-
-        // Input adicional para indicar que se está procesando la solicitud
-        let actionInput = document.createElement("input");
-        actionInput.type = "hidden";
-        actionInput.name = "accion";
-        actionInput.value = "guardar_historico";
-        form.appendChild(actionInput);
-
-        // Agregar el formulario al documento y enviarlo
-        document.body.appendChild(form);
-        form.submit();
-    }
-    </script>
-    <?php 
-    // Verifica si se envió el formulario desde JavaScript
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["accion"]) && $_POST["accion"] === "guardar_historico") {
-        // Captura los datos de POST y guárdalos en un array
-        $datos = [
-            "id_solicitud" => $_POST["id_solicitud"],
-            "estado" => "terminada"
-        ];
-
-        // Llamar a la función para registrar en el histórico
-        $resultado = $solicitudController->historico($datos);
-
-        // Redirigir o mostrar mensaje según el resultado
-        if ($resultado) {
-            echo "<script>alert('Solicitud registrada en el histórico correctamente');</script>";
-        } else {
-            echo "<script>alert('Error al registrar la solicitud');</script>";
-        }
-    }
-    ?>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/revision_solicitud.js"></script>
 </body>
 </html>
