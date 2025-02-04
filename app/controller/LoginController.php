@@ -36,7 +36,7 @@ class LoginController {
                 if ($_SESSION['rol'] === 'solicitante') {   
                     header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php");
                     exit();
-                } elseif ($_SESSION['rol'] === 'lider_aprobador' || $_SESSION['rol'] === 'administrador') {
+                } elseif ($_SESSION['rol'] === 'lider_aprobador' || $_SESSION['rol'] === 'administrador' || $_SESSION['rol'] === 'visualizar') {
                       
                         header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php");
                         exit();

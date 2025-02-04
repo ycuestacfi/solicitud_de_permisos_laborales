@@ -11,7 +11,7 @@ if (!isset($_SESSION['estado'])) {
     }
 }
 
-if ($_SESSION['rol'] !== "lider_aprobador" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+if ($_SESSION['rol'] !== "lider_aprobador" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI" && $_SESSION['rol'] !== "visualizar") {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
@@ -20,9 +20,14 @@ require_once __DIR__ . '/../controller/solicitudController.php';
 // Ahora, pasar la conexión a la clase solicitudModel
 $solicitudController = new SolicitudController();
 
-// Obtener solicitudes
-$id_departamento = $_SESSION['id_departamento'];
-$solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento);
+if ($_SESSION['rol'] == 'visualizar'){
+    $solicitudes = $solicitudController->solicitudesDeDepartamento($_SESSION['rol']);
+} else {
+    // Obtener solicitudes
+    $id_departamento = $_SESSION['id_departamento'];
+    $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento);
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -203,15 +208,19 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
         
         <ul id="menu">
             
-            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
             
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            <?php if ($_SESSION['rol'] !== 'visualizar') {
+                echo '<li><a href="solicitudes.php">Mis solicitudes</a></li>';
+                echo '<li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>';
+                }
+            ?>
             
-            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
+            
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                     
                     echo '<li><a href="departamentos.php">Departamentos</a></li>';
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
@@ -219,12 +228,18 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
                 }
             ?>
           
-            <li><a href="aprovadas.php">aprovadas</a></li>
+          <?php if ($_SESSION['rol'] == 'visualizar'){
+                    echo '<li><a href="aprovadas.php"> Aprovadas </a></li>'; 
+            }?>
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          
     </nav>
 </section>
+    <?php if ($_SESSION['rol'] == 'visualizar'){
+        echo '<input type="text" id="busqueda" onkeyup="filtrarTabla()" placeholder="Buscar en las solicitudes...">';
+    }
+    ?>
     <div class="tabla_registro">
         <table id="tabla_registros" style="height: 100% ;width: 100%;">
             <thead>
@@ -369,6 +384,7 @@ $solicitudes = $solicitudController->solicitudesDeDepartamento($id_departamento)
     </footer>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/main.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/menu.js"></script>
+    <script src="/solicitud_de_permisos_laborales/app/assets/js/busqueda.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/estado_solicitud.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/tarjetas.js"></script>
     <script src="/solicitud_de_permisos_laborales/app/assets/js/evidencia.js"></script>

@@ -11,7 +11,7 @@ if (!isset($_SESSION['estado'])) {
     }
 }
 
-if ($_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+if ($_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI" && $_SESSION['rol'] !== 'visualizar') {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
@@ -61,15 +61,18 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                 
                 <ul id="menu">
             
-            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
             
-            <li><a href="solicitudes.php">Mis solicitudes</a></li>
-            <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
+            <?php if ($_SESSION['rol'] !== 'visualizar'){
+                echo '<li><a href="solicitudes.php">Mis solicitudes</a></li>';
+                echo '<li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>';
+            }
+            ?>
             
-            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                     
                     echo '<li><a href="departamentos.php">Departamentos</a></li>';
                     echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
@@ -80,6 +83,10 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                     echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
                 }
             ?>
+
+            <?php if ($_SESSION['rol'] == 'visualizar'){
+                    echo '<li><a href="aprovadas.php"> Aprovadas </a></li>'; 
+            }?>
             
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
@@ -87,40 +94,41 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
             </nav>
         </section>
 
-        <h1>Gestión de Departamentos</h1>
-
-        <!-- Formulario para crear o editar departamento -->
         
+        <!-- Formulario para crear o editar departamento -->
+    <?php if ($_SESSION['rol'] !== 'visualizar') :?>
+    <h1>Gestión de Departamentos</h1>
     <section id="gestion_departamentos">
-    <form  id="form_gestion_departamentos" action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
-    <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
-
-    <label for="nombre_departamento">Nombre del Departamento</label>
-    <input type="text" id="nombre_departamento" name="nombre_departamento" required>
-
-    <label for="id_lider">Líder</label>
-    <select id="id_lider" name="id_lider">
-        <option value="4">Seleccione un líder</option>
-
-        <?php if (!empty($usuarios_selecion_lider)): ?>
+        <form  id="form_gestion_departamentos" action="/solicitud_de_permisos_laborales/app/controller/departamentoController.php" method="POST">
+            <input type="hidden" name="id_departamento" value="<?php echo isset($departamento) ? $departamento['id_departamento'] : ''; ?>">
+            
+            <label for="nombre_departamento">Nombre del Departamento</label>
+            <input type="text" id="nombre_departamento" name="nombre_departamento" required>
+            
+            <label for="id_lider">Líder</label>
+            <select id="id_lider" name="id_lider">
+                <option value="4">Seleccione un líder</option>
+                
+                <?php if (!empty($usuarios_selecion_lider)): ?>
             <?php foreach ($usuarios_selecion_lider as $posibles_lideres): ?>
                 <option value="<?php echo htmlspecialchars($posibles_lideres['id_usuario']); ?>">
                     <?php echo htmlspecialchars($posibles_lideres['nombres'].' '.$posibles_lideres['apellidos']); ?>
                 </option>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <option value="">No hay líderes disponibles</option>
-        <?php endif; ?>
-    </select>
+                <?php endforeach; ?>
+                <?php else: ?>
+                    <option value="">No hay líderes disponibles</option>
+                    <?php endif; ?>
+                </select>
+                
+                <!-- Botón para crear un nuevo departamento -->
+                <button type="submit" name="accion" value="crear">Crear Departamento</button>
 
-    <!-- Botón para crear un nuevo departamento -->
-    <button type="submit" name="accion" value="crear">Crear Departamento</button>
-
-    <!-- Botón para actualizar un departamento existente -->
-    <!-- <button type="submit" name="accion" value="actualizar">Actualizar Departamento</button> -->
-</form>
+            <!-- Botón para actualizar un departamento existente -->
+            <!-- <button type="submit" name="accion" value="actualizar">Actualizar Departamento</button> -->
+        </form>
     </section>
-
+    <?php endif;?>
+    
  
 
 
@@ -137,7 +145,10 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                     <th>ID Departamento</th>
                     <th>Nombre del Departamento</th>
                     <th>Nombre del Líder</th>
-                    <th>Acciones</th>
+                    <?php if ($_SESSION['rol'] !== 'visualizar') {
+                    echo '<th>Acciones</th>';
+                    }
+                    ?>
                 </tr>
             </thead>
             <tbody>
@@ -154,9 +165,12 @@ $usuarios_selecion_lider = $usercontroler->selecion_de_lider();
                             <?php else: ?>
                                 <td class="td_solicitud">No hay líder asignado</td>
                             <?php endif; ?>
-                            <td class="td_solicitud">
-                                <button style="background:none; border:none;" onclick="abrirModal(this)"><i class="fa-solid fa-pen-to-square" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
-                            </td>
+                            <?php if ($_SESSION['rol'] !== 'visualizar') {
+                                echo '<td class="td_solicitud">
+                                    <button style="background:none; border:none;" onclick="abrirModal(this)"><i class="fa-solid fa-pen-to-square" style="font-size: 22px; color:var(--verde-corporativo);"></i></button>
+                                </td>';
+                                }
+                            ?>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

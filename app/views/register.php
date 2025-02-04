@@ -8,7 +8,7 @@ if (!isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
-if ( $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+if ( $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI" && $_SESSION['rol'] !== 'visualizar') {
     header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
     exit();
 }
@@ -102,42 +102,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
             <section id="navigation">
 
-                    <nav>
-                    <figure style="margin:0; padding:0; width:150px;">
-                        <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
-                    </figure>
-                    <div id="btn_menu">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    
-                    <ul id="menu">
-                
-                <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
-                    echo '<li><a href="dashboard.php">Inicio</a></li>';
+        <nav>
+        <figure style="margin:0; padding:0; width:150px;">
+            <a href="dashboard.php"><img src="/solicitud_de_permisos_laborales/app/assets/img/logocfipblanco.png" style="width: 100%;" alt=""></a>
+        </figure>
+        <div id="btn_menu">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        
+        <ul id="menu">
+            
+            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
+                echo '<li><a href="dashboard.php">Inicio</a></li>';
+            }
+            ?>
+            
+            <?php if ($_SESSION['rol'] !== 'visualizar') {
+                echo '<li><a href="solicitudes.php">Mis solicitudes</a></li>';
+                echo '<li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>';
                 }
-                ?>
-                
-                <li><a href="solicitudes.php">Mis solicitudes</a></li>
-                <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
-                
-                <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
-                        
-                        echo '<li><a href="departamentos.php">Departamentos</a></li>';
-                        echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
-                        echo '<li><a href="historico.php"> Historico </a></li>';
-                    }
-                ?>
-                <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
-                        echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
-                    }
-                ?>
-                
-                <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
-            </ul>
+            ?>
+            
+            
+            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                     
-                </nav>
+                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
+                    echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
+                    echo '<li><a href="historico.php"> Historico </a></li>';
+                }
+            ?>
+          
+          <?php if ($_SESSION['rol'] == 'visualizar'){
+                    echo '<li><a href="aprovadas.php"> Aprovadas </a></li>'; 
+            }?>
+            <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
+        </ul>
+         
+        </nav>
             </section>
     <!-- Formulario de registro de usuarios -->
     <form method="POST"  id="formulario-solicitud" action="/solicitud_de_permisos_laborales/app/controller/UserController.php">

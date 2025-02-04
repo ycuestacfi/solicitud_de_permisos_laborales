@@ -31,9 +31,15 @@ class solicitudModel {
     }
     
     public function solicitudesDeDepartamento($id_departamento){
-        $sql = "SELECT * FROM solicitudes WHERE id_departamento = ? AND estado = 'pendiente' ORDER BY fecha_solicitud DESC;";
-        $smtp = $this->db->prepare($sql);
-        $smtp->execute([$id_departamento]);
+        if ($id_departamento !== "visualizar") {
+            $sql = "SELECT * FROM solicitudes WHERE id_departamento = ? AND estado = 'pendiente' ORDER BY fecha_solicitud DESC;";
+            $smtp = $this->db->prepare($sql);
+            $smtp->execute([$id_departamento]);
+        } else {
+            $sql = "SELECT * FROM solicitudes WHERE estado = 'pendiente' ORDER BY fecha_solicitud DESC;";
+            $smtp = $this->db->prepare($sql);
+            $smtp->execute([]);
+        }
         return $smtp->fetchAll(PDO::FETCH_ASSOC);
     }
 
