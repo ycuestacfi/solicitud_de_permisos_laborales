@@ -29,7 +29,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    border-left: solid 1px var(--verde-corporativo) ;
+    /* border-left: solid 1px var(--verde-corporativo) ; */
 }
 .label-login{
     color: var(--azul-oscuro-contraste);
@@ -78,8 +78,8 @@
 }
 #text_login{
     position: absolute;
-    left: 70%;
-    top: 5px;
+    left: 64%;
+    top: 35px;
     font-size: 35px;
     color: var(--verde-corporativo);
 }
@@ -100,7 +100,8 @@
     width: 90%;
     height: 100%;
     position: relative;
-    left: 4%;
+    left: 7%;
+    bottom: 20%;
 }
 @media screen and (max-width: 600px) {
     /* Ajustes para pantallas pequeñas */

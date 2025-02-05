@@ -7,6 +7,12 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: login.php");
     exit();
 }
+
+if ( $_SESSION['rol'] === 'visualizar') {
+    header("Location: /solicitud_de_permisos_laborales/app/views/dashboard.php ");
+    exit();
+}
+
 require_once __DIR__ . '/../controller/solicitudController.php';
 include_once __DIR__ . '/../controller/departamentoController.php';
 
@@ -183,8 +189,6 @@ input[type="file"] {
                     <li><a href="solicitudes.php">Mis solicitudes</a></li>
                     <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
                     
-                    
-                    
                     <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
                             
                         echo '<li><a href="departamentos.php">Departamentos</a></li>';
@@ -192,10 +196,15 @@ input[type="file"] {
                         echo '<li><a href="historico.php"> Historico </a></li>';
                         }
                     ?>
+
                     <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
                         echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
                         }
                     ?>
+
+                    <?php if ($_SESSION['rol'] == 'TI'){
+                        echo '<li><a href="aprovadas.php"> Aprovadas </a></li>'; 
+                    }?>
                     
                     <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
                 </ul>

@@ -16,7 +16,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /app/views/login.php ");
     exit();
 }
-if ($_SESSION['rol'] !== "seguridad" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI" && $_SESSION['rol'] !== 'visualizar') {
+if ($_SESSION['rol'] !== "TI" && $_SESSION['rol'] !== 'visualizar') {
     header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
     exit();
 }
@@ -157,7 +157,7 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
         
         <ul id="menu">
             
-            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
+            <?php if ($_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                 echo '<li><a href="dashboard.php">Inicio</a></li>';
             }
             ?>
@@ -169,17 +169,23 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
             ?>
             
             
-            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
+            <?php if ($_SESSION['rol'] == "TI" || $_SESSION['rol'] === 'visualizar'){
                     
-                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
-                    echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
-                    echo '<li><a href="historico.php"> Historico </a></li>';
+                echo '<li><a href="departamentos.php">Departamentos</a></li>';
+                echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
+                echo '<li><a href="historico.php"> Historico </a></li>';
+                }
+            ?>
+
+            <?php if ($_SESSION['rol'] == "TI"){
+                echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
                 }
             ?>
           
-          <?php if ($_SESSION['rol'] == 'visualizar'){
-                    echo '<li><a href="aprovadas.php"> Aprovadas </a></li>'; 
-            }?>
+            <?php if ($_SESSION['rol'] == "TI" || $_SESSION['rol'] == 'visualizar'){
+                echo '<li><a href="aprovadas.php"> Aprovadas </a></li>'; 
+                }
+            ?>
             <li><a href="/solicitud_de_permisos_laborales/cierre_de_sesion.php" id="btn_salir">Cerrar sesión</a></li>
         </ul>
          

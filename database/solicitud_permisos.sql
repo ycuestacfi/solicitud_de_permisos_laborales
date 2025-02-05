@@ -209,7 +209,7 @@ CREATE TABLE `usuarios` (
   `contrasena` varchar(128) NOT NULL,
   `correo` varchar(64) NOT NULL,
   `id_departamento` int(11) DEFAULT NULL,
-  `rol` enum('solicitante','lider_aprobador','administrador','seguridad','sistem_admin','visualizar') NOT NULL,
+  `rol` enum('solicitante','lider_aprobador','administrador','seguridad','TI','visualizar') NOT NULL,
   `estado` enum('activo','inactivo','suspendido') DEFAULT 'activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

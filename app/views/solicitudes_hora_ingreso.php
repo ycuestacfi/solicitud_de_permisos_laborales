@@ -8,7 +8,7 @@ if (!isset($_SESSION['correo']) || !isset($_SESSION['rol'])) {
     header("Location: /solicitud_de_permisos_laborales/app/views/login.php ");
     exit();
 }
-if ($_SESSION['rol'] !== "seguridad" && $_SESSION['rol'] !== "administrador" && $_SESSION['rol'] !== "TI") {
+if ($_SESSION['rol'] !== "seguridad" && $_SESSION['rol'] !== "TI") {
     header("Location: /solicitud_de_permisos_laborales/app/views/solicitudes.php ");
     exit();
 }
@@ -93,17 +93,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hora-input']) && isse
         cursor: pointer;
     }
 </style>
-<!-- <header>
-        <h1>Título de la Página</h1>
-        <nav>
-            <ul>
-                <li><a href="#home" style="color: white;">Inicio</a></li>
-                <li><a href="#about" style="color: white;">Acerca de</a></li>
-                <li><a href="#services" style="color: white;">Servicios</a></li>
-                <li><a href="#contact" style="color: white;">Contacto</a></li>
-            </ul>
-        </nav>
-    </header> -->
     
     <main>
     <section id="navigation">
@@ -120,23 +109,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['hora-input']) && isse
         <ul id="menu">
             
             
+            <?php if ($_SESSION['rol'] == "TI"){
+                echo '<li><a href="dashboard.php">Inicio</a></li>';
+                }
+            ?>
+
             <li><a href="solicitudes.php">Mis solicitudes</a></li>
             <li><a href="solicitud_de_permisos.php">Nueva solicitud</a></li>
             
-            
-            <?php if ($_SESSION['rol'] == "lider_aprobador" || $_SESSION['rol'] == "administrador" || $_SESSION['rol'] == "TI"){
-                echo '<li><a href="dashboard.php">Inicio</a></li>';
-            }
-            ?>
-            <?php if ($_SESSION['rol'] == 'administrador' || $_SESSION['rol'] == "TI"){
+            <?php if ($_SESSION['rol'] == "TI"){
                     
-                    echo '<li><a href="departamentos.php">Departamentos</a></li>';
-                    echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
-                    echo '<li><a href="historico.php"> Historico </a></li>';
+                echo '<li><a href="departamentos.php">Departamentos</a></li>';
+                echo '<li><a href="register.php"> Registrar Usuarios</a></li>';
+                echo '<li><a href="historico.php"> Historico </a></li>';
+                echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
                 }
             ?>
-            <?php if ($_SESSION['rol'] == 'seguridad' || $_SESSION['rol'] == "TI"){
-                    echo '<li><a href="solicitudes_hora_ingreso.php"> solicitudes hoy </a></li>'; 
+
+            <?php if ($_SESSION['rol'] == "TI"){
+                echo '<li><a href="solicitudes_hora_ingreso.php"> Aprovadas </a></li>'; 
                 }
             ?>
             
