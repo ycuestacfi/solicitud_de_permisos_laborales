@@ -34,7 +34,7 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejemplo de Estructura HTML5</title>
+    <title>Solicitudes por aprovacion</title>
     <!-- iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/solicitud_de_permisos_laborales/app/assets/css/style.css">
@@ -221,7 +221,7 @@ $solicitudes = $solicitudController->solicitudesDeTerminadas();
                 </tr>
                 <?php endforeach; ?>
                 <?php else: ?>
-                    <td class="td_solicitud" colspan="10">No tienes solicitudes pendientes en tu departamento</td>
+                    <td class="td_solicitud" colspan="10">No hay solicitudes pendientes</td>
                 <?php endif; ?>
             </tbody>
 

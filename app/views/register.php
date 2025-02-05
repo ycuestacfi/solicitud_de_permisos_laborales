@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Departamentos</title>
+    <title>Registro de nuevos usuarios</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/register.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
